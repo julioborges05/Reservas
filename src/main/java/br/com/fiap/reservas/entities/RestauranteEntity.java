@@ -11,6 +11,7 @@ public class RestauranteEntity {
     private final LocalDateTime horarioAbertura;
     private final LocalDateTime horarioFechamento;
     private final int capacidade;
+    private int qtdReservas = 0;
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalDateTime horarioAbertura, LocalDateTime horarioFechamento, int capacidade) {
         validarNome(nome);
@@ -55,5 +56,13 @@ public class RestauranteEntity {
         if (capacidade < 0) {
             throw new IllegalArgumentException("Capacidade inválida");
         }
+    }
+
+    public void realizaReserva(int qntPessoa) {
+        qtdReservas += qntPessoa;
+    }
+
+    public int getCapacidade() {
+        return capacidade - qtdReservas;
     }
 }
