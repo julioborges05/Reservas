@@ -3,13 +3,16 @@ package br.com.fiap.reservas.entities;
 public class AvaliacaoEntity {
     private final int nota;
     private final String comentario;
+    private final UsuarioEntity usuario;
 
-    public AvaliacaoEntity(int nota, String comentario) {
+    public AvaliacaoEntity(int nota, String comentario, UsuarioEntity usuario) {
         validarNota(nota);
         validarComentario(comentario);
+        validarUsuario(usuario);
 
         this.nota = nota;
         this.comentario = comentario;
+        this.usuario = usuario;
     }
 
     private static void validarNota(int nota) {
@@ -23,4 +26,11 @@ public class AvaliacaoEntity {
             throw new IllegalArgumentException("Comentário inválido");
         }
     }
+
+    private static void validarUsuario(UsuarioEntity usuario) {
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário inválido");
+        }
+    }
+    
 }

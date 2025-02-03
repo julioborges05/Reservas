@@ -11,7 +11,7 @@ public class AvaliacaoEntityTest {
     void retornaErroComNotaMenorQueZero() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> AvaliaRestauranteUseCase.avaliarRestaurante(-1, "comentario"),
+                () -> AvaliaRestauranteUseCase.avaliarRestaurante(-1, "comentario", new UsuarioEntity("usuario")),
                 "Nota inválida"
         );
     }
@@ -19,7 +19,7 @@ public class AvaliacaoEntityTest {
     void retornaErroComNotaMaiorQueCinco() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> AvaliaRestauranteUseCase.avaliarRestaurante(6, "comentario"),
+                () -> AvaliaRestauranteUseCase.avaliarRestaurante(6, "comentario", new UsuarioEntity("usuario")),
                 "Nota inválida"
         );
     }
@@ -27,8 +27,25 @@ public class AvaliacaoEntityTest {
     void retornaErroComComentarioNulo() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> AvaliaRestauranteUseCase.avaliarRestaurante(5, null),
+                () -> AvaliaRestauranteUseCase.avaliarRestaurante(5, null, new UsuarioEntity("usuario")),
                 "Comentário inválido"
         );
     }
+    @Test
+    void retornaErroComComentarioVazio() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> AvaliaRestauranteUseCase.avaliarRestaurante(5, "", new UsuarioEntity("usuario")),
+                "Comentário inválido"
+        );
+    }
+    @Test
+    void retornaErroComUsuarioNulo() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> AvaliaRestauranteUseCase.avaliarRestaurante(5, "comentario", null),
+                "Usuário inválido"
+        );
+    }
+
 }
