@@ -4,15 +4,18 @@ public class AvaliacaoEntity {
     private final int nota;
     private final String comentario;
     private final UsuarioEntity usuario;
+    private final RestauranteEntity restaurante;
 
-    public AvaliacaoEntity(int nota, String comentario, UsuarioEntity usuario) {
+    public AvaliacaoEntity(int nota, String comentario, UsuarioEntity usuario, RestauranteEntity restaurante) {
         validarNota(nota);
         validarComentario(comentario);
         validarUsuario(usuario);
+        validarRestaurante(restaurante);
 
         this.nota = nota;
         this.comentario = comentario;
         this.usuario = usuario;
+        this.restaurante = restaurante;
     }
 
     private static void validarNota(int nota) {
@@ -30,6 +33,11 @@ public class AvaliacaoEntity {
     private static void validarUsuario(UsuarioEntity usuario) {
         if (usuario == null) {
             throw new IllegalArgumentException("Usuário inválido");
+        }
+    }
+    private static void validarRestaurante(RestauranteEntity restaurante) {
+        if (restaurante == null) {
+            throw new IllegalArgumentException("Restaurante inválido");
         }
     }
     
