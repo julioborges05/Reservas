@@ -13,7 +13,8 @@ public class RestauranteEntity {
     private final int capacidade;
     private int qtdReservas = 0;
 
-    public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalDateTime horarioAbertura, LocalDateTime horarioFechamento, int capacidade) {
+    public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalDateTime horarioAbertura,
+                             LocalDateTime horarioFechamento, int capacidade) {
         validarNome(nome);
         validarEndereco(endereco);
         validarTipoCozinha(tipoCozinha);
@@ -60,6 +61,14 @@ public class RestauranteEntity {
 
     public void realizaReserva(int qntPessoa) {
         qtdReservas += qntPessoa;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getTipoCozinha() {
+        return tipoCozinha;
     }
 
     public int getCapacidade() {

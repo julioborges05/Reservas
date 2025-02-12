@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  restaurante:
+    image: postgres:latest
+    container_name: restaurante_db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=restaurantedb
+    ports:
+      - "5433:5432"
