@@ -73,6 +73,14 @@ public class RestauranteEntity {
         qtdReservas += qntPessoa;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public String getTipoCozinha() {
+        return tipoCozinha;
+    }
+
     public int getCapacidade() {
         return capacidade - qtdReservas;
     }
