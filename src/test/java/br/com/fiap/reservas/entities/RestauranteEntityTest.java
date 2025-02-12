@@ -16,7 +16,7 @@ public class RestauranteEntityTest {
     void validaNome() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new RestauranteEntity(null, enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10),
+                () -> new RestauranteEntity(null, enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10, listaMesa),
                 "Nome Inválido"
         );
     }
@@ -25,7 +25,7 @@ public class RestauranteEntityTest {
     void validaEndereco() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new RestauranteEntity("nome", null, "tipoCozinha", horarioAbertura, horarioFechamento, 10),
+                () -> new RestauranteEntity("nome", null, "tipoCozinha", horarioAbertura, horarioFechamento, 10, listaMesa),
                 "Endereço Inválido"
         );
     }
@@ -34,7 +34,7 @@ public class RestauranteEntityTest {
     void validaTipoCozinha() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new RestauranteEntity("nome", enderecoEntity, null, horarioAbertura, horarioFechamento, 10),
+                () -> new RestauranteEntity("nome", enderecoEntity, null, horarioAbertura, horarioFechamento, 10, listaMesa),
                 "Tipo de Cozinha Inválida"
         );
     }
@@ -43,7 +43,7 @@ public class RestauranteEntityTest {
     void validaHorarioAbertura() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", null, horarioFechamento, 10),
+                () -> new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", null, horarioFechamento, 10, listaMesa),
                 "Horário Inválido"
         );
     }
@@ -52,7 +52,7 @@ public class RestauranteEntityTest {
     void validaHorarioFechamento() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", horarioAbertura, null, 10),
+                () -> new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", horarioAbertura, null, 10, listaMesa),
                 "Horário Inválido"
         );
     }
@@ -61,7 +61,7 @@ public class RestauranteEntityTest {
     void validaCapacidade() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, -1),
+                () -> new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, -1, listaMesa),
                 "Capacidade Inválida"
         );
     }

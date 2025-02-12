@@ -25,7 +25,7 @@ public class ReservaEntityTest {
     void validaUsuario() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ReservaEntity(new RestauranteEntity("Nome", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10), null),
+                () -> new ReservaEntity(new RestauranteEntity("Nome", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10, listaMesa), null),
                 "Usuário Inválido"
         );
     }

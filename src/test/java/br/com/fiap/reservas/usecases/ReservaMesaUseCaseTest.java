@@ -17,7 +17,7 @@ public class ReservaMesaUseCaseTest {
     private final LocalDateTime horarioFechamento = LocalDateTime.of(2025, 02, 02, 17, 37);
 
     private ReservaMesaUseCase reservaMesaUseCase = new ReservaMesaUseCase();
-    private RestauranteEntity restauranteEntity = new RestauranteEntity("Nome", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10);
+    private RestauranteEntity restauranteEntity = new RestauranteEntity("Nome", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10, listaMesa);
 
     @Test
     void retornaErroPorCapacidadeInvalida() {
