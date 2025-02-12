@@ -84,4 +84,9 @@ public class RestauranteEntity {
     public int getCapacidade() {
         return capacidade - qtdReservas;
     }
+
+    public List<MesaEntity> getListaMesa() {
+        return listaMesa;
+    }
+
 }
