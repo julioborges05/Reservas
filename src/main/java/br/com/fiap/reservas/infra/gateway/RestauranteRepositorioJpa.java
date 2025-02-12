@@ -7,6 +7,7 @@ import br.com.fiap.reservas.infra.repository.RestauranteRepository;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
@@ -24,6 +25,6 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
                 "123", "123");
 
         return new RestauranteEntity(restaurante.getNome(), enderecoEntity, restaurante.getTipo(), LocalDateTime.now(),
-                LocalDateTime.now(), 10);
+                LocalDateTime.now(), 10, new ArrayList<>());
     }
 }

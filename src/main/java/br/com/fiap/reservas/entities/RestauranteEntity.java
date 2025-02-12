@@ -3,6 +3,7 @@ package br.com.fiap.reservas.entities;
 import io.micrometer.common.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class RestauranteEntity {
     private final String nome;
@@ -12,14 +13,16 @@ public class RestauranteEntity {
     private final LocalDateTime horarioFechamento;
     private final int capacidade;
     private int qtdReservas = 0;
+    private final List<MesaEntity> listaMesa;
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalDateTime horarioAbertura,
-                             LocalDateTime horarioFechamento, int capacidade) {
+                             LocalDateTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
         validarNome(nome);
         validarEndereco(endereco);
         validarTipoCozinha(tipoCozinha);
         validarHorarios(horarioAbertura, horarioFechamento);
         validarCapacidade(capacidade);
+        validarMesas(listaMesa);
 
         this.nome = nome;
         this.endereco = endereco;
@@ -27,6 +30,7 @@ public class RestauranteEntity {
         this.horarioAbertura = horarioAbertura;
         this.horarioFechamento = horarioFechamento;
         this.capacidade = capacidade;
+        this.listaMesa = listaMesa;
     }
 
     private static void validarNome(String nome) {
@@ -59,6 +63,12 @@ public class RestauranteEntity {
         }
     }
 
+    private static void validarMesas(List<MesaEntity> listaMesa) {
+        if (listaMesa == null || listaMesa.isEmpty()) {
+            throw new IllegalArgumentException("Quantidade de mesas inválida");
+        }
+    }
+
     public void realizaReserva(int qntPessoa) {
         qtdReservas += qntPessoa;
     }
@@ -74,4 +84,9 @@ public class RestauranteEntity {
     public int getCapacidade() {
         return capacidade - qtdReservas;
     }
+
+    public List<MesaEntity> getListaMesa() {
+        return listaMesa;
+    }
+
 }
