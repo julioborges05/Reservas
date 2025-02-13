@@ -1,8 +1,10 @@
 package br.com.fiap.reservas.usecases;
 
+import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.entities.UsuarioEntity;
+import br.com.fiap.reservas.enums.StatusMesa;
 
 public class ReservaMesaUseCase {
 
@@ -12,6 +14,6 @@ public class ReservaMesaUseCase {
         }
 
         restaurante.realizaReserva(qtdPessoas);
-        return new ReservaEntity(restaurante, usuario);
+        return new ReservaEntity(restaurante, usuario, new MesaEntity(1, StatusMesa.RESERVADA));
     }
 }
