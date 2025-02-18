@@ -2,10 +2,20 @@ package br.com.fiap.reservas.controller.dto;
 
 import br.com.fiap.reservas.entities.RestauranteEntity;
 
-public record RestauranteDto(String nome, String tipo) {
+import java.time.LocalTime;
+
+public record RestauranteDto(String nome, EnderecoDto endereco , String tipoCozinha, LocalTime horarioAbertura,
+                             LocalTime horarioFechamento, int capacidade) {
 
     public RestauranteDto(RestauranteEntity restauranteEntity) {
-        this(restauranteEntity.getNome(), restauranteEntity.getTipoCozinha());
+        this(
+                restauranteEntity.getNome(),
+                new EnderecoDto(restauranteEntity.getEndereco()),
+                restauranteEntity.getTipoCozinha(),
+                restauranteEntity.getHorarioAbertura(),
+                restauranteEntity.getHorarioFechamento(),
+                restauranteEntity.getCapacidade()
+        );
     }
 
 }

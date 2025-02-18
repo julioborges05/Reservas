@@ -1,4 +1,4 @@
-package br.com.fiap.reservas.infra.repository;
+package br.com.fiap.reservas.infra.repository.reserva;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

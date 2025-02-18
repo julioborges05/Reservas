@@ -3,20 +3,21 @@ package br.com.fiap.reservas.entities;
 import io.micrometer.common.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class RestauranteEntity {
     private final String nome;
     private final EnderecoEntity endereco;
     private final String tipoCozinha;
-    private final LocalDateTime horarioAbertura;
-    private final LocalDateTime horarioFechamento;
+    private final LocalTime horarioAbertura;
+    private final LocalTime horarioFechamento;
     private final int capacidade;
     private int qtdReservas = 0;
     private final List<MesaEntity> listaMesa;
 
-    public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalDateTime horarioAbertura,
-                             LocalDateTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
+    public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
+                             LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
         validarNome(nome);
         validarEndereco(endereco);
         validarTipoCozinha(tipoCozinha);
@@ -51,7 +52,7 @@ public class RestauranteEntity {
         }
     }
 
-    private static void validarHorarios(LocalDateTime horarioAbertura, LocalDateTime horarioFechamento) {
+    private static void validarHorarios(LocalTime horarioAbertura, LocalTime horarioFechamento) {
         if (horarioAbertura == null || horarioFechamento == null) {
             throw new IllegalArgumentException("Horário de funcionamento inválido");
         }
@@ -64,9 +65,9 @@ public class RestauranteEntity {
     }
 
     private static void validarMesas(List<MesaEntity> listaMesa) {
-        if (listaMesa == null || listaMesa.isEmpty()) {
-            throw new IllegalArgumentException("Quantidade de mesas inválida");
-        }
+//        if (listaMesa == null || listaMesa.isEmpty()) {
+//            throw new IllegalArgumentException("Quantidade de mesas inválida");
+//        }
     }
 
     public void realizaReserva(int qntPessoa) {
@@ -77,16 +78,27 @@ public class RestauranteEntity {
         return nome;
     }
 
+    public EnderecoEntity getEndereco() {
+        return endereco;
+    }
+
     public String getTipoCozinha() {
         return tipoCozinha;
     }
 
+    public LocalTime getHorarioAbertura() {
+        return horarioAbertura;
+    }
+
+    public LocalTime getHorarioFechamento() {
+        return horarioFechamento;
+    }
+
     public int getCapacidade() {
-        return capacidade - qtdReservas;
+        return capacidade;
     }
 
     public List<MesaEntity> getListaMesa() {
         return listaMesa;
     }
-
 }

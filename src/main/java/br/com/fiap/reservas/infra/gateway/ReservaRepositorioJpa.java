@@ -2,13 +2,11 @@ package br.com.fiap.reservas.infra.gateway;
 
 import br.com.fiap.reservas.entities.*;
 import br.com.fiap.reservas.enums.StatusMesa;
-import br.com.fiap.reservas.infra.repository.Reserva;
-import br.com.fiap.reservas.infra.repository.ReservaRepository;
-import br.com.fiap.reservas.infra.repository.Restaurante;
-import br.com.fiap.reservas.infra.repository.RestauranteRepository;
+import br.com.fiap.reservas.infra.repository.reserva.Reserva;
+import br.com.fiap.reservas.infra.repository.reserva.ReservaRepository;
 import br.com.fiap.reservas.interfaces.IReservaGateway;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +26,8 @@ public class ReservaRepositorioJpa implements IReservaGateway {
         EnderecoEntity enderecoEntity = new EnderecoEntity("123", "456", "789", "101112",
                 "123", "123");
 
-        RestauranteEntity restauranteEntity = new RestauranteEntity("teste", enderecoEntity, "teste", LocalDateTime.now(),
-                LocalDateTime.now(), 10, new ArrayList<>());
+        RestauranteEntity restauranteEntity = new RestauranteEntity("teste", enderecoEntity, "teste", LocalTime.now(),
+                LocalTime.now(), 10, new ArrayList<>());
 
         reserva.forEach(res -> {
             //passar os valores da busca no repository

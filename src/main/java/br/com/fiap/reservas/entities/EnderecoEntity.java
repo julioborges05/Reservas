@@ -3,12 +3,30 @@ package br.com.fiap.reservas.entities;
 import io.micrometer.common.util.StringUtils;
 
 public class EnderecoEntity {
+
+    private Long id;
     private final String cep;
     private final String logradouro;
     private final String bairro;
     private final String cidade;
     private final String numero;
     private final String complemento;
+
+    public EnderecoEntity(Long id, String cep, String logradouro, String bairro, String cidade, String numero, String complemento) {
+        validaCep(cep);
+        validaLogradouro(logradouro);
+        validaBairro(bairro);
+        validaCidade(cidade);
+        validaNumero(numero);
+        validaComplemento(complemento);
+        this.id = id;
+        this.cep = cep;
+        this.logradouro = logradouro;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.numero = numero;
+        this.complemento = complemento;
+    }
 
     public EnderecoEntity(String cep, String logradouro, String bairro, String cidade, String numero, String complemento) {
         validaCep(cep);
@@ -59,5 +77,33 @@ public class EnderecoEntity {
         if (StringUtils.isBlank(cep)) {
             throw new IllegalArgumentException("CEP inválido");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public String getComplemento() {
+        return complemento;
     }
 }

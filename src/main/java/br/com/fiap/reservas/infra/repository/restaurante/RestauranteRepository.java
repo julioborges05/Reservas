@@ -1,6 +1,5 @@
-package br.com.fiap.reservas.infra.repository;
+package br.com.fiap.reservas.infra.repository.restaurante;
 
-import br.com.fiap.reservas.entities.RestauranteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
