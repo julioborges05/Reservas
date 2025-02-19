@@ -1,25 +1,26 @@
-package br.com.fiap.reservas.gateway;
+package br.com.fiap.reservas.infra.gateway;
 
 import br.com.fiap.reservas.entities.AvaliacaoEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.entities.UsuarioEntity;
+import br.com.fiap.reservas.infra.repository.avaliacao.AvaliacaoRepository;
 import br.com.fiap.reservas.interfaces.IAvaliacaoGateway;
 
-public class AvaliacaoGateway implements IAvaliacaoGateway {
+public class AvaliacaoRespositorioJpa implements IAvaliacaoGateway {
 
-    private final IAvaliacaoGateway avaliacaoDatabaseGateway;
+    private final AvaliacaoRepository avaliacaoRepository;
 
-    public AvaliacaoGateway(IAvaliacaoGateway avaliacaoDatabaseGateway){
-        this.avaliacaoDatabaseGateway = avaliacaoDatabaseGateway;
+    public AvaliacaoRespositorioJpa(AvaliacaoRepository avaliacaoRepository) {
+        this.avaliacaoRepository = avaliacaoRepository;
     }
 
     @Override
     public AvaliacaoEntity avaliarRestaurante(RestauranteEntity restaurante, int nota, String comentario, UsuarioEntity usuario) {
-        return avaliacaoDatabaseGateway.avaliarRestaurante(restaurante, nota, comentario, usuario);
+        return null;
     }
 
     @Override
     public AvaliacaoEntity buscarAvaliacaoPorRestaurante(String nome) {
-        return avaliacaoDatabaseGateway.buscarAvaliacaoPorRestaurante(nome);
+        return avaliacaoRepository.findAvaliacaoByRestaurante(nome);
     }
 }

@@ -40,5 +40,19 @@ public class AvaliacaoEntity {
             throw new IllegalArgumentException("Restaurante inválido");
         }
     }
-    
+
+    public RestauranteEntity getRestaurante() {
+        return restaurante;
+    }
+    public int getNota() {
+        return nota;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public UsuarioEntity getUsuario(){
+        return usuario;
+    }
 }
