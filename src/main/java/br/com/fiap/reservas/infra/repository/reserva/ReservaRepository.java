@@ -1,4 +1,4 @@
-package br.com.fiap.reservas.infra.repository;
+package br.com.fiap.reservas.infra.repository.reserva;
 
 import br.com.fiap.reservas.enums.StatusMesa;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package br.com.fiap.reservas.controller;
 
 import br.com.fiap.reservas.controller.dto.RestauranteDto;
-import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.interfaces.IEnderecoGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 
 public class BuscaRestauranteController {

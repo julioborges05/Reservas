@@ -15,4 +15,9 @@ public class RestauranteGateway implements IRestauranteGateway {
     public RestauranteEntity buscarRestaurantePorNomeELocalizacaoETipo(String nome, String endereco, String tipo) {
         return restauranteDatabaseGateway.buscarRestaurantePorNomeELocalizacaoETipo(nome, endereco, tipo);
     }
+
+    @Override
+    public RestauranteEntity cadastrarRestaurante(RestauranteEntity restauranteEntity) {
+        return restauranteDatabaseGateway.cadastrarRestaurante(restauranteEntity);
+    }
 }
