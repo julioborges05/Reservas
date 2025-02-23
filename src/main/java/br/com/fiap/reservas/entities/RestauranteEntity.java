@@ -14,7 +14,23 @@ public class RestauranteEntity {
     private final LocalTime horarioFechamento;
     private final int capacidade;
     private int qtdReservas = 0;
-    private final List<MesaEntity> listaMesa;
+    private List<MesaEntity> listaMesa;
+
+    public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
+                             LocalTime horarioFechamento, int capacidade) {
+        validarNome(nome);
+        validarEndereco(endereco);
+        validarTipoCozinha(tipoCozinha);
+        validarHorarios(horarioAbertura, horarioFechamento);
+        validarCapacidade(capacidade);
+
+        this.nome = nome;
+        this.endereco = endereco;
+        this.tipoCozinha = tipoCozinha;
+        this.horarioAbertura = horarioAbertura;
+        this.horarioFechamento = horarioFechamento;
+        this.capacidade = capacidade;
+    }
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
                              LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {

@@ -15,7 +15,7 @@ public class ReservaGateway implements IReservaGateway {
     }
 
     @Override
-    public List<ReservaEntity> buscarReservas(StatusMesa statusMesa) {
-        return reservaDatabaseGateway.buscarReservas(statusMesa);
+    public List<ReservaEntity> buscarReservasPorRestaurante(Long restauranteId) {
+        return reservaDatabaseGateway.buscarReservasPorRestaurante(restauranteId);
     }
 }
