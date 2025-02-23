@@ -14,6 +14,6 @@ public class ReservaMesaUseCase {
         }
 
         restaurante.realizaReserva(qtdPessoas);
-        return new ReservaEntity(restaurante, usuario, new MesaEntity(1, StatusMesa.RESERVADA));
+        return new ReservaEntity(restaurante, "Ana", new MesaEntity(1, StatusMesa.RESERVADA));
     }
 }

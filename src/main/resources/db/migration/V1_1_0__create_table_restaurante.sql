@@ -22,3 +22,25 @@ create table restaurante
     constraint restaurante_pk primary key (id),
     constraint restaurante_endereco_fk foreign key (id_endereco) references endereco (id)
 );
+
+create table mesa
+(
+    numero  serial,
+    status  varchar(255)  not null,
+
+    constraint mesa_pk primary key (numero),
+);
+
+create table reserva
+(
+    id              serial,
+    id_usuario      integer not null,
+    id_restaurante  integer not null,
+    id_mesa         integer not null,
+
+    constraint reserva_pk primary key (id),
+    constraint reserva_usuario_fk foreign key (id_usuario) references usuario (id),
+    constraint reserva_restaurante_fk foreign key (id_restaurante) references restaurante (id),
+    constraint reserva_restaurante_fk foreign key (id_restaurante) references restaurante (id),
+    constraint reserva_mesa_fk foreign key (id_mesa) references mesa (id),
+)

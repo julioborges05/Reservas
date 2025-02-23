@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IReservaGateway {
 
-    public List<ReservaEntity> buscarReservas(StatusMesa statusMesa);
+    public List<ReservaEntity> buscarReservasPorRestaurante(Long restauranteId);
 
 }

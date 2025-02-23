@@ -12,7 +12,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
     @Query(value = """
             select * from reserva
-            where statusMesa = :statusMesa
+            where restaurante_id = :restauranteId AND
+            mesa.statusMesa = :statusMesa
             """, nativeQuery = true)
-    List<Reserva> findByStatusMesa(StatusMesa statusMesa);
+    List<Reserva> findByRestauranteId(Long restauranteId, StatusMesa statusMesa);
 }

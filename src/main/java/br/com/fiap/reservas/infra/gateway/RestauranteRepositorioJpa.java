@@ -8,6 +8,7 @@ import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
@@ -49,5 +50,31 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
                 restauranteSalvo.getCapacidade(),
                 new ArrayList<>()
         );
+    }
+
+    @Override
+    public RestauranteEntity findById(Long id) throws Exception {
+        Optional<Restaurante> restauranteOptional = restauranteRepository.findById(id);
+        // Ainda falta mexer
+        EnderecoEntity enderecoEntity = new EnderecoEntity("123", "456", "789", "101112",
+                "123", "123");
+
+        if (restauranteOptional.isPresent()) {
+            Restaurante restauranteSalvo = restauranteOptional.get();
+            RestauranteEntity restauranteEntity = new RestauranteEntity(
+                    restauranteSalvo.getNome(),
+                    enderecoEntity,
+                    restauranteSalvo.getTipo(),
+                    restauranteSalvo.getHorarioAbertura(),
+                    restauranteSalvo.getHorarioFechamento(),
+                    restauranteSalvo.getCapacidade(),
+                    new ArrayList<>()
+            );
+
+            return restauranteEntity;
+        } else {
+            throw new Exception("Restaurante não encontrado");
+        }
+
     }
 }
