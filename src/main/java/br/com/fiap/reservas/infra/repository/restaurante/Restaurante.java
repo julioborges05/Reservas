@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.infra.repository.restaurante;
 
+import br.com.fiap.reservas.entities.RestauranteEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -36,6 +37,10 @@ public class Restaurante {
         this.horarioAbertura = horarioAbertura;
         this.horarioFechamento = horarioFechamento;
         this.capacidade = capacidade;
+    }
+
+    public Restaurante(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

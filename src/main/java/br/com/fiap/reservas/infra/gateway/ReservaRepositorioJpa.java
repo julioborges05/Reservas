@@ -1,6 +1,9 @@
 package br.com.fiap.reservas.infra.gateway;
 
-import br.com.fiap.reservas.entities.*;
+import br.com.fiap.reservas.entities.EnderecoEntity;
+import br.com.fiap.reservas.entities.MesaEntity;
+import br.com.fiap.reservas.entities.ReservaEntity;
+import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.infra.repository.mesa.Mesa;
 import br.com.fiap.reservas.infra.repository.reserva.Reserva;
@@ -47,5 +50,25 @@ public class ReservaRepositorioJpa implements IReservaGateway {
         });
 
         return reservaEntityList;
+    }
+
+    @Override
+    public ReservaEntity cadastrarReserva(RestauranteEntity restauranteEntity, String nomeUsuario, MesaEntity mesaEntity) {
+        Reserva reservaSalvo = reservaRepository.save(getReserva(restauranteEntity.getId(), nomeUsuario, mesaEntity));
+
+        List<MesaEntity> mesaEntityList = new ArrayList<>();
+        mesaEntityList.add(mesaEntity);
+
+        return new ReservaEntity(
+                restauranteEntity,
+                reservaSalvo.getNomeUsuario(),
+                mesaEntityList
+        );
+    }
+
+    private static Reserva getReserva(Long restauranteId, String nomeUsuario, MesaEntity mesaEntity) {
+        Mesa mesa = new Mesa(mesaEntity.getId(), mesaEntity.getStatusMesa(), mesaEntity.getNumero(), new Restaurante(restauranteId));
+        Restaurante restaurante = new Restaurante(restauranteId);
+        return new Reserva(restaurante, nomeUsuario, mesa);
     }
 }

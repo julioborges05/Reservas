@@ -1,9 +1,6 @@
 package br.com.fiap.reservas.usecases;
 
 import br.com.fiap.reservas.entities.EnderecoEntity;
-import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.entities.UsuarioEntity;
-import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +13,7 @@ public class ReservaMesaUseCaseTest {
     private final LocalDateTime horarioAbertura = LocalDateTime.of(2025, 02, 02, 10, 37);
     private final LocalDateTime horarioFechamento = LocalDateTime.of(2025, 02, 02, 17, 37);
 
-    private ReservaMesaUseCase reservaMesaUseCase = new ReservaMesaUseCase();
+    private CadastrarReservaUseCase reservaMesaUseCase = new CadastrarReservaUseCase();
 //    private RestauranteEntity restauranteEntity = new RestauranteEntity("Nome", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10, listaMesa);
 
 //    @Test

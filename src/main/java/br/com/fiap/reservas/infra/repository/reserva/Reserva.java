@@ -21,9 +21,17 @@ public class Reserva {
     @JoinColumn(name = "id_restaurante")
     private Restaurante restaurante;
 
-    @OneToMany
     @JoinColumn(name = "id_mesa")
-    private List<Mesa> mesaList;
+    private Integer id_mesa;
+
+    public Reserva() {
+    }
+
+    public Reserva(Restaurante restaurante, String nomeUsuario, Mesa mesa) {
+        this.nomeUsuario = nomeUsuario;
+        this.restaurante = restaurante;
+        this.id_mesa = mesa.getId();
+    }
 
     public Long getId() {
         return id;
@@ -50,10 +58,7 @@ public class Reserva {
     }
 
     public List<Mesa> getMesaList() {
-        return mesaList;
+        return List.of();
     }
 
-    public void setMesaList(List<Mesa> mesaList) {
-        this.mesaList = mesaList;
-    }
 }

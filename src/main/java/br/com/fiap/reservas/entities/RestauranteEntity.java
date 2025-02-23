@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class RestauranteEntity {
+    private Long id;
     private final String nome;
     private final EnderecoEntity endereco;
     private final String tipoCozinha;
@@ -50,6 +51,23 @@ public class RestauranteEntity {
         this.listaMesa = listaMesa;
     }
 
+    public RestauranteEntity(Long id, String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
+                             LocalTime horarioFechamento, int capacidade) {
+        validarNome(nome);
+        validarEndereco(endereco);
+        validarTipoCozinha(tipoCozinha);
+        validarHorarios(horarioAbertura, horarioFechamento);
+        validarCapacidade(capacidade);
+
+        this.id = id;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.tipoCozinha = tipoCozinha;
+        this.horarioAbertura = horarioAbertura;
+        this.horarioFechamento = horarioFechamento;
+        this.capacidade = capacidade;
+    }
+
     private static void validarNome(String nome) {
         if (StringUtils.isBlank(nome)) {
             throw new IllegalArgumentException("Nome inválido");
@@ -86,8 +104,8 @@ public class RestauranteEntity {
 //        }
     }
 
-    public void realizaReserva(int qntPessoa) {
-        qtdReservas += qntPessoa;
+    public Long getId() {
+        return id;
     }
 
     public String getNome() {
@@ -116,5 +134,9 @@ public class RestauranteEntity {
 
     public List<MesaEntity> getListaMesa() {
         return listaMesa;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
