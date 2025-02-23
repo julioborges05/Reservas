@@ -3,7 +3,7 @@ package br.com.fiap.reservas.gateway;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 
-import java.util.List;
+import java.util.Optional;
 
 public class RestauranteGateway implements IRestauranteGateway {
 
@@ -24,7 +24,7 @@ public class RestauranteGateway implements IRestauranteGateway {
     }
 
     @Override
-    public List<RestauranteEntity> buscarRestaurantePorNome(String nome) {
-        return restauranteDatabaseGateway.buscarRestaurantePorNome(nome);
+    public RestauranteEntity findById(Long id) throws Exception {
+        return restauranteDatabaseGateway.findById(id);
     }
 }

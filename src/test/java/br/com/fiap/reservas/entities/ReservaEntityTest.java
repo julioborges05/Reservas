@@ -4,6 +4,7 @@ import br.com.fiap.reservas.enums.StatusMesa;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -15,9 +16,10 @@ public class ReservaEntityTest {
 
     @Test
     void validaRestaurante() {
+        MesaEntity mesa = new MesaEntity(1, StatusMesa.LIVRE);
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ReservaEntity(null, new UsuarioEntity("nome"), new MesaEntity(1, StatusMesa.LIVRE)),
+                () -> new ReservaEntity(null, "nome", List.of(mesa)),
                 "Restaurante Inválido"
         );
     }

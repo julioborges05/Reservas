@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class RestauranteEntity {
-    private final Long id;
+    private Long id;
     private final String nome;
     private final EnderecoEntity endereco;
     private final String tipoCozinha;
@@ -15,16 +15,49 @@ public class RestauranteEntity {
     private final LocalTime horarioFechamento;
     private final int capacidade;
     private int qtdReservas = 0;
-    private final List<MesaEntity> listaMesa;
+    private List<MesaEntity> listaMesa;
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
-                             LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa, Long id) {
+                             LocalTime horarioFechamento, int capacidade) {
+        validarNome(nome);
+        validarEndereco(endereco);
+        validarTipoCozinha(tipoCozinha);
+        validarHorarios(horarioAbertura, horarioFechamento);
+        validarCapacidade(capacidade);
+
+        this.nome = nome;
+        this.endereco = endereco;
+        this.tipoCozinha = tipoCozinha;
+        this.horarioAbertura = horarioAbertura;
+        this.horarioFechamento = horarioFechamento;
+        this.capacidade = capacidade;
+    }
+
+    public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
+                             LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
         validarNome(nome);
         validarEndereco(endereco);
         validarTipoCozinha(tipoCozinha);
         validarHorarios(horarioAbertura, horarioFechamento);
         validarCapacidade(capacidade);
         validarMesas(listaMesa);
+
+        this.nome = nome;
+        this.endereco = endereco;
+        this.tipoCozinha = tipoCozinha;
+        this.horarioAbertura = horarioAbertura;
+        this.horarioFechamento = horarioFechamento;
+        this.capacidade = capacidade;
+        this.listaMesa = listaMesa;
+    }
+
+    public RestauranteEntity(Long id, String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
+                             LocalTime horarioFechamento, int capacidade) {
+        validarNome(nome);
+        validarEndereco(endereco);
+        validarTipoCozinha(tipoCozinha);
+        validarHorarios(horarioAbertura, horarioFechamento);
+        validarCapacidade(capacidade);
 
         this.id = id;
         this.nome = nome;
@@ -33,7 +66,6 @@ public class RestauranteEntity {
         this.horarioAbertura = horarioAbertura;
         this.horarioFechamento = horarioFechamento;
         this.capacidade = capacidade;
-        this.listaMesa = listaMesa;
     }
 
     private static void validarNome(String nome) {
@@ -72,8 +104,8 @@ public class RestauranteEntity {
 //        }
     }
 
-    public void realizaReserva(int qntPessoa) {
-        qtdReservas += qntPessoa;
+    public Long getId() {
+        return id;
     }
 
     public String getNome() {
@@ -104,7 +136,7 @@ public class RestauranteEntity {
         return listaMesa;
     }
 
-    public Long getId() {
-        return id;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

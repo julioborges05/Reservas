@@ -2,24 +2,20 @@ package br.com.fiap.reservas.infra.gateway;
 
 import br.com.fiap.reservas.entities.EnderecoEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.infra.repository.endereco.Endereco;
-import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
     private final RestauranteRepository restauranteRepository;
-    private final EnderecoRepository enderecoRepository;
 
-    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository, EnderecoRepository enderecoRepository) {
+    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository) {
         this.restauranteRepository = restauranteRepository;
-        this.enderecoRepository = enderecoRepository;
     }
 
     @Override
@@ -57,21 +53,28 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
     }
 
     @Override
-    public List<RestauranteEntity> buscarRestaurantePorNome(String nome) {
-        List<Restaurante> restaurante = restauranteRepository.findByNome(nome);
+    public RestauranteEntity findById(Long id) throws Exception {
+        Optional<Restaurante> restauranteOptional = restauranteRepository.findById(id);
+        // Ainda falta mexer
+        EnderecoEntity enderecoEntity = new EnderecoEntity("123", "456", "789", "101112",
+                "123", "123");
 
-        ArrayList<RestauranteEntity> restaurantes = new ArrayList<>();
+        if (restauranteOptional.isPresent()) {
+            Restaurante restauranteSalvo = restauranteOptional.get();
+            RestauranteEntity restauranteEntity = new RestauranteEntity(
+                    restauranteSalvo.getNome(),
+                    enderecoEntity,
+                    restauranteSalvo.getTipo(),
+                    restauranteSalvo.getHorarioAbertura(),
+                    restauranteSalvo.getHorarioFechamento(),
+                    restauranteSalvo.getCapacidade(),
+                    new ArrayList<>()
+            );
 
-        for(Restaurante r : restaurante) {
-            Endereco endereco = enderecoRepository.findById(r.getIdEndereco()).orElseThrow();
-
-            EnderecoEntity enderecoEntity = new EnderecoEntity(endereco.getCep(), endereco.getLogradouro(),
-                    endereco.getBairro(), endereco.getCidade(), endereco.getNumero(), endereco.getComplemento());
-
-            restaurantes.add(new RestauranteEntity(r.getNome(), enderecoEntity, r.getTipo(), r.getHorarioAbertura(),
-                r.getHorarioFechamento(), r.getCapacidade(), new ArrayList<>()));
+            return restauranteEntity;
+        } else {
+            throw new Exception("Restaurante não encontrado");
         }
 
-        return restaurantes;
     }
 }

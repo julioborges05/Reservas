@@ -2,7 +2,7 @@ package br.com.fiap.reservas.interfaces;
 
 import br.com.fiap.reservas.entities.RestauranteEntity;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface IRestauranteGateway {
 
@@ -10,6 +10,6 @@ public interface IRestauranteGateway {
 
     RestauranteEntity cadastrarRestaurante(RestauranteEntity restauranteEntity);
 
-    List<RestauranteEntity> buscarRestaurantePorNome(String nome);
+    RestauranteEntity findById(Long id) throws Exception;
 
 }
