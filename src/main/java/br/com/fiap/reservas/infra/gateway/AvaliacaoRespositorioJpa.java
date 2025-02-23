@@ -1,8 +1,8 @@
 package br.com.fiap.reservas.infra.gateway;
 
+import br.com.fiap.reservas.controller.dto.AvaliacaoDto;
 import br.com.fiap.reservas.entities.AvaliacaoEntity;
-import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.entities.UsuarioEntity;
+import br.com.fiap.reservas.infra.repository.avaliacao.Avaliacao;
 import br.com.fiap.reservas.infra.repository.avaliacao.AvaliacaoRepository;
 import br.com.fiap.reservas.interfaces.IAvaliacaoGateway;
 
@@ -15,12 +15,18 @@ public class AvaliacaoRespositorioJpa implements IAvaliacaoGateway {
     }
 
     @Override
-    public AvaliacaoEntity avaliarRestaurante(RestauranteEntity restaurante, int nota, String comentario, UsuarioEntity usuario) {
-        return null;
+    public AvaliacaoEntity avaliarRestaurante(AvaliacaoDto avaliacaoDto) {
+        Avaliacao avaliacao = new Avaliacao(avaliacaoDto.restauranteId(), avaliacaoDto.nota(), avaliacaoDto.comentario(), avaliacaoDto.usuarioId());
+
+        avaliacaoRepository.save(avaliacao);
+
+        return new AvaliacaoEntity(avaliacao.getNota(), avaliacao.getComentario(), avaliacao.getUsuarioId(), avaliacao.getRestauranteId());
     }
 
     @Override
-    public AvaliacaoEntity buscarAvaliacaoPorRestaurante(String nome) {
-        return avaliacaoRepository.findAvaliacaoByRestaurante(nome);
+    public AvaliacaoEntity buscarAvaliacaoPorRestaurante(Long id) {
+        Avaliacao avaliacao = avaliacaoRepository.findAvaliacaoByRestaurante(id);
+
+        return new AvaliacaoEntity(avaliacao.getNota(), avaliacao.getComentario(), avaliacao.getUsuarioId(), avaliacao.getRestauranteId());
     }
 }

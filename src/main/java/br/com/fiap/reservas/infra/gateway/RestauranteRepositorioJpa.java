@@ -2,19 +2,24 @@ package br.com.fiap.reservas.infra.gateway;
 
 import br.com.fiap.reservas.entities.EnderecoEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.infra.repository.endereco.Endereco;
+import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
     private final RestauranteRepository restauranteRepository;
+    private final EnderecoRepository enderecoRepository;
 
-    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository) {
+    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository, EnderecoRepository enderecoRepository) {
         this.restauranteRepository = restauranteRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @Override
@@ -49,5 +54,24 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
                 restauranteSalvo.getCapacidade(),
                 new ArrayList<>()
         );
+    }
+
+    @Override
+    public List<RestauranteEntity> buscarRestaurantePorNome(String nome) {
+        List<Restaurante> restaurante = restauranteRepository.findByNome(nome);
+
+        ArrayList<RestauranteEntity> restaurantes = new ArrayList<>();
+
+        for(Restaurante r : restaurante) {
+            Endereco endereco = enderecoRepository.findById(r.getIdEndereco()).orElseThrow();
+
+            EnderecoEntity enderecoEntity = new EnderecoEntity(endereco.getCep(), endereco.getLogradouro(),
+                    endereco.getBairro(), endereco.getCidade(), endereco.getNumero(), endereco.getComplemento());
+
+            restaurantes.add(new RestauranteEntity(r.getNome(), enderecoEntity, r.getTipo(), r.getHorarioAbertura(),
+                r.getHorarioFechamento(), r.getCapacidade(), new ArrayList<>()));
+        }
+
+        return restaurantes;
     }
 }

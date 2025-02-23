@@ -4,11 +4,13 @@ import br.com.fiap.reservas.entities.AvaliacaoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     @Query(value = """
             select * from avaliacao
-            where restaurante = :restaurante
+            where restaurante_id = :id
             """, nativeQuery = true)
-    AvaliacaoEntity findAvaliacaoByRestaurante(String restaurante);
+    Avaliacao findAvaliacaoByRestaurante(Long id);
 
 }

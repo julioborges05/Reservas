@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class RestauranteEntity {
+    private final Long id;
     private final String nome;
     private final EnderecoEntity endereco;
     private final String tipoCozinha;
@@ -17,7 +18,7 @@ public class RestauranteEntity {
     private final List<MesaEntity> listaMesa;
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
-                             LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
+                             LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa, Long id) {
         validarNome(nome);
         validarEndereco(endereco);
         validarTipoCozinha(tipoCozinha);
@@ -25,6 +26,7 @@ public class RestauranteEntity {
         validarCapacidade(capacidade);
         validarMesas(listaMesa);
 
+        this.id = id;
         this.nome = nome;
         this.endereco = endereco;
         this.tipoCozinha = tipoCozinha;
@@ -100,5 +102,9 @@ public class RestauranteEntity {
 
     public List<MesaEntity> getListaMesa() {
         return listaMesa;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

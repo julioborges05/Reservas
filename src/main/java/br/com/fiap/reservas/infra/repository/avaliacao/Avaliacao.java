@@ -1,10 +1,7 @@
 package br.com.fiap.reservas.infra.repository.avaliacao;
 
 import br.com.fiap.reservas.entities.RestauranteEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -15,31 +12,32 @@ public class Avaliacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String Restaurante;
+    @Column(name = "restaurante_id")
+    private Long restauranteId;
 
     private int nota;
 
     private String comentario;
 
-
-    private String usuario;
+    @Column(name = "usuario_id")
+    private Long usuarioId;
 
     public Avaliacao() {
     }
 
-    public Avaliacao(String Restaurante, int nota, String comentario, String usuario) {
-        this.Restaurante = Restaurante;
+    public Avaliacao(Long restauranteId, int nota, String comentario, Long usuarioId) {
+        this.restauranteId = restauranteId;
         this.nota = nota;
         this.comentario = comentario;
-        this.usuario = usuario;
+        this.usuarioId = usuarioId;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getRestaurante() {
-        return Restaurante;
+    public Long getRestauranteId() {
+        return restauranteId;
     }
 
     public int getNota() {
@@ -50,7 +48,7 @@ public class Avaliacao {
         return comentario;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public Long getUsuarioId() {
+        return usuarioId;
     }
 }

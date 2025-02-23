@@ -3,10 +3,10 @@ package br.com.fiap.reservas.entities;
 public class AvaliacaoEntity {
     private final int nota;
     private final String comentario;
-    private final UsuarioEntity usuario;
-    private final RestauranteEntity restaurante;
+    private final Long usuarioId;
+    private final Long restauranteId;
 
-    public AvaliacaoEntity(int nota, String comentario, UsuarioEntity usuario, RestauranteEntity restaurante) {
+    public AvaliacaoEntity(int nota, String comentario, Long usuario, Long restaurante) {
         validarNota(nota);
         validarComentario(comentario);
         validarUsuario(usuario);
@@ -14,8 +14,8 @@ public class AvaliacaoEntity {
 
         this.nota = nota;
         this.comentario = comentario;
-        this.usuario = usuario;
-        this.restaurante = restaurante;
+        this.usuarioId = usuario;
+        this.restauranteId = restaurante;
     }
 
     private static void validarNota(int nota) {
@@ -30,19 +30,19 @@ public class AvaliacaoEntity {
         }
     }
 
-    private static void validarUsuario(UsuarioEntity usuario) {
+    private static void validarUsuario(Long usuario) {
         if (usuario == null) {
             throw new IllegalArgumentException("Usuário inválido");
         }
     }
-    private static void validarRestaurante(RestauranteEntity restaurante) {
+    private static void validarRestaurante(Long restaurante) {
         if (restaurante == null) {
             throw new IllegalArgumentException("Restaurante inválido");
         }
     }
 
-    public RestauranteEntity getRestaurante() {
-        return restaurante;
+    public Long getRestaurante() {
+        return restauranteId;
     }
     public int getNota() {
         return nota;
@@ -52,7 +52,7 @@ public class AvaliacaoEntity {
         return comentario;
     }
 
-    public UsuarioEntity getUsuario(){
-        return usuario;
+    public Long getUsuarioId(){
+        return usuarioId;
     }
 }
