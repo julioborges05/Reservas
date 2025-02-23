@@ -8,10 +8,9 @@ import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.interfaces.IEnderecoGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
+import br.com.fiap.reservas.usecases.CadastrarMesasUseCase;
 import br.com.fiap.reservas.usecases.CadastraRestauranteUseCase;
 import br.com.fiap.reservas.usecases.CadastrarEnderecoUseCase;
-
-import java.util.List;
 
 public class CadastrarRestauranteController {
 
@@ -29,10 +28,9 @@ public class CadastrarRestauranteController {
                 endereco.bairro(), endereco.cidade(), endereco.numero(), endereco.complemento());
         EnderecoEntity enderecoSalvo = enderecoGateway.cadastrarEndereco(enderecoEntity);
 
-        MesaEntity mesaEntity = new MesaEntity(1, StatusMesa.LIVRE);
         RestauranteEntity restauranteEntity = CadastraRestauranteUseCase.cadastrarRestaurante(restaurante.nome(),
                 enderecoSalvo, restaurante.tipoCozinha(), restaurante.horarioAbertura(), restaurante.horarioFechamento(),
-                restaurante.capacidade(), List.of(mesaEntity));
+                restaurante.capacidade(), CadastrarMesasUseCase.cadastrarMesas(restaurante.capacidade()));
 
         return new RestauranteDto(restauranteGateway.cadastrarRestaurante(restauranteEntity));
     }
