@@ -1,7 +1,6 @@
 package br.com.fiap.reservas.controller;
 
 import br.com.fiap.reservas.controller.dto.RestauranteDto;
-import br.com.fiap.reservas.interfaces.IEnderecoGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 
 public class BuscaRestauranteController {
@@ -12,8 +11,19 @@ public class BuscaRestauranteController {
         this.restauranteGateway = restauranteGateway;
     }
 
-    public RestauranteDto buscarRestaurantePorNomeEnderecoETipo(String nome, String endereco, String tipo) {
-        return new RestauranteDto(restauranteGateway.buscarRestaurantePorNomeELocalizacaoETipo(nome, endereco, tipo));
+    public RestauranteDto buscarRestaurantePorNome(String nome) {
+        return new RestauranteDto(restauranteGateway.buscarRestaurantePorNome(nome));
     }
 
+    public RestauranteDto buscarRestaurantePorLocalizacao(String localizacao) {
+        return new RestauranteDto(restauranteGateway.buscarRestaurantePorLocalizacao(localizacao));
+    }
+
+    public RestauranteDto buscarRestaurantePorTipoCozinha(String tipoCozinha) {
+        return new RestauranteDto(restauranteGateway.buscarRestaurantePorTipoCozinha(tipoCozinha));
+    }
+
+    public RestauranteDto buscarRestaurantePorNomeLocalizacaoETipoCozinha(String nome, String localizacao, String tipoCozinha) {
+        return new RestauranteDto(restauranteGateway.buscarRestaurantePorNomeLocalizacaoETipoCozinha(nome, localizacao, tipoCozinha));
+    }
 }

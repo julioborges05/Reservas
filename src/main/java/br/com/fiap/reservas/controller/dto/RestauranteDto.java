@@ -17,5 +17,4 @@ public record RestauranteDto(String nome, EnderecoDto endereco , String tipoCozi
                 restauranteEntity.getCapacidade()
         );
     }
-
 }
