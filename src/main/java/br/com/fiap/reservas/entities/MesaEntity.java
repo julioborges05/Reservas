@@ -1,10 +1,11 @@
 package br.com.fiap.reservas.entities;
 
 import br.com.fiap.reservas.enums.StatusMesa;
+import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 
 public class MesaEntity {
 
-    private Integer id;
+    private MesaPK id;
     private final Integer numero;
     private StatusMesa statusMesa;
 
@@ -16,7 +17,7 @@ public class MesaEntity {
         this.statusMesa = statusMesa;
     }
 
-    public MesaEntity(Integer id, Integer numero, StatusMesa statusMesa) {
+    public MesaEntity(MesaPK id, Integer numero, StatusMesa statusMesa) {
         validarNumero(numero);
         validarStatusMesa(statusMesa);
 
@@ -37,19 +38,11 @@ public class MesaEntity {
         }
     }
 
-    public void setStatusMesa(StatusMesa statusMesa) {
-        this.statusMesa = statusMesa;
-    }
-
-    public StatusMesa getStatusMesa() {
-        return statusMesa;
-    }
-
     public Integer getNumero() {
         return numero;
     }
 
-    public Integer getId() {
+    public MesaPK getId() {
         return id;
     }
 }

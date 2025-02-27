@@ -1,9 +1,12 @@
 package br.com.fiap.reservas.infra.repository.restaurante;
 
 import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.infra.repository.mesa.Mesa;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Restaurante {
@@ -27,10 +30,15 @@ public class Restaurante {
 
     private int capacidade;
 
+    @OneToMany(mappedBy = "restaurante", cascade = {CascadeType.PERSIST,
+            CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private List<Mesa> mesas = new ArrayList<>();
+
     public Restaurante() {
     }
 
-    public Restaurante(String nome, Long idEndereco, String tipo, LocalTime horarioAbertura, LocalTime horarioFechamento, int capacidade) {
+    public Restaurante(String nome, Long idEndereco, String tipo, LocalTime horarioAbertura, LocalTime horarioFechamento,
+                       int capacidade) {
         this.nome = nome;
         this.idEndereco = idEndereco;
         this.tipo = tipo;
@@ -69,5 +77,13 @@ public class Restaurante {
 
     public int getCapacidade() {
         return capacidade;
+    }
+
+    public List<Mesa> getMesas() {
+        return mesas;
+    }
+
+    public void setMesas(List<Mesa> mesas) {
+        this.mesas = mesas;
     }
 }

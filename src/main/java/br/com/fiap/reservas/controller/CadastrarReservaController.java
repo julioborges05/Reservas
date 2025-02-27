@@ -4,13 +4,13 @@ import br.com.fiap.reservas.controller.dto.ReservaDto;
 import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.infra.repository.mesa.Mesa;
+import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
 import br.com.fiap.reservas.interfaces.IReservaGateway;
+import br.com.fiap.reservas.interfaces.IReservaVMesaGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 import br.com.fiap.reservas.usecases.CadastrarReservaUseCase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CadastrarReservaController {
@@ -18,13 +18,16 @@ public class CadastrarReservaController {
     private final IReservaGateway reservaGateway;
     private final IRestauranteGateway restauranteGateway;
     private final IMesaGateway mesasGateway;
+    private final IReservaVMesaGateway reservaVMesaGateway;
 
     public CadastrarReservaController(
-            IReservaGateway reservaGateway, IRestauranteGateway restauranteGateway, IMesaGateway mesasGateway
-    ) {
+            IReservaGateway reservaGateway,
+            IRestauranteGateway restauranteGateway,
+            IMesaGateway mesasGateway, IReservaVMesaGateway reservaVMesaGateway) {
         this.reservaGateway = reservaGateway;
         this.restauranteGateway = restauranteGateway;
         this.mesasGateway = mesasGateway;
+        this.reservaVMesaGateway = reservaVMesaGateway;
     }
 
     public ReservaDto cadastrarReserva(ReservaDto reservaDto) throws Exception {
@@ -35,10 +38,10 @@ public class CadastrarReservaController {
         ReservaEntity reservaEntity = CadastrarReservaUseCase.cadastrarReserva(
                 restauranteEntity, reservaDto.usuario(), reservaDto.qtdPessoas(), mesasLivres);
 
-        List<MesaEntity> mesasParaReservar = reservaEntity.getMesaList();
-        mesasParaReservar.forEach(mesaEntity -> {
-            mesasGateway.atualizarReservaMesa(new Mesa(mesaEntity.getId(), mesaEntity.getStatusMesa()));
-            reservaGateway.cadastrarReserva(restauranteEntity, reservaEntity.getNomeUsuario(), mesaEntity);
+        List<ReservaVMesa> mesasParaReservar = reservaEntity.getMesaList();
+        mesasParaReservar.forEach(reservaVMesa -> {
+            reservaVMesaGateway.cadastrarReservaVMesa(reservaVMesa);
+            reservaGateway.cadastrarReserva(restauranteEntity, reservaEntity.getNomeUsuario(), mesasParaReservar);
         });
 
         return reservaDto;

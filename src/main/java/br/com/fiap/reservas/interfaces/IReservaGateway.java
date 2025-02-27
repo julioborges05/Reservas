@@ -1,18 +1,22 @@
 package br.com.fiap.reservas.interfaces;
 
-import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.enums.StatusMesa;
+import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 public interface IReservaGateway {
 
     public List<ReservaEntity> buscarReservasPorRestaurante(Long restauranteId);
 
-    ReservaEntity cadastrarReserva(RestauranteEntity restauranteId, String nomeUsuario, MesaEntity mesaEntity);
+    ReservaEntity cadastrarReserva(RestauranteEntity restauranteId, String nomeUsuario,
+                                   List<ReservaVMesa> reservaVMesaList);
+
+    ReservaEntity atualizarStatusReserva(String nomeUsuario);
+
+    void atualizarQtdPessoasReserva(ReservaEntity reservaEntity);
+
+    ReservaEntity findById(Long id);
 
 }

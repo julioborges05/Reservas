@@ -1,51 +1,77 @@
 package br.com.fiap.reservas.infra.repository.mesa;
 
 import br.com.fiap.reservas.enums.StatusMesa;
+import br.com.fiap.reservas.enums.StatusReserva;
+import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import jakarta.persistence.*;
 
 @Entity
 public class Mesa {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private StatusMesa statusMesa;
+    @EmbeddedId
+    private MesaPK id;
 
     @ManyToOne
-    @JoinColumn(name = "id_restaurante", nullable = false)
+    @JoinColumn(name = "id_restaurante", referencedColumnName = "id", insertable = false, updatable = false)
     private Restaurante restaurante;
 
-    private Integer numero;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_mesa")
+    private StatusMesa statusMesa;
+
+    @OneToOne
+    @JoinColumn(name = "id_reserva_vm")
+    private ReservaVMesa reservaVMesa;
 
     public Mesa() {
     }
 
-    public Mesa(Integer id, StatusMesa statusMesa) {
+    public Mesa(MesaPK id) {
         this.id = id;
-        this.statusMesa = statusMesa;
     }
 
-    public Mesa(Integer id, StatusMesa statusMesa, Integer numero, Restaurante restaurante) {
+    public Mesa(MesaPK id, Restaurante restaurante) {
         this.id = id;
-        this.statusMesa = statusMesa;
-        this.numero = numero;
         this.restaurante = restaurante;
     }
 
-    public Integer getId() {
+    public Mesa(MesaPK id, Restaurante restaurante, StatusMesa statusMesa) {
+        this.id = id;
+        this.restaurante = restaurante;
+        this.statusMesa = statusMesa;
+    }
+
+    public MesaPK getId() {
         return id;
     }
 
     public Integer getNumero() {
-        return numero;
+        return id.getNumeroMesa();
     }
 
     public void setNumero(Integer numero) {
-        this.numero = numero;
+        this.getId().setNumeroMesa(numero);
+    }
+
+    public void setId(MesaPK id) {
+        this.id = id;
+    }
+
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+
+    public ReservaVMesa getReservaVMesa() {
+        return reservaVMesa;
+    }
+
+    public void setReservaVMesa(ReservaVMesa reservaVMesa) {
+        this.reservaVMesa = reservaVMesa;
     }
 
     public StatusMesa getStatusMesa() {

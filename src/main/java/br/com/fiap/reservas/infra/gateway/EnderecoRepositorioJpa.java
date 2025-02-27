@@ -33,4 +33,19 @@ public class EnderecoRepositorioJpa implements IEnderecoGateway {
         return new EnderecoEntity(enderecoSalvo.getId(), enderecoSalvo.getCep(), enderecoSalvo.getLogradouro(),
                 enderecoSalvo.getBairro(), enderecoSalvo.getCidade(), enderecoSalvo.getNumero(), enderecoSalvo.getComplemento());
     }
+
+    @Override
+    public EnderecoEntity buscarEnderecoPeloId(Long id) {
+        Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
+
+        if (enderecoOptional.isPresent()) {
+            Endereco endereco = enderecoOptional.get();
+            return new EnderecoEntity(endereco.getCep(), endereco.getLogradouro(),
+                    endereco.getBairro(), endereco.getCidade(), endereco.getNumero(), endereco.getComplemento());
+        } else {
+            throw new RuntimeException("Endereço não encontrado");
+        }
+    }
+
+
 }

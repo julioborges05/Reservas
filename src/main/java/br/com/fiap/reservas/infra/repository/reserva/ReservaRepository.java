@@ -1,6 +1,6 @@
 package br.com.fiap.reservas.infra.repository.reserva;
 
-import br.com.fiap.reservas.enums.StatusMesa;
+import br.com.fiap.reservas.enums.StatusReserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,13 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     @Query(value = """
             select * from reserva
             where restaurante_id = :restauranteId AND
-            mesa.statusMesa = :statusMesa
+            mesa.statusReserva = :statusReserva
             """, nativeQuery = true)
-    List<Reserva> findByRestauranteId(Long restauranteId, StatusMesa statusMesa);
+    List<Reserva> findByRestauranteId(Long restauranteId, StatusReserva statusReserva);
+
+    @Query(value = """
+            select * from reserva
+            where nome_usuario = :nomeUsuario
+            """, nativeQuery = true)
+    Reserva findByNomeUsuario(String nomeUsuario);
 }

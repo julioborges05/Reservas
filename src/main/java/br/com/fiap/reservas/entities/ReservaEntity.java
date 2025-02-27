@@ -1,14 +1,21 @@
 package br.com.fiap.reservas.entities;
 
+import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReservaEntity {
+
+    private Long id;
     private final RestauranteEntity restaurante;
     private final String nomeUsuario;
     private int qtdPessoas;
-    private List<MesaEntity> mesaList;
+    private List<ReservaVMesa> mesaList;
 
-    public ReservaEntity(RestauranteEntity restaurante, String nomeUsuario, List<MesaEntity> mesaList) {
+    private LocalDateTime horaChegada;
+
+    public ReservaEntity(RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> mesaList) {
         if (restaurante == null) {
             throw new IllegalArgumentException("Restaurante deve ser informado");
         }
@@ -37,6 +44,10 @@ public class ReservaEntity {
         this.qtdPessoas = qtdPessoas;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public RestauranteEntity getRestaurante() {
         return restaurante;
     }
@@ -49,7 +60,15 @@ public class ReservaEntity {
         return qtdPessoas;
     }
 
-    public List<MesaEntity> getMesaList() {
+    public List<ReservaVMesa> getMesaList() {
         return mesaList;
+    }
+
+    public LocalDateTime getHoraChegada() {
+        return horaChegada;
+    }
+
+    public void setHoraChegada(LocalDateTime horaChegada) {
+        this.horaChegada = horaChegada;
     }
 }
