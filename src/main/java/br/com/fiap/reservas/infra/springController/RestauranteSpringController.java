@@ -19,8 +19,23 @@ public class RestauranteSpringController {
     }
 
     @GetMapping
-    public RestauranteDto buscarRestaurantePorNomeEnderecoETipo() {
-        return buscaRestauranteController.buscarRestaurantePorNomeEnderecoETipo("abc", "def", "ghi");
+    public RestauranteDto buscarRestaurantePorNome() {
+        return buscaRestauranteController.buscarRestaurantePorNome("nome");
+    }
+
+    @GetMapping
+    public RestauranteDto buscarRestaurantePorLocalizacao() {
+        return buscaRestauranteController.buscarRestaurantePorLocalizacao("localizacao");
+    }
+
+    @GetMapping
+    public RestauranteDto buscarRestaurantePorTipoCozinha() {
+        return buscaRestauranteController.buscarRestaurantePorTipoCozinha("tipoCozinha");
+    }
+
+    @GetMapping
+    public RestauranteDto buscarRestaurantePorNomeLocalizacaoETipoCozinha() {
+        return buscaRestauranteController.buscarRestaurantePorNomeLocalizacaoETipoCozinha("nome", "localizacao", "tipoCozinha");
     }
 
     @PostMapping
