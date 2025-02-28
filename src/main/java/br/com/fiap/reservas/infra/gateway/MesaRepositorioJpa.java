@@ -5,6 +5,7 @@ import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.Mesa;
 import br.com.fiap.reservas.infra.repository.mesa.MesaRepository;
+import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
 
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ public class MesaRepositorioJpa implements IMesaGateway {
                 restauranteId, StatusMesa.LIVRE);
 
         mesas.forEach(mesa -> {
-            MesaEntity mesaEntityList = new MesaEntity(mesa.getId(), mesa.getNumero(), mesa.getStatusMesa());
+//            ReservaVMesa reservaVMesa = new ReservaVMesa(mesa.getReservaVMesa().getIdReserva(), mesa.getId(),
+//                    mesa.getReservaVMesa().getStatus());
+            MesaEntity mesaEntityList = new MesaEntity(mesa.getRestaurante().getId(), mesa.getNumero(), mesa.getStatusMesa());
 
             mesasEntityList.add(mesaEntityList);
         });

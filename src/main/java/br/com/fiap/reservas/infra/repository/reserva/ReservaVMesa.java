@@ -12,6 +12,7 @@ public class ReservaVMesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "id_reserva")
     private Long idReserva;
 
     @Embedded
@@ -32,15 +33,11 @@ public class ReservaVMesa {
     public ReservaVMesa() {
     }
 
-    public ReservaVMesa(Long idReserva, MesaPK idMesa, StatusReserva status) {
+    public ReservaVMesa(Long id, Long idReserva, MesaPK idMesa, StatusReserva status) {
+        this.id = id;
         this.idReserva = idReserva;
         this.idMesa = idMesa;
         this.status = status;
-    }
-
-    public ReservaVMesa(Long idReserva, MesaPK idMesa) {
-        this.idReserva = idReserva;
-        this.idMesa = idMesa;
     }
 
     public ReservaVMesa(MesaPK idMesa, StatusReserva status) {

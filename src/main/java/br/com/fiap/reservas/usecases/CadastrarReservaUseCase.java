@@ -7,13 +7,15 @@ import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CadastrarReservaUseCase {
 
     public static ReservaEntity cadastrarReserva(
-            RestauranteEntity restaurante, String usuario, int qtdPessoas, List<MesaEntity> mesasLivres) {
+            RestauranteEntity restaurante, String usuario, int qtdPessoas, List<MesaEntity> mesasLivres,
+            LocalDateTime horaChegada) {
 
         if (restaurante.getCapacidade() < qtdPessoas) {
             throw new RuntimeException("Capacidade insuficiente");
@@ -32,10 +34,10 @@ public class CadastrarReservaUseCase {
                 .limit(numeroMesas)
                 .forEach(mesa -> {
                     ReservaVMesa reservaVMesa = new ReservaVMesa(StatusReserva.RESERVADA);
-                    reservaVMesa.setIdMesa(new MesaPK(restaurante.getId(), mesa.getNumero()));
+                    reservaVMesa.setIdMesa(new MesaPK(mesa.getRestauranteId(), mesa.getNumero()));
                     mesasParaReservar.add(reservaVMesa);
         });
 
-        return new ReservaEntity(restaurante, usuario, mesasParaReservar);
+        return new ReservaEntity(restaurante, usuario, mesasParaReservar, horaChegada);
     }
 }

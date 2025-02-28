@@ -4,14 +4,13 @@ import br.com.fiap.reservas.entities.EnderecoEntity;
 import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusMesa;
-import br.com.fiap.reservas.enums.StatusReserva;
+import br.com.fiap.reservas.infra.repository.endereco.Endereco;
 import br.com.fiap.reservas.infra.repository.mesa.Mesa;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import br.com.fiap.reservas.infra.repository.mesa.MesaRepository;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,11 +21,14 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
     private final RestauranteRepository restauranteRepository;
 
-    @Autowired
-    private MesaRepository mesaRepository;
+    private final MesaRepository mesaRepository;
 
-    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository) {
+    private final EnderecoRepositorioJpa enderecoRepositorioJpa;
+
+    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository, MesaRepository mesaRepository, EnderecoRepositorioJpa enderecoRepositorioJpa) {
         this.restauranteRepository = restauranteRepository;
+        this.mesaRepository = mesaRepository;
+        this.enderecoRepositorioJpa = enderecoRepositorioJpa;
     }
 
     @Override
@@ -70,8 +72,8 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
         restauranteSalvo.getMesas().forEach(mesa -> {
             MesaPK mesaPK = new MesaPK();
             mesaPK.setNumeroMesa(mesa.getNumero());
-            mesaPK.setRestauranteId(restauranteSalvo.getId());
-            MesaEntity mesaEntity = new MesaEntity(mesaPK, mesa.getNumero(),
+            mesaPK.setRestauranteId(mesa.getId().getRestauranteId());
+            MesaEntity mesaEntity = new MesaEntity(mesa.getRestaurante().getId(), mesa.getNumero(),
                     StatusMesa.LIVRE);
             mesaEntityList.add(mesaEntity);
         });
@@ -91,13 +93,13 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
     @Override
     public RestauranteEntity findById(Long id) throws Exception {
         Optional<Restaurante> restauranteOptional = restauranteRepository.findById(id);
-        // Ainda falta mexer
-        EnderecoEntity enderecoEntity = new EnderecoEntity("123", "456", "789", "101112",
-                "123", "123");
 
         if (restauranteOptional.isPresent()) {
             Restaurante restauranteSalvo = restauranteOptional.get();
-            RestauranteEntity restauranteEntity = new RestauranteEntity(
+            EnderecoEntity enderecoEntity = enderecoRepositorioJpa.buscarEnderecoPeloId(restauranteSalvo.getIdEndereco());
+
+            return new RestauranteEntity(
+                    restauranteSalvo.getId(),
                     restauranteSalvo.getNome(),
                     enderecoEntity,
                     restauranteSalvo.getTipo(),
@@ -106,8 +108,6 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
                     restauranteSalvo.getCapacidade(),
                     new ArrayList<>()
             );
-
-            return restauranteEntity;
         } else {
             throw new Exception("Restaurante não encontrado");
         }

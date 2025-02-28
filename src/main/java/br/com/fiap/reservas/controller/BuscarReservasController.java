@@ -30,7 +30,7 @@ public class BuscarReservasController {
 
         listaReservas.forEach(reserva -> {
             ReservaEntity reservaEntity = GerenciaReservaUseCase.buscarReservaPorRestaurante(
-                    restauranteEntity, reserva.getNomeUsuario(), reserva.getMesaList());
+                    restauranteEntity, reserva.getNomeUsuario(), reserva.getReservaVMesaList(), reserva.getHoraChegada());
             reservasEncontradas.add(new BuscarReservasDto(reservaEntity));
         });
 

@@ -5,6 +5,7 @@ import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IReservaGateway;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReservaGateway implements IReservaGateway {
@@ -21,13 +22,13 @@ public class ReservaGateway implements IReservaGateway {
     }
 
     public ReservaEntity cadastrarReserva(RestauranteEntity restauranteId, String nomeUsuario,
-                                          List<ReservaVMesa> reservaVMesaList) {
-        return reservaDatabaseGateway.cadastrarReserva(restauranteId, nomeUsuario, reservaVMesaList);
+                                          List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
+        return reservaDatabaseGateway.cadastrarReserva(restauranteId, nomeUsuario, reservaVMesaList, horaChegada);
     }
 
     @Override
-    public ReservaEntity atualizarStatusReserva(String nomeUsuario) {
-        return reservaDatabaseGateway.atualizarStatusReserva(nomeUsuario);
+    public ReservaEntity atualizarStatusReserva(String nomeUsuario, String horaChegada) {
+        return reservaDatabaseGateway.atualizarStatusReserva(nomeUsuario, horaChegada);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ReservaGateway implements IReservaGateway {
     }
 
     @Override
-    public ReservaEntity findById(Long id) {
-        return reservaDatabaseGateway.findById(id);
+    public ReservaEntity buscaReservaPeloId(Long id) {
+        return reservaDatabaseGateway.buscaReservaPeloId(id);
     }
 }

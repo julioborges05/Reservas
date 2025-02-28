@@ -22,10 +22,6 @@ public class MesaPK implements Serializable {
 		this.numeroMesa = numeroMesa;
 	}
 
-	public MesaPK(Integer numeroMesa) {
-		this.numeroMesa = numeroMesa;
-	}
-
 	public Long getRestauranteId() {
 		return restauranteId;
 	}

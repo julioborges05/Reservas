@@ -5,6 +5,7 @@ import br.com.fiap.reservas.controller.CadastrarRestauranteController;
 import br.com.fiap.reservas.infra.gateway.EnderecoRepositorioJpa;
 import br.com.fiap.reservas.infra.gateway.RestauranteRepositorioJpa;
 import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
+import br.com.fiap.reservas.infra.repository.mesa.MesaRepository;
 import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.interfaces.IEnderecoGateway;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
@@ -28,8 +29,10 @@ public class RestauranteConfig {
     }
 
     @Bean
-    RestauranteRepositorioJpa criaRestauranteRepositorioJpa(RestauranteRepository restauranteRepository) {
-        return new RestauranteRepositorioJpa(restauranteRepository);
+    RestauranteRepositorioJpa criaRestauranteRepositorioJpa(RestauranteRepository restauranteRepository,
+                                                            MesaRepository mesaRepository,
+                                                            EnderecoRepositorioJpa enderecoRepositorioJpa) {
+        return new RestauranteRepositorioJpa(restauranteRepository, mesaRepository, enderecoRepositorioJpa);
     }
 
     @Bean

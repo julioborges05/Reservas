@@ -30,8 +30,7 @@ public class Restaurante {
 
     private int capacidade;
 
-    @OneToMany(mappedBy = "restaurante", cascade = {CascadeType.PERSIST,
-            CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Mesa> mesas = new ArrayList<>();
 
     public Restaurante() {
@@ -39,6 +38,17 @@ public class Restaurante {
 
     public Restaurante(String nome, Long idEndereco, String tipo, LocalTime horarioAbertura, LocalTime horarioFechamento,
                        int capacidade) {
+        this.nome = nome;
+        this.idEndereco = idEndereco;
+        this.tipo = tipo;
+        this.horarioAbertura = horarioAbertura;
+        this.horarioFechamento = horarioFechamento;
+        this.capacidade = capacidade;
+    }
+
+    public Restaurante(Long id, String nome, Long idEndereco, String tipo, LocalTime horarioAbertura, LocalTime horarioFechamento,
+                       int capacidade) {
+        this.id = id;
         this.nome = nome;
         this.idEndereco = idEndereco;
         this.tipo = tipo;

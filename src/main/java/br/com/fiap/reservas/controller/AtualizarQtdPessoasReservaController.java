@@ -28,14 +28,14 @@ public class AtualizarQtdPessoasReservaController {
     }
 
     public void atualizarQtdPessoasReserva(ReservaDto reservaDto) throws Exception {
-        ReservaEntity reservaEntity = reservaGateway.findById(reservaDto.reservaId());
+        ReservaEntity reservaEntity = reservaGateway.buscaReservaPeloId(reservaDto.reservaId());
         RestauranteEntity restauranteEntity = restauranteGateway.findById(reservaDto.restauranteId());
         List<MesaEntity> mesasLivres = mesasGateway.buscarMesasLivresPorRestaurante(reservaDto.restauranteId());
 
         ReservaEntity reserva = GerenciaReservaUseCase.atualizarQtdPessoasReserva(reservaEntity, reservaDto.qtdPessoas(),
                 mesasLivres, restauranteEntity);
 
-        reservaGateway.atualizarQtdPessoasReserva(reservaEntity);
+        reservaGateway.atualizarQtdPessoasReserva(reserva);
     }
 
 }

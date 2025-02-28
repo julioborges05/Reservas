@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.entities;
 
+import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +17,10 @@ public class ReservaEntityTest {
 
     @Test
     void validaRestaurante() {
-        MesaEntity mesa = new MesaEntity(1, StatusReserva.LIVRE);
+        MesaEntity mesa = new MesaEntity(1, StatusMesa.LIVRE);
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ReservaEntity(null, "nome", List.of(mesa)),
+                () -> new ReservaEntity(null, "nome", List.of(mesa), LocalDateTime.now()),
                 "Restaurante Inválido"
         );
     }

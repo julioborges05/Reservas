@@ -4,18 +4,18 @@ import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusReserva;
-import br.com.fiap.reservas.infra.repository.reserva.Reserva;
+import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
-import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GerenciaReservaUseCase {
 
     public static ReservaEntity buscarReservaPorRestaurante(RestauranteEntity restauranteEntity, String nomeUsuario,
-                                                     List<ReservaVMesa> reservaVMesaList) {
-        return new ReservaEntity(restauranteEntity, "", reservaVMesaList);
+                                                            List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
+        return new ReservaEntity(restauranteEntity, nomeUsuario, reservaVMesaList, horaChegada);
     }
 
     public static ReservaEntity atualizarQtdPessoasReserva(ReservaEntity reservaEntity, Integer qtdPessoas,
@@ -33,14 +33,18 @@ public class GerenciaReservaUseCase {
             throw new RuntimeException("Número de mesas indisponível");
         }
 
-        reservaEntity.getMesaList().clear();
+        reservaEntity.getReservaVMesaList().clear();
 
         List<ReservaVMesa> mesasParaReservar = new ArrayList<>();
-        for (int i = 0; i < numeroMesas; i++) {
-            ReservaVMesa reservaVMesa = new ReservaVMesa(reservaEntity.getId(), StatusReserva.RESERVADA);
-            mesasParaReservar.add(reservaVMesa);
-        }
+        mesasLivres.stream()
+                .limit(numeroMesas)
+                .forEach(mesa -> {
+                    ReservaVMesa reservaVMesa = new ReservaVMesa(StatusReserva.RESERVADA);
+                    reservaVMesa.setIdReserva(reservaEntity.getId());
+                    reservaVMesa.setIdMesa(new MesaPK(mesa.getRestauranteId(), mesa.getNumero()));
+                    mesasParaReservar.add(reservaVMesa);
+                });
 
-        return new ReservaEntity(restaurante, reservaEntity.getNomeUsuario(), mesasParaReservar);
+        return new ReservaEntity(reservaEntity.getId(), restaurante, reservaEntity.getNomeUsuario(), mesasParaReservar);
     }
 }

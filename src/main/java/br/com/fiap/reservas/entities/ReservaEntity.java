@@ -11,11 +11,12 @@ public class ReservaEntity {
     private final RestauranteEntity restaurante;
     private final String nomeUsuario;
     private int qtdPessoas;
-    private List<ReservaVMesa> mesaList;
+    private List<ReservaVMesa> reservaVMesaList;
 
     private LocalDateTime horaChegada;
 
-    public ReservaEntity(RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> mesaList) {
+    public ReservaEntity(RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList,
+                         LocalDateTime horaChegada) {
         if (restaurante == null) {
             throw new IllegalArgumentException("Restaurante deve ser informado");
         }
@@ -25,7 +26,38 @@ public class ReservaEntity {
 
         this.restaurante = restaurante;
         this.nomeUsuario = nomeUsuario;
-        this.mesaList = mesaList;
+        this.reservaVMesaList = reservaVMesaList;
+        this.horaChegada = horaChegada;
+    }
+
+    public ReservaEntity(Long id, RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList,
+                         LocalDateTime horaChegada) {
+        if (restaurante == null) {
+            throw new IllegalArgumentException("Restaurante deve ser informado");
+        }
+        if (nomeUsuario == null) {
+            throw new IllegalArgumentException("Nome do usuário deve ser informado");
+        }
+
+        this.id = id;
+        this.restaurante = restaurante;
+        this.nomeUsuario = nomeUsuario;
+        this.reservaVMesaList = reservaVMesaList;
+        this.horaChegada = horaChegada;
+    }
+
+    public ReservaEntity(Long id, RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList) {
+        if (restaurante == null) {
+            throw new IllegalArgumentException("Restaurante deve ser informado");
+        }
+        if (nomeUsuario == null) {
+            throw new IllegalArgumentException("Nome do usuário deve ser informado");
+        }
+
+        this.id = id;
+        this.restaurante = restaurante;
+        this.nomeUsuario = nomeUsuario;
+        this.reservaVMesaList = reservaVMesaList;
     }
 
     public ReservaEntity(RestauranteEntity restaurante, String usuario, int qtdPessoas) {
@@ -60,8 +92,8 @@ public class ReservaEntity {
         return qtdPessoas;
     }
 
-    public List<ReservaVMesa> getMesaList() {
-        return mesaList;
+    public List<ReservaVMesa> getReservaVMesaList() {
+        return reservaVMesaList;
     }
 
     public LocalDateTime getHoraChegada() {

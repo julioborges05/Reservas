@@ -10,6 +10,7 @@ import br.com.fiap.reservas.interfaces.IReservaGateway;
 import br.com.fiap.reservas.interfaces.IReservaVMesaGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 import br.com.fiap.reservas.usecases.CadastrarReservaUseCase;
+import br.com.fiap.reservas.utils.DateFormat;
 
 import java.util.List;
 
@@ -36,13 +37,14 @@ public class CadastrarReservaController {
         List<MesaEntity> mesasLivres = mesasGateway.buscarMesasLivresPorRestaurante(reservaDto.restauranteId());
 
         ReservaEntity reservaEntity = CadastrarReservaUseCase.cadastrarReserva(
-                restauranteEntity, reservaDto.usuario(), reservaDto.qtdPessoas(), mesasLivres);
+                restauranteEntity, reservaDto.usuario(), reservaDto.qtdPessoas(), mesasLivres,
+                DateFormat.convertFromStringToLocalDateTime(reservaDto.horaChegada()));
 
-        List<ReservaVMesa> mesasParaReservar = reservaEntity.getMesaList();
-        mesasParaReservar.forEach(reservaVMesa -> {
-            reservaVMesaGateway.cadastrarReservaVMesa(reservaVMesa);
-            reservaGateway.cadastrarReserva(restauranteEntity, reservaEntity.getNomeUsuario(), mesasParaReservar);
-        });
+        List<ReservaVMesa> mesasParaReservar = reservaEntity.getReservaVMesaList();
+        ReservaEntity reserva = reservaGateway.cadastrarReserva(restauranteEntity, reservaEntity.getNomeUsuario(),
+                mesasParaReservar, DateFormat.convertFromStringToLocalDateTime(reservaDto.horaChegada()));
+
+        mesasParaReservar.forEach(reservaVMesaGateway::cadastrarReservaVMesa);
 
         return reservaDto;
     }

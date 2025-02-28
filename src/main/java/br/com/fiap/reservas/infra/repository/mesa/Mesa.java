@@ -50,10 +50,6 @@ public class Mesa {
         return id.getNumeroMesa();
     }
 
-    public void setNumero(Integer numero) {
-        this.getId().setNumeroMesa(numero);
-    }
-
     public void setId(MesaPK id) {
         this.id = id;
     }

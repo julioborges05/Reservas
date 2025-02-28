@@ -22,19 +22,21 @@ public class Reserva {
     @JoinColumn(name = "id_restaurante")
     private Restaurante restaurante;
 
-    @OneToMany(cascade = {CascadeType.PERSIST,
-            CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_reserva")
     private List<ReservaVMesa> reservaVMesaList;
 
+    @Column(name = "hora_chegada")
     private LocalDateTime horaChegada;
 
     public Reserva() {
     }
 
-    public Reserva(Restaurante restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList) {
+    public Reserva(Restaurante restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
         this.nomeUsuario = nomeUsuario;
         this.restaurante = restaurante;
         this.reservaVMesaList = reservaVMesaList;
+        this.horaChegada = horaChegada;
     }
 
     public Reserva(Long id, String nomeUsuario, Restaurante restaurante, List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
@@ -67,10 +69,6 @@ public class Reserva {
 
     public void setRestaurante(Restaurante restaurante) {
         this.restaurante = restaurante;
-    }
-
-    public List<Mesa> getMesaList() {
-        return List.of();
     }
 
     public List<ReservaVMesa> getReservaVMesaList() {
