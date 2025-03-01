@@ -2,6 +2,7 @@ package br.com.fiap.reservas.usecases;
 
 import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.enums.StatusMesa;
+import br.com.fiap.reservas.enums.StatusReserva;
 
 import java.util.ArrayList;
 import java.util.List;

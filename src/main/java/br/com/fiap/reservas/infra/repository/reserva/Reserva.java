@@ -4,6 +4,8 @@ import br.com.fiap.reservas.infra.repository.mesa.Mesa;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +15,6 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //OU NOME USUARIO
     @Column(name = "nome_usuario")
     private String nomeUsuario;
 
@@ -21,16 +22,29 @@ public class Reserva {
     @JoinColumn(name = "id_restaurante")
     private Restaurante restaurante;
 
-    @JoinColumn(name = "id_mesa")
-    private Integer id_mesa;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_reserva")
+    private List<ReservaVMesa> reservaVMesaList;
+
+    @Column(name = "hora_chegada")
+    private LocalDateTime horaChegada;
 
     public Reserva() {
     }
 
-    public Reserva(Restaurante restaurante, String nomeUsuario, Mesa mesa) {
+    public Reserva(Restaurante restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
         this.nomeUsuario = nomeUsuario;
         this.restaurante = restaurante;
-        this.id_mesa = mesa.getId();
+        this.reservaVMesaList = reservaVMesaList;
+        this.horaChegada = horaChegada;
+    }
+
+    public Reserva(Long id, String nomeUsuario, Restaurante restaurante, List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
+        this.id = id;
+        this.nomeUsuario = nomeUsuario;
+        this.restaurante = restaurante;
+        this.reservaVMesaList = reservaVMesaList;
+        this.horaChegada = horaChegada;
     }
 
     public Long getId() {
@@ -57,8 +71,19 @@ public class Reserva {
         this.restaurante = restaurante;
     }
 
-    public List<Mesa> getMesaList() {
-        return List.of();
+    public List<ReservaVMesa> getReservaVMesaList() {
+        return reservaVMesaList;
     }
 
+    public void setReservaVMesaList(List<ReservaVMesa> reservaVMesaList) {
+        this.reservaVMesaList = reservaVMesaList;
+    }
+
+    public LocalDateTime getHoraChegada() {
+        return horaChegada;
+    }
+
+    public void setHoraChegada(LocalDateTime horaChegada) {
+        this.horaChegada = horaChegada;
+    }
 }

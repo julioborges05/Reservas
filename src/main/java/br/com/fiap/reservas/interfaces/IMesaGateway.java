@@ -11,4 +11,6 @@ public interface IMesaGateway {
 
     void atualizarReservaMesa(Mesa mesa);
 
+    void save(Mesa mesa);
+
 }

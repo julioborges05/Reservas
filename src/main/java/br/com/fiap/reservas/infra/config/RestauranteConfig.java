@@ -5,8 +5,10 @@ import br.com.fiap.reservas.controller.CadastrarRestauranteController;
 import br.com.fiap.reservas.infra.gateway.EnderecoRepositorioJpa;
 import br.com.fiap.reservas.infra.gateway.RestauranteRepositorioJpa;
 import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
+import br.com.fiap.reservas.infra.repository.mesa.MesaRepository;
 import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.interfaces.IEnderecoGateway;
+import br.com.fiap.reservas.interfaces.IMesaGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +23,9 @@ public class RestauranteConfig {
 
     @Bean
     CadastrarRestauranteController criaCadastrarRestauranteController(IRestauranteGateway restauranteGateway,
-                                                                      IEnderecoGateway enderecoGateway) {
-        return new CadastrarRestauranteController(restauranteGateway, enderecoGateway);
+                                                                      IEnderecoGateway enderecoGateway,
+                                                                      IMesaGateway mesaGateway) {
+        return new CadastrarRestauranteController(restauranteGateway, enderecoGateway, mesaGateway);
     }
 
     @Bean

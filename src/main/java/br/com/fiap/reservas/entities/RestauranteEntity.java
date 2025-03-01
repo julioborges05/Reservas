@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.entities;
 
+import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import io.micrometer.common.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class RestauranteEntity {
     }
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
-                             LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
+                              LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
         validarNome(nome);
         validarEndereco(endereco);
         validarTipoCozinha(tipoCozinha);
@@ -52,12 +53,13 @@ public class RestauranteEntity {
     }
 
     public RestauranteEntity(Long id, String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
-                             LocalTime horarioFechamento, int capacidade) {
+                             LocalTime horarioFechamento, int capacidade, List<MesaEntity> listaMesa) {
         validarNome(nome);
         validarEndereco(endereco);
         validarTipoCozinha(tipoCozinha);
         validarHorarios(horarioAbertura, horarioFechamento);
         validarCapacidade(capacidade);
+        validarMesas(listaMesa);
 
         this.id = id;
         this.nome = nome;
@@ -66,6 +68,7 @@ public class RestauranteEntity {
         this.horarioAbertura = horarioAbertura;
         this.horarioFechamento = horarioFechamento;
         this.capacidade = capacidade;
+        this.listaMesa = listaMesa;
     }
 
     private static void validarNome(String nome) {
