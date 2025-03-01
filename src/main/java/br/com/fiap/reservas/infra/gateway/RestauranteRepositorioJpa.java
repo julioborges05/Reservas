@@ -128,7 +128,6 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
                     .orElse(null);
 
             Restaurante restauranteSalvo = restauranteOptional.get();
-            EnderecoEntity enderecoEntity = enderecoRepositorioJpa.buscarEnderecoPeloId(restauranteSalvo.getIdEndereco());
 
             return new RestauranteEntity(
                     restauranteSalvo.getId(),
@@ -140,7 +139,6 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
                     restauranteSalvo.getCapacidade(),
                     new ArrayList<>()
             );
-            return restauranteEntity;
         } else {
             throw new Exception("Restaurante não encontrado");
         }

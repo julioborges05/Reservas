@@ -1,10 +1,7 @@
 package br.com.fiap.reservas.gateway;
 
 import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
-
-import java.util.Optional;
 
 public class RestauranteGateway implements IRestauranteGateway {
 
