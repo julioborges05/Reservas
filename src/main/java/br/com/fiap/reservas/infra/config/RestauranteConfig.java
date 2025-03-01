@@ -29,10 +29,8 @@ public class RestauranteConfig {
     }
 
     @Bean
-    RestauranteRepositorioJpa criaRestauranteRepositorioJpa(RestauranteRepository restauranteRepository,
-                                                            MesaRepository mesaRepository,
-                                                            EnderecoRepositorioJpa enderecoRepositorioJpa) {
-        return new RestauranteRepositorioJpa(restauranteRepository, mesaRepository, enderecoRepositorioJpa);
+    RestauranteRepositorioJpa criaRestauranteRepositorioJpa(RestauranteRepository restauranteRepository, EnderecoRepository enderecoRepository) {
+        return new RestauranteRepositorioJpa(restauranteRepository, enderecoRepository);
     }
 
     @Bean
