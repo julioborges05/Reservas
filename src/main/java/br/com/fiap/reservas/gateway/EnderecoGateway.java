@@ -15,4 +15,9 @@ public class EnderecoGateway implements IEnderecoGateway {
     public EnderecoEntity cadastrarEndereco(EnderecoEntity enderecoEntity) {
         return enderecoDatabaseGateway.cadastrarEndereco(enderecoEntity);
     }
+
+    @Override
+    public EnderecoEntity buscarEnderecoPeloId(Long id) {
+        return enderecoDatabaseGateway.buscarEnderecoPeloId(id);
+    }
 }
