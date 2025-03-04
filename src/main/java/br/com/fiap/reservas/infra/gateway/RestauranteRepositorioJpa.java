@@ -2,6 +2,7 @@ package br.com.fiap.reservas.infra.gateway;
 
 import br.com.fiap.reservas.entities.EnderecoEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
     private final RestauranteRepository restauranteRepository;
+    private final EnderecoRepository enderecoRepository;
 
-    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository) {
+    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository, EnderecoRepository enderecoRepository) {
         this.restauranteRepository = restauranteRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @Override
