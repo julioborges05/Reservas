@@ -10,8 +10,26 @@ public class UsuarioEntityTest {
     void validaNome() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new UsuarioEntity(null),
+                () -> new UsuarioEntity(null, "email", "senha"),
                 "Nome Inválido"
+        );
+    }
+
+    @Test
+    void validaEmail() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new UsuarioEntity("nome", null, "senha"),
+                "Email Inválido"
+        );
+    }
+
+    @Test
+    void validaSenha() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new UsuarioEntity("nome", "email", null),
+                "Senha Inválida"
         );
     }
 }
