@@ -21,10 +21,7 @@ public class CadastrarReservaUseCase {
             throw new RuntimeException("Capacidade insuficiente");
         }
 
-        int numeroMesas = 1;
-        if (qtdPessoas > 4) {
-            numeroMesas = (int) (double) (qtdPessoas / 4);
-        }
+        int numeroMesas = (int) Math.ceil(qtdPessoas / 4.0);
         if (mesasLivres.size() < numeroMesas) {
             throw new RuntimeException("Número de mesas indisponível");
         }

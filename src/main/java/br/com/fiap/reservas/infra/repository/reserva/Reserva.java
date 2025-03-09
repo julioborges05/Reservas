@@ -1,11 +1,9 @@
 package br.com.fiap.reservas.infra.repository.reserva;
 
-import br.com.fiap.reservas.infra.repository.mesa.Mesa;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
