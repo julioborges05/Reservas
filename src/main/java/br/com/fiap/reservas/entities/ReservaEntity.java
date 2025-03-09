@@ -38,6 +38,9 @@ public class ReservaEntity {
         if (nomeUsuario == null) {
             throw new IllegalArgumentException("Nome do usuário deve ser informado");
         }
+        if (id == null) {
+            throw new IllegalArgumentException("Id deve ser informado");
+        }
 
         this.id = id;
         this.restaurante = restaurante;
@@ -52,6 +55,9 @@ public class ReservaEntity {
         }
         if (nomeUsuario == null) {
             throw new IllegalArgumentException("Nome do usuário deve ser informado");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Id deve ser informado");
         }
 
         this.id = id;
