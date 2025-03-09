@@ -1,7 +1,7 @@
 package br.com.fiap.reservas.entities;
 
-import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
+import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -17,7 +17,8 @@ public class ReservaEntityTest {
 
     @Test
     void validaRestaurante() {
-        MesaEntity mesa = new MesaEntity(1, StatusMesa.LIVRE);
+        ReservaVMesa mesa = new ReservaVMesa(Long.valueOf(1), StatusReserva.LIVRE);
+
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new ReservaEntity(null, "nome", List.of(mesa), LocalDateTime.now()),

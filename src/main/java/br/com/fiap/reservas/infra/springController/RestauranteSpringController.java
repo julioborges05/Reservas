@@ -18,22 +18,22 @@ public class RestauranteSpringController {
         this.cadastrarRestauranteController = cadastrarRestauranteController;
     }
 
-    @GetMapping
+    @GetMapping("/buscar-nome")
     public RestauranteDto buscarRestaurantePorNome() {
         return buscaRestauranteController.buscarRestaurantePorNome("nome");
     }
 
-    @GetMapping
+    @GetMapping("/buscar-localizacao")
     public RestauranteDto buscarRestaurantePorLocalizacao() {
         return buscaRestauranteController.buscarRestaurantePorLocalizacao("localizacao");
     }
 
-    @GetMapping
+    @GetMapping("/buscar-tipo-cozinha")
     public RestauranteDto buscarRestaurantePorTipoCozinha() {
         return buscaRestauranteController.buscarRestaurantePorTipoCozinha("tipoCozinha");
     }
 
-    @GetMapping
+    @GetMapping("/buscar-nome-localizacao")
     public RestauranteDto buscarRestaurantePorNomeLocalizacaoETipoCozinha() {
         return buscaRestauranteController.buscarRestaurantePorNomeLocalizacaoETipoCozinha("nome", "localizacao", "tipoCozinha");
     }
