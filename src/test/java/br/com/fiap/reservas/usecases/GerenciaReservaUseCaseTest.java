@@ -58,7 +58,8 @@ public class GerenciaReservaUseCaseTest {
 
     @Test
     void atualizaReservaComSucesso() {
-        RestauranteEntity restauranteEntity = new RestauranteEntity("Restaurante", enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10, List.of(mesaEntity));
+        RestauranteEntity restauranteEntity = new RestauranteEntity("Restaurante", enderecoEntity,
+                "tipoCozinha", horarioAbertura, horarioFechamento, 10, List.of(mesaEntity));
 
         List<MesaEntity> mesasLivres = List.of(new MesaEntity(1, StatusMesa.LIVRE));
 

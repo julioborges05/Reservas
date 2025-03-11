@@ -26,8 +26,6 @@ public class MesaRepositorioJpa implements IMesaGateway {
                 restauranteId, StatusMesa.LIVRE);
 
         mesas.forEach(mesa -> {
-//            ReservaVMesa reservaVMesa = new ReservaVMesa(mesa.getReservaVMesa().getIdReserva(), mesa.getId(),
-//                    mesa.getReservaVMesa().getStatus());
             MesaEntity mesaEntityList = new MesaEntity(mesa.getRestaurante().getId(), mesa.getNumero(), mesa.getStatusMesa());
 
             mesasEntityList.add(mesaEntityList);
