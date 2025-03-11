@@ -41,7 +41,6 @@ public class RestauranteEntity {
         validarTipoCozinha(tipoCozinha);
         validarHorarios(horarioAbertura, horarioFechamento);
         validarCapacidade(capacidade);
-        validarMesas(listaMesa);
 
         this.nome = nome;
         this.endereco = endereco;
@@ -59,7 +58,6 @@ public class RestauranteEntity {
         validarTipoCozinha(tipoCozinha);
         validarHorarios(horarioAbertura, horarioFechamento);
         validarCapacidade(capacidade);
-        validarMesas(listaMesa);
 
         this.id = id;
         this.nome = nome;
@@ -99,12 +97,6 @@ public class RestauranteEntity {
         if (capacidade < 0) {
             throw new IllegalArgumentException("Capacidade inválida");
         }
-    }
-
-    private static void validarMesas(List<MesaEntity> listaMesa) {
-//        if (listaMesa == null || listaMesa.isEmpty()) {
-//            throw new IllegalArgumentException("Quantidade de mesas inválida");
-//        }
     }
 
     public Long getId() {

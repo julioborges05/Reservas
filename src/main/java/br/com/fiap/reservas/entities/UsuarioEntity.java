@@ -8,17 +8,42 @@ public class UsuarioEntity {
     private final String senha;
 
     public UsuarioEntity(String nome, String email, String senha) {
-        if (StringUtils.isBlank(nome)) {
-            throw new IllegalArgumentException("Nome Inválido");
-        }
-        if (StringUtils.isBlank(email)) {
-            throw new IllegalArgumentException("Email Inválido");
-        }
-        if (StringUtils.isBlank(senha)) {
-            throw new IllegalArgumentException("Senha Inválida");
-        }
+        validaNome(nome);
+        validaEmail(email);
+        validaSenha(senha);
+
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+    }
+
+    private static void validaSenha(String senha) {
+        if (StringUtils.isBlank(senha)) {
+            throw new IllegalArgumentException("Senha Inválida");
+        }
+    }
+
+    private static void validaEmail(String email) {
+        if (StringUtils.isBlank(email)) {
+            throw new IllegalArgumentException("Email Inválido");
+        }
+    }
+
+    private static void validaNome(String nome) {
+        if (StringUtils.isBlank(nome)) {
+            throw new IllegalArgumentException("Nome Inválido");
+        }
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSenha() {
+        return senha;
     }
 }

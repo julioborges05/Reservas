@@ -44,6 +44,7 @@ public class AvaliacaoEntity {
     public Long getRestaurante() {
         return restauranteId;
     }
+
     public int getNota() {
         return nota;
     }

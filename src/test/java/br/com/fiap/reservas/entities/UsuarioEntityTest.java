@@ -2,6 +2,7 @@ package br.com.fiap.reservas.entities;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UsuarioEntityTest {
@@ -31,5 +32,14 @@ public class UsuarioEntityTest {
                 () -> new UsuarioEntity("nome", "email", null),
                 "Senha Inválida"
         );
+    }
+
+    @Test
+    void criaUsuarioComSucesso() {
+        UsuarioEntity usuario = new UsuarioEntity("nome", "email", "senha");
+
+        assertEquals("nome", usuario.getNome());
+        assertEquals("email", usuario.getEmail());
+        assertEquals("senha", usuario.getSenha());
     }
 }

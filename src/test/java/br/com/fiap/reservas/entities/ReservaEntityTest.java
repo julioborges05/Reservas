@@ -66,6 +66,7 @@ public class ReservaEntityTest {
     @Test
     void validaRestauranteComIdAndHoraChegadaComSucesso() {
         ReservaEntity reserva = new ReservaEntity(1L, restaurante, "nome", List.of(reservaVMesa), horarioChegada);
+
         assertNotNull(reserva);
         assertEquals(restaurante, reserva.getRestaurante());
         assertEquals("nome", reserva.getNomeUsuario());
@@ -81,11 +82,13 @@ public class ReservaEntityTest {
                 () -> new ReservaEntity(1L, null, "nome", List.of(reservaVMesa)),
                 "Restaurante Inválido"
         );
+
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new ReservaEntity(1L, restaurante, null, List.of(reservaVMesa)),
                 "Nome do usuário deve ser informado"
         );
+
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new ReservaEntity(null, restaurante, "nome", List.of(reservaVMesa)),
@@ -93,6 +96,7 @@ public class ReservaEntityTest {
         );
 
         ReservaEntity reserva = new ReservaEntity(1L, restaurante, "nome", List.of(reservaVMesa));
+
         assertNotNull(reserva);
         assertEquals(restaurante, reserva.getRestaurante());
         assertEquals("nome", reserva.getNomeUsuario());
@@ -103,6 +107,7 @@ public class ReservaEntityTest {
     @Test
     void validaRestauranteComIdComSucesso() {
         ReservaEntity reserva = new ReservaEntity(1L, restaurante, "nome", List.of(reservaVMesa));
+
         assertNotNull(reserva);
         assertEquals(restaurante, reserva.getRestaurante());
         assertEquals("nome", reserva.getNomeUsuario());
@@ -117,11 +122,13 @@ public class ReservaEntityTest {
                 () -> new ReservaEntity(null, "nome", 4),
                 "Restaurante deve ser informado"
         );
+
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new ReservaEntity(restaurante, null, 4),
                 "Usuário deve ser informado"
         );
+
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new ReservaEntity(restaurante, "nome", 0),
@@ -132,6 +139,7 @@ public class ReservaEntityTest {
     @Test
     void validaRestauranteComQtdPessoasComSucesso() {
         ReservaEntity reserva = new ReservaEntity(restaurante, "nome", 4);
+
         assertNotNull(reserva);
         assertEquals(restaurante, reserva.getRestaurante());
         assertEquals("nome", reserva.getNomeUsuario());

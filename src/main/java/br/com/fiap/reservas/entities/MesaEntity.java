@@ -45,4 +45,8 @@ public class MesaEntity {
     public Long getRestauranteId() {
         return restauranteId;
     }
+
+    public StatusMesa getStatusMesa() {
+        return statusMesa;
+    }
 }
