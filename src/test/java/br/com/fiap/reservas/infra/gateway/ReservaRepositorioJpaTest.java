@@ -1,8 +1,10 @@
 package br.com.fiap.reservas.infra.gateway;
 
 import br.com.fiap.reservas.entities.EnderecoEntity;
+import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import br.com.fiap.reservas.infra.repository.reserva.Reserva;
@@ -109,6 +111,22 @@ public class ReservaRepositorioJpaTest {
         assertDoesNotThrow(() -> reservaRepositorioJpa.atualizarQtdPessoasReserva(reservaEntity));
 
         verify(reservaRepository).save(any(Reserva.class));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoReservaNaoEncontradaNaHoraDeTentarAtualizar() {
+        List<MesaEntity> mesasLivres = List.of(new MesaEntity(1, StatusMesa.LIVRE));
+        RestauranteEntity restauranteEntity = new RestauranteEntity("Restaurante", enderecoEntityMock,
+                "tipoCozinha", LocalTime.now(), LocalTime.now(), 10, mesasLivres);
+
+        ReservaEntity reservaEntity = new ReservaEntity(restauranteEntity, "Usuario", List.of(), LocalDateTime.now());
+
+        when(reservaRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+                reservaRepositorioJpa.atualizarQtdPessoasReserva(reservaEntity));
+
+        assertEquals("Reserva não encontrada", exception.getMessage());
     }
 
     @Test
