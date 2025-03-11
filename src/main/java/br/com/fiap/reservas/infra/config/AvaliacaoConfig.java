@@ -12,6 +12,8 @@ import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.infra.repository.usuario.UsuarioRepository;
 import br.com.fiap.reservas.infra.springController.AvaliacaoSpringController;
 import br.com.fiap.reservas.interfaces.IAvaliacaoGateway;
+import br.com.fiap.reservas.interfaces.IRestauranteGateway;
+import br.com.fiap.reservas.interfaces.IUsuarioGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,8 +26,9 @@ public class AvaliacaoConfig {
     }
 
     @Bean
-    RealizarAvaliacaoController criaAvaliacaoSpringController(IAvaliacaoGateway avaliacaoGateway) {
-        return new RealizarAvaliacaoController(avaliacaoGateway);
+    RealizarAvaliacaoController criaAvaliacaoSpringController(IAvaliacaoGateway avaliacaoGateway, IUsuarioGateway usuarioGateway,
+                                                              IRestauranteGateway restauranteGateway) {
+        return new RealizarAvaliacaoController(avaliacaoGateway, usuarioGateway, restauranteGateway);
     }
 
     @Bean

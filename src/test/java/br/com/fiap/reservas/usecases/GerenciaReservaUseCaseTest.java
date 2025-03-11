@@ -73,4 +73,13 @@ public class GerenciaReservaUseCaseTest {
         assertEquals(1, reserva.getReservaVMesaList().size());
         assertEquals(StatusReserva.RESERVADA, reserva.getReservaVMesaList().getFirst().getStatus());
     }
+
+    @Test
+    void buscarReservaPorRestaurante() {
+        assertDoesNotThrow(
+                () -> GerenciaReservaUseCase.buscarReservaPorRestaurante(new RestauranteEntity("Restaurante",
+                        enderecoEntity, "tipoCozinha", horarioAbertura, horarioFechamento, 10,
+                        List.of(mesaEntity)), "Lucas", new ArrayList<>(), horarioChegada)
+        );
+    }
 }

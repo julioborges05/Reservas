@@ -15,4 +15,9 @@ public class UsuarioGateway implements IUsuarioGateway {
     public UsuarioEntity buscarUsuarioPorId(Long id) {
         return usuarioDatabaseGateway.buscarUsuarioPorId(id);
     }
+
+    @Override
+    public UsuarioEntity cadastrarUsuario(UsuarioEntity usuarioEntity) {
+        return usuarioDatabaseGateway.cadastrarUsuario(usuarioEntity);
+    }
 }

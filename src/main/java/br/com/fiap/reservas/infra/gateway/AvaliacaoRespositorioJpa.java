@@ -1,6 +1,5 @@
 package br.com.fiap.reservas.infra.gateway;
 
-import br.com.fiap.reservas.controller.dto.AvaliacaoDto;
 import br.com.fiap.reservas.entities.AvaliacaoEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.entities.UsuarioEntity;
@@ -23,16 +22,12 @@ public class AvaliacaoRespositorioJpa implements IAvaliacaoGateway {
 
     @Override
     @Transactional
-    public AvaliacaoEntity avaliarRestaurante(AvaliacaoDto avaliacaoDto) {
-        Avaliacao avaliacao = new Avaliacao(avaliacaoDto.restauranteId(), avaliacaoDto.nota(), avaliacaoDto.comentario(),
-                avaliacaoDto.usuarioId());
-
+    public AvaliacaoEntity avaliarRestaurante(AvaliacaoEntity avaliacaoEntity) {
+        Avaliacao avaliacao = new Avaliacao(avaliacaoEntity);
         avaliacaoRepository.save(avaliacao);
 
-        RestauranteEntity restauranteEntity = restauranteRepositorioJpa.buscarRestaurantePorId(avaliacaoDto.restauranteId());
-        UsuarioEntity usuarioEntity = usuarioRepositorioJpa.buscarUsuarioPorId(avaliacaoDto.usuarioId());
-
-        return new AvaliacaoEntity(avaliacao.getNota(), avaliacao.getComentario(), usuarioEntity, restauranteEntity);
+        return new AvaliacaoEntity(avaliacao.getNota(), avaliacao.getComentario(), avaliacaoEntity.getUsuario(),
+                avaliacaoEntity.getRestaurante());
     }
 
     @Override

@@ -26,4 +26,12 @@ public class UsuarioRepositorioJpa implements IUsuarioGateway {
 
         throw new RuntimeException("Usuário não encontrado");
     }
+
+    @Override
+    public UsuarioEntity cadastrarUsuario(UsuarioEntity usuarioEntity) {
+        Usuario usuario = new Usuario(usuarioEntity);
+        usuarioRepository.save(usuario);
+
+        return new UsuarioEntity(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getSenha());
+    }
 }

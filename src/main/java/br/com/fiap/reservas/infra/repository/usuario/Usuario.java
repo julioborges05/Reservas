@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.infra.repository.usuario;
 
+import br.com.fiap.reservas.entities.UsuarioEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -11,6 +12,16 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+
+    public Usuario() {
+    }
+
+    public Usuario(UsuarioEntity usuarioEntity) {
+        this.id = usuarioEntity.getId();
+        this.nome = usuarioEntity.getNome();
+        this.email = usuarioEntity.getEmail();
+        this.senha = usuarioEntity.getSenha();
+    }
 
     public Long getId() {
         return id;

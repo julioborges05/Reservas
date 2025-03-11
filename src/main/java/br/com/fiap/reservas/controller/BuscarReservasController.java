@@ -15,13 +15,12 @@ public class BuscarReservasController {
     private final IReservaGateway reservaGateway;
     private final IRestauranteGateway restauranteGateway;
 
-    public BuscarReservasController(
-            IReservaGateway reservaGateway, IRestauranteGateway restauranteGateway) {
+    public BuscarReservasController(IReservaGateway reservaGateway, IRestauranteGateway restauranteGateway) {
         this.reservaGateway = reservaGateway;
         this.restauranteGateway = restauranteGateway;
     }
 
-    public List<BuscarReservasDto> buscarReservasPorRestaurante(Long restauranteId) throws Exception {
+    public List<BuscarReservasDto> buscarReservasPorRestaurante(Long restauranteId) {
         List<BuscarReservasDto> reservasEncontradas = new ArrayList<>();
         RestauranteEntity restauranteEntity = restauranteGateway.findById(restauranteId);
         restauranteEntity.setId(restauranteId);
