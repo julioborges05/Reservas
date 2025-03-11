@@ -117,30 +117,46 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
     }
 
     @Override
-    public RestauranteEntity findById(Long id) throws Exception {
+    public RestauranteEntity findById(Long id) {
         Optional<Restaurante> restauranteOptional = restauranteRepository.findById(id);
 
         if (restauranteOptional.isPresent()) {
-            Optional<Endereco> endereco = enderecoRepository.findById(restauranteOptional.get().getIdEndereco());
-            EnderecoEntity enderecoEntity = endereco
-                    .map(value ->
-                            new EnderecoEntity(value.getCep(), value.getLogradouro(), value.getBairro(), value.getCidade(), value.getNumero(), value.getComplemento()))
-                    .orElse(null);
-
-            Restaurante restauranteSalvo = restauranteOptional.get();
-
-            return new RestauranteEntity(
-                    restauranteSalvo.getId(),
-                    restauranteSalvo.getNome(),
-                    enderecoEntity,
-                    restauranteSalvo.getTipo(),
-                    restauranteSalvo.getHorarioAbertura(),
-                    restauranteSalvo.getHorarioFechamento(),
-                    restauranteSalvo.getCapacidade(),
-                    new ArrayList<>()
-            );
-        } else {
-            throw new Exception("Restaurante não encontrado");
+            return converteEmRestauranteEntity(restauranteOptional.get());
         }
+
+        throw new RuntimeException("Restaurante não encontrado");
     }
+
+    @Override
+    public RestauranteEntity buscarRestaurantePorId(Long restauranteId) {
+        Optional<Restaurante> restauranteOptional = restauranteRepository.findById(restauranteId);
+
+        if (restauranteOptional.isPresent()) {
+            return converteEmRestauranteEntity(restauranteOptional.get());
+        }
+
+        throw new RuntimeException("Restaurante não encontrado");
+    }
+
+    private RestauranteEntity converteEmRestauranteEntity(Restaurante restaurante) {
+        Optional<Endereco> endereco = enderecoRepository.findById(restaurante.getIdEndereco());
+
+        EnderecoEntity enderecoEntity = endereco
+                .map(value -> new EnderecoEntity(value.getCep(), value.getLogradouro(), value.getBairro(),
+                        value.getCidade(), value.getNumero(), value.getComplemento()))
+                .orElse(null);
+
+        return new RestauranteEntity(
+                restaurante.getId(),
+                restaurante.getNome(),
+                enderecoEntity,
+                restaurante.getTipo(),
+                restaurante.getHorarioAbertura(),
+                restaurante.getHorarioFechamento(),
+                restaurante.getCapacidade(),
+                new ArrayList<>()
+        );
+    }
+
+
 }

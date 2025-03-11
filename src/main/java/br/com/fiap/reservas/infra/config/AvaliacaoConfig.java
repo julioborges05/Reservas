@@ -4,7 +4,12 @@ import br.com.fiap.reservas.controller.BuscarAvaliacaoController;
 import br.com.fiap.reservas.controller.RealizarAvaliacaoController;
 
 import br.com.fiap.reservas.infra.gateway.AvaliacaoRespositorioJpa;
+import br.com.fiap.reservas.infra.gateway.RestauranteRepositorioJpa;
+import br.com.fiap.reservas.infra.gateway.UsuarioRepositorioJpa;
 import br.com.fiap.reservas.infra.repository.avaliacao.AvaliacaoRepository;
+import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
+import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
+import br.com.fiap.reservas.infra.repository.usuario.UsuarioRepository;
 import br.com.fiap.reservas.infra.springController.AvaliacaoSpringController;
 import br.com.fiap.reservas.interfaces.IAvaliacaoGateway;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +29,14 @@ public class AvaliacaoConfig {
     }
 
     @Bean
-    AvaliacaoRespositorioJpa criaAvaliacaoRepositorioJpa(AvaliacaoRepository avaliacaoRepository) {
-        return new AvaliacaoRespositorioJpa(avaliacaoRepository);
+    AvaliacaoRespositorioJpa criaAvaliacaoRepositorioJpa(AvaliacaoRepository avaliacaoRepository,
+                                                         RestauranteRepositorioJpa restauranteRepositorioJpa,
+                                                         UsuarioRepositorioJpa usuarioRepositorioJpa) {
+        return new AvaliacaoRespositorioJpa(avaliacaoRepository, restauranteRepositorioJpa, usuarioRepositorioJpa);
+    }
+
+    @Bean
+    UsuarioRepositorioJpa criaUsuarioRepositorioJpa(UsuarioRepository usuarioRepository) {
+        return new UsuarioRepositorioJpa(usuarioRepository);
     }
 }

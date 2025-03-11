@@ -57,8 +57,14 @@ public class Restaurante {
         this.capacidade = capacidade;
     }
 
-    public Restaurante(Long id) {
-        this.id = id;
+    public Restaurante(RestauranteEntity restauranteEntity) {
+        this.id = restauranteEntity.getId();
+        this.nome = restauranteEntity.getNome();
+        this.idEndereco = restauranteEntity.getEndereco().getId();
+        this.tipo = restauranteEntity.getTipoCozinha();
+        this.horarioAbertura = restauranteEntity.getHorarioAbertura();
+        this.horarioFechamento = restauranteEntity.getHorarioFechamento();
+        this.capacidade = restauranteEntity.getCapacidade();
     }
 
     public Long getId() {

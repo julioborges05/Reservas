@@ -40,4 +40,9 @@ public class RestauranteGateway implements IRestauranteGateway {
     public RestauranteEntity findById(Long id) throws Exception {
         return restauranteDatabaseGateway.findById(id);
     }
+
+    @Override
+    public RestauranteEntity buscarRestaurantePorId(Long restauranteId) {
+        return restauranteDatabaseGateway.buscarRestaurantePorId(restauranteId);
+    }
 }

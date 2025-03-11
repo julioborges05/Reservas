@@ -2,8 +2,7 @@ package br.com.fiap.reservas.entities;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EnderecoEntityTest {
 
@@ -62,9 +61,29 @@ public class EnderecoEntityTest {
     }
 
     @Test
-    void entidadeCriadaComSucesso() {
-        assertDoesNotThrow(
-                () -> new EnderecoEntity("13180000", "logradouro", "bairro", "cidade", "numero", "complemento")
-        );
+    void entidadeCriadaComSucesso_SemId() {
+        EnderecoEntity endereco = new EnderecoEntity("13180000", "logradouro", "bairro", "cidade",
+                "numero", "complemento");
+
+        assertEquals("13180000", endereco.getCep());
+        assertEquals("logradouro", endereco.getLogradouro());
+        assertEquals("bairro", endereco.getBairro());
+        assertEquals("cidade", endereco.getCidade());
+        assertEquals("numero", endereco.getNumero());
+        assertEquals("complemento", endereco.getComplemento());
+    }
+
+    @Test
+    void entidadeCriadaComSucesso_ComId() {
+        EnderecoEntity endereco = new EnderecoEntity(1L, "13180000", "logradouro", "bairro", "cidade",
+                "numero", "complemento");
+
+        assertEquals(1L, endereco.getId());
+        assertEquals("13180000", endereco.getCep());
+        assertEquals("logradouro", endereco.getLogradouro());
+        assertEquals("bairro", endereco.getBairro());
+        assertEquals("cidade", endereco.getCidade());
+        assertEquals("numero", endereco.getNumero());
+        assertEquals("complemento", endereco.getComplemento());
     }
 }

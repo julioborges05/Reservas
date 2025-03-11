@@ -19,9 +19,7 @@ import java.util.Optional;
 public class ReservaRepositorioJpa implements IReservaGateway {
 
     private final ReservaRepository reservaRepository;
-
     private final EnderecoRepositorioJpa enderecoRepositorioJpa;
-
     private final RestauranteRepositorioJpa restauranteRepositorioJpa;
 
     public ReservaRepositorioJpa(ReservaRepository reservaRepository, EnderecoRepositorioJpa enderecoRepositorioJpa,
@@ -129,9 +127,10 @@ public class ReservaRepositorioJpa implements IReservaGateway {
         }
     }
 
-    private static Reserva getReserva(Long restauranteId, String nomeUsuario, List<ReservaVMesa> reservaVMesaList,
+    private Reserva getReserva(Long restauranteId, String nomeUsuario, List<ReservaVMesa> reservaVMesaList,
                                       LocalDateTime horaChegada) {
-        Restaurante restaurante = new Restaurante(restauranteId);
+        RestauranteEntity restauranteEntity = restauranteRepositorioJpa.buscarRestaurantePorId(restauranteId);
+        Restaurante restaurante = new Restaurante(restauranteEntity);
         return new Reserva(restaurante, nomeUsuario, reservaVMesaList, horaChegada);
     }
 

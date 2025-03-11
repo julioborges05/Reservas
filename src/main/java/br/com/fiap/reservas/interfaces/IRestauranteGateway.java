@@ -16,4 +16,6 @@ public interface IRestauranteGateway {
     RestauranteEntity cadastrarRestaurante(RestauranteEntity restauranteEntity);
 
     RestauranteEntity findById(Long id) throws Exception;
+
+    RestauranteEntity buscarRestaurantePorId(Long restauranteId);
 }
