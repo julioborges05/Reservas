@@ -7,10 +7,10 @@ public record AvaliacaoDto (Long restauranteId, int nota, String comentario, lon
 
     public AvaliacaoDto(AvaliacaoEntity avaliacaoEntity) {
         this(
-                avaliacaoEntity.getRestaurante(),
+                avaliacaoEntity.getRestaurante().getId(),
                 avaliacaoEntity.getNota(),
                 avaliacaoEntity.getComentario(),
-                avaliacaoEntity.getUsuarioId()
+                avaliacaoEntity.getUsuario().getId()
         );
     }
 
