@@ -18,12 +18,12 @@ public class AvaliaRestauranteUseCaseTest {
     private final LocalTime horarioFechamento = LocalTime.of(17, 37);
 
     @Test
-    void avaliarRestauranteCriaAvaliacaoEntity() {
+    void criarAvaliacaoDoRestauranteCriaAvaliacaoEntity() {
         UsuarioEntity usuario = new UsuarioEntity("Teste", "email", "senha");
         RestauranteEntity restauranteEntity = new RestauranteEntity("nome", enderecoEntity, "tipoCozinha",
                 horarioAbertura, horarioFechamento, 10);
 
-        AvaliacaoEntity avaliacao = AvaliaRestauranteUseCase.avaliarRestaurante(5, "Muito bom",
+        AvaliacaoEntity avaliacao = AvaliaRestauranteUseCase.criarAvaliacaoDoRestaurante(5, "Muito bom",
                 usuario, restauranteEntity);
 
         assertEquals(5, avaliacao.getNota());

@@ -10,9 +10,13 @@ import java.util.List;
 public class CadastrarMesasUseCase {
 
     public static List<MesaEntity> cadastrarMesas(int capacidade) {
+        if (capacidade < 0) {
+            throw new IllegalArgumentException("Capacidade de mesas não pode ser negativa");
+        }
+
         List<MesaEntity> listaMesa = new ArrayList<>();
 
-        int qtdMesas = capacidade / 4;
+        int qtdMesas = (int) Math.ceil(capacidade / 4.0);
         for (int i = 0; i < qtdMesas; i++) {
             MesaEntity mesa = new MesaEntity(i, StatusMesa.LIVRE);
             listaMesa.add(mesa);

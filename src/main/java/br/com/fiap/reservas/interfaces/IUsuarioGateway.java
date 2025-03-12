@@ -6,4 +6,6 @@ public interface IUsuarioGateway {
 
     UsuarioEntity buscarUsuarioPorId(Long id);
 
+    UsuarioEntity cadastrarUsuario(UsuarioEntity usuarioEntity);
+
 }

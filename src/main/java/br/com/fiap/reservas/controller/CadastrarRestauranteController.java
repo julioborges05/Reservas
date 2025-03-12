@@ -33,10 +33,7 @@ public class CadastrarRestauranteController {
     }
 
     public RestauranteDto cadastrarRestaurante(RestauranteDto restaurante) {
-        EnderecoDto endereco = restaurante.endereco();
-        EnderecoEntity enderecoEntity = CadastrarEnderecoUseCase.cadastrarEndereco(endereco.cep(), endereco.logradouro(),
-                endereco.bairro(), endereco.cidade(), endereco.numero(), endereco.complemento());
-        EnderecoEntity enderecoSalvo = enderecoGateway.cadastrarEndereco(enderecoEntity);
+        EnderecoEntity enderecoSalvo = cadastrarEndereco(restaurante);
         List<MesaEntity> listaMesas = CadastrarMesasUseCase.cadastrarMesas(restaurante.capacidade());
 
         RestauranteEntity restauranteEntity = CadastraRestauranteUseCase.cadastrarRestaurante(restaurante.nome(),
@@ -46,6 +43,15 @@ public class CadastrarRestauranteController {
         RestauranteEntity restauranteSalvo = restauranteGateway.cadastrarRestaurante(restauranteEntity);
 
         return new RestauranteDto(restauranteSalvo);
+    }
+
+    private EnderecoEntity cadastrarEndereco(RestauranteDto restaurante) {
+        EnderecoDto endereco = restaurante.endereco();
+
+        EnderecoEntity enderecoEntity = enderecoGateway.cadastrarEndereco(new EnderecoEntity(endereco.cep(), endereco.logradouro(),
+                endereco.bairro(), endereco.cidade(), endereco.numero(), endereco.complemento()));
+
+        return enderecoGateway.cadastrarEndereco(enderecoEntity);
     }
 
 }

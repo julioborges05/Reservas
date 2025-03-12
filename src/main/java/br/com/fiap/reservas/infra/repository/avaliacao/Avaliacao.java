@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.infra.repository.avaliacao;
 
+import br.com.fiap.reservas.entities.AvaliacaoEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import jakarta.persistence.*;
 
@@ -30,6 +31,13 @@ public class Avaliacao {
         this.nota = nota;
         this.comentario = comentario;
         this.usuarioId = usuarioId;
+    }
+
+    public Avaliacao(AvaliacaoEntity avaliacaoEntity) {
+        this.restauranteId = avaliacaoEntity.getRestaurante().getId();
+        this.nota = avaliacaoEntity.getNota();
+        this.comentario = avaliacaoEntity.getComentario();
+        this.usuarioId = avaliacaoEntity.getUsuario().getId();
     }
 
     public Long getId() {

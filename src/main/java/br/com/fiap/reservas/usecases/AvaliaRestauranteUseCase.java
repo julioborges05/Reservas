@@ -6,7 +6,8 @@ import br.com.fiap.reservas.entities.UsuarioEntity;
 
 public class AvaliaRestauranteUseCase {
 
-    public static AvaliacaoEntity avaliarRestaurante(int nota, String comentario, UsuarioEntity usuario, RestauranteEntity restaurante) {
+    public static AvaliacaoEntity criarAvaliacaoDoRestaurante(int nota, String comentario, UsuarioEntity usuario,
+                                                              RestauranteEntity restaurante) {
         return new AvaliacaoEntity(nota, comentario, usuario, restaurante);
     }
 
