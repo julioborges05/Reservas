@@ -21,8 +21,6 @@ public class BuscaRestauranteControllerTest {
 
     private BuscaRestauranteController buscaRestauranteController;
 
-    AutoCloseable openMocks;
-
     @BeforeEach
     void setUp() {
         try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {

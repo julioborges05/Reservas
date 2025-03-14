@@ -9,13 +9,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/restaurante")
 public class RestauranteSpringController {
 
-    private final BuscaRestauranteController buscaRestauranteController;
     private final CadastrarRestauranteController cadastrarRestauranteController;
+    private final BuscaRestauranteController buscaRestauranteController;
+
 
     public RestauranteSpringController(BuscaRestauranteController buscaRestauranteController,
                                        CadastrarRestauranteController cadastrarRestauranteController) {
         this.buscaRestauranteController = buscaRestauranteController;
         this.cadastrarRestauranteController = cadastrarRestauranteController;
+    }
+
+    @PostMapping
+    public RestauranteDto cadastrarRestaurante(@RequestBody RestauranteDto restauranteDto) {
+        return cadastrarRestauranteController.cadastrarRestaurante(restauranteDto);
     }
 
     @GetMapping("/buscar-nome")
@@ -36,10 +42,5 @@ public class RestauranteSpringController {
     @GetMapping("/buscar-nome-localizacao-tipoCozinha")
     public RestauranteDto buscarRestaurantePorNomeLocalizacaoETipoCozinha(@PathVariable String nome, @PathVariable String localizacao, @RequestParam String tipoCozinha) {
         return buscaRestauranteController.buscarRestaurantePorNomeLocalizacaoETipoCozinha(nome, localizacao, tipoCozinha);
-    }
-
-    @PostMapping
-    public RestauranteDto cadastrarRestaurante(@RequestBody RestauranteDto restauranteDto) {
-        return cadastrarRestauranteController.cadastrarRestaurante(restauranteDto);
     }
 }
