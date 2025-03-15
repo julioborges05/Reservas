@@ -22,14 +22,11 @@ public class CadastrarRestauranteController {
 
     private final IRestauranteGateway restauranteGateway;
     private final IEnderecoGateway enderecoGateway;
-    private final IMesaGateway mesaGateway;
 
     public CadastrarRestauranteController(IRestauranteGateway restauranteGateway,
-                                          IEnderecoGateway enderecoGateway,
-                                          IMesaGateway mesaGateway) {
+                                          IEnderecoGateway enderecoGateway) {
         this.restauranteGateway = restauranteGateway;
         this.enderecoGateway = enderecoGateway;
-        this.mesaGateway = mesaGateway;
     }
 
     public RestauranteDto cadastrarRestaurante(RestauranteDto restaurante) {
@@ -48,10 +45,8 @@ public class CadastrarRestauranteController {
     private EnderecoEntity cadastrarEndereco(RestauranteDto restaurante) {
         EnderecoDto endereco = restaurante.endereco();
 
-        EnderecoEntity enderecoEntity = enderecoGateway.cadastrarEndereco(new EnderecoEntity(endereco.cep(), endereco.logradouro(),
+        return enderecoGateway.cadastrarEndereco(new EnderecoEntity(endereco.cep(), endereco.logradouro(),
                 endereco.bairro(), endereco.cidade(), endereco.numero(), endereco.complemento()));
-
-        return enderecoGateway.cadastrarEndereco(enderecoEntity);
     }
 
 }

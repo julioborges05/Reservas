@@ -1,6 +1,7 @@
 package br.com.fiap.reservas.controller;
 
 import br.com.fiap.reservas.controller.dto.AvaliacaoDto;
+import br.com.fiap.reservas.entities.AvaliacaoEntity;
 import br.com.fiap.reservas.interfaces.IAvaliacaoGateway;
 
 public class BuscarAvaliacaoController {
@@ -12,7 +13,9 @@ public class BuscarAvaliacaoController {
     }
 
     public AvaliacaoDto buscarAvaliacaoPorRestaurante(Long id) {
-        return new AvaliacaoDto(avaliacaoGateway.buscarAvaliacaoPorRestaurante(id));
+        AvaliacaoEntity avaliacao = avaliacaoGateway.buscarAvaliacaoPorRestaurante(id);
+
+        return new AvaliacaoDto(avaliacao);
     }
 
 }

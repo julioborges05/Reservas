@@ -26,8 +26,6 @@ public class RestauranteSpringControllerTest {
     private IRestauranteGateway restauranteGateway;
     @Mock
     private IEnderecoGateway enderecoGateway;
-    @Mock
-    private IMesaGateway mesaGateway;
 
     private CadastrarRestauranteController cadastrarRestauranteController;
     private BuscaRestauranteController buscaRestauranteController;
@@ -35,7 +33,7 @@ public class RestauranteSpringControllerTest {
     @BeforeEach
     void setUp() {
         try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
-            cadastrarRestauranteController = new CadastrarRestauranteController(restauranteGateway, enderecoGateway, mesaGateway);
+            cadastrarRestauranteController = new CadastrarRestauranteController(restauranteGateway, enderecoGateway);
             buscaRestauranteController = new BuscaRestauranteController(restauranteGateway);
         } catch (Exception e) {
             e.printStackTrace();

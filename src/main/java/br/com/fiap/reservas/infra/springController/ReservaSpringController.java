@@ -40,7 +40,7 @@ public class ReservaSpringController {
     }
 
     @GetMapping(value = "/{restauranteId}")
-    public List<BuscarReservasDto> buscarReservasPorRestauranteId(@PathVariable Long restauranteId) throws Exception {
+    public List<BuscarReservasDto> buscarReservasPorRestauranteId(@PathVariable Long restauranteId) {
         return buscarReservasController.buscarReservasPorRestaurante(restauranteId);
     }
 
