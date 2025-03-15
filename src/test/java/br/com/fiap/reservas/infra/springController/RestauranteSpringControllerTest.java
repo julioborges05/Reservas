@@ -5,109 +5,138 @@ import br.com.fiap.reservas.controller.CadastrarRestauranteController;
 import br.com.fiap.reservas.controller.dto.RestauranteDto;
 import br.com.fiap.reservas.entities.EnderecoEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.interfaces.IEnderecoGateway;
-import br.com.fiap.reservas.interfaces.IMesaGateway;
-import br.com.fiap.reservas.interfaces.IRestauranteGateway;
+import br.com.fiap.reservas.utils.JsonFormatUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RestauranteSpringControllerTest {
 
-    @Mock
-    private IRestauranteGateway restauranteGateway;
-    @Mock
-    private IEnderecoGateway enderecoGateway;
+    private RestauranteSpringController restauranteSpringController;
 
+    @Mock
     private CadastrarRestauranteController cadastrarRestauranteController;
+
+    @Mock
     private BuscaRestauranteController buscaRestauranteController;
 
+    private MockMvc mockMvc;
+    private AutoCloseable mock;
+
+    private final LocalTime horarioAbertura = LocalTime.of(10, 0);
+    private final LocalTime horarioFechamento = LocalTime.of(22, 0);
+    private final EnderecoEntity enderecoEntity = new EnderecoEntity("cep", "rua", "bairro", "cidade", "numero", "complemento");
+    private final RestauranteEntity restauranteEntity = new RestauranteEntity("nome", enderecoEntity, "tipoCozinha",
+            horarioAbertura, horarioFechamento, 0);
+
     @BeforeEach
-    void setUp() {
-        try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
-            cadastrarRestauranteController = new CadastrarRestauranteController(restauranteGateway, enderecoGateway);
-            buscaRestauranteController = new BuscaRestauranteController(restauranteGateway);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setup() {
+        mock = MockitoAnnotations.openMocks(this);
+        restauranteSpringController = new RestauranteSpringController(buscaRestauranteController, cadastrarRestauranteController);
+
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(restauranteSpringController)
+                .build();
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        mock.close();
     }
 
     @Test
-    void validaCadastrarRestauranteComErro(){
-        fail("Teste não implementado");
+    public void cadastrarRestaurante() throws Exception {
+        RestauranteDto restaurante = new RestauranteDto(restauranteEntity);
+
+        mockMvc.perform(post("/restaurante")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonFormatUtil.asJsonString(restaurante))
+        ).andExpect(status().isOk());
+
+        verify(cadastrarRestauranteController, times(1)).cadastrarRestaurante(restaurante);
     }
 
     @Test
-    void validaCadastrarRestauranteComSucesso(){
-        fail("Teste não implementado");
-        /*
-        EnderecoEntity enderecoEntity = new EnderecoEntity("89670000", "Logradouro", "Bairro", "Cidade", "Numero", "Complemento");
-        RestauranteEntity restauranteEntity = new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", LocalTime.of(18, 30), LocalTime.of(23, 30), 10);
-        RestauranteDto dto = new RestauranteDto(restauranteEntity);
+    public void buscarRestaurantePorNome() throws Exception {
+        String nome = "nome";
+        RestauranteDto restaurante = new RestauranteDto(restauranteEntity);
 
-        when(cadastrarRestauranteController.cadastrarRestaurante(dto)).thenReturn(dto);
+        when(buscaRestauranteController.buscarRestaurantePorNome(nome)).thenReturn(restaurante);
 
-        RestauranteDto resultado = cadastrarRestauranteController.cadastrarRestaurante(dto);
-        assertNotNull(resultado);
-        assertEquals(dto, resultado);
-        verify(cadastrarRestauranteController).cadastrarRestaurante(dto);
-         */
+        mockMvc.perform(
+                get("/restaurante/buscar-nome")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("nome", nome)
+                )
+                .andExpect(status().isOk());
+
+        verify(buscaRestauranteController, times(1)).buscarRestaurantePorNome(nome);
     }
 
     @Test
-    void validaBuscarRestaurantePorNome(){
-        when(restauranteGateway.buscarRestaurantePorNome(anyString()))
-                .thenThrow(new RuntimeException("Restaurante não encontrado"));
+    public void buscarRestaurantePorLocalizacao() throws Exception {
+        String localizacao = "cidade";
+        RestauranteDto restaurante = new RestauranteDto(restauranteEntity);
 
-        assertThrows(RuntimeException.class,
-                () -> buscaRestauranteController.buscarRestaurantePorNome("Estação Burger"), "Restaurante não encontrado"
-        );
+        when(buscaRestauranteController.buscarRestaurantePorLocalizacao(localizacao)).thenReturn(restaurante);
 
-        verify(restauranteGateway).buscarRestaurantePorNome(anyString());
+        mockMvc.perform(
+                get("/restaurante/buscar-localizacao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("localizacao", localizacao)
+                )
+                .andExpect(status().isOk());
+
+        verify(buscaRestauranteController, times(1)).buscarRestaurantePorLocalizacao(localizacao);
     }
 
     @Test
-    void validaBuscarRestaurantePorLocalizacao(){
-        when(restauranteGateway.buscarRestaurantePorLocalizacao(anyString()))
-                .thenThrow(new RuntimeException("Restaurante não encontrado"));
+    public void buscarRestaurantePorTipoCozinha() throws Exception {
+        String tipoCozinha = "tipoCozinha";
+        RestauranteDto restaurante = new RestauranteDto(restauranteEntity);
 
-        assertThrows(RuntimeException.class,
-                () -> buscaRestauranteController.buscarRestaurantePorLocalizacao("Rua Santa Catarina, 1190 - Cidade Jardim, Catanduvas/SC"), "Restaurante não encontrado"
-        );
+        when(buscaRestauranteController.buscarRestaurantePorTipoCozinha(tipoCozinha))
+                .thenReturn(restaurante);
 
-        verify(restauranteGateway).buscarRestaurantePorLocalizacao(anyString());
+        mockMvc.perform(
+                get("/restaurante/buscar-tipoCozinha")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("tipoCozinha", tipoCozinha)
+                )
+                .andExpect(status().isOk());
+
+        verify(buscaRestauranteController, times(1)).buscarRestaurantePorTipoCozinha(tipoCozinha);
     }
 
     @Test
-    void validaBuscarRestaurantePorTipoCozinha(){
-        when(restauranteGateway.buscarRestaurantePorTipoCozinha(anyString())).
-                thenThrow(new RuntimeException("Restaurante não encontrado"));
+    public void buscarRestaurantePorNomeLocalizacaoETipoCozinha() throws Exception {
+        String nome = "nome";
+        String localizacao = "cidade";
+        String tipoCozinha = "tipoCozinha";
+        RestauranteDto restaurante = new RestauranteDto(restauranteEntity);
 
-        assertThrows(RuntimeException.class,
-                () -> buscaRestauranteController.buscarRestaurantePorTipoCozinha("Cozinha Americana"), "Restaurante não encontrado"
-        );
+        when(buscaRestauranteController.buscarRestaurantePorNomeLocalizacaoETipoCozinha(nome, localizacao, tipoCozinha)).thenReturn(restaurante);
 
-        verify(restauranteGateway).buscarRestaurantePorTipoCozinha(anyString());
+        mockMvc.perform(get("/restaurante/buscar-nome-localizacao-tipoCozinha")
+                        .param("nome", nome)
+                        .param("localizacao", localizacao)
+                        .param("tipoCozinha", tipoCozinha)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(buscaRestauranteController, times(1)).buscarRestaurantePorNomeLocalizacaoETipoCozinha(nome, localizacao, tipoCozinha);
     }
 
-    @Test
-    void validaBuscarRestaurantePorNomeLocalizacaoETipoCozinha(){
-        when(restauranteGateway.buscarRestaurantePorNomeLocalizacaoETipoCozinha(anyString(), anyString(), anyString()))
-                .thenThrow(new RuntimeException("Restaurante não encontrado"));
-
-        assertThrows(RuntimeException.class,
-                () -> buscaRestauranteController.buscarRestaurantePorNomeLocalizacaoETipoCozinha("Estação Burger", "Rua Santa Catarina, 1190 - Cidade Jardim, Catanduvas/SC",
-                        "Cozinha Americana"), "Restaurante não encontrado"
-        );
-
-        verify(restauranteGateway).buscarRestaurantePorNomeLocalizacaoETipoCozinha(anyString(), anyString(), anyString());
-    }
 }

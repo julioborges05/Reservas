@@ -2,6 +2,7 @@ package br.com.fiap.reservas.infra.springController;
 
 import br.com.fiap.reservas.controller.CadastrarUsuarioController;
 import br.com.fiap.reservas.controller.dto.UsuarioDto;
+import br.com.fiap.reservas.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -52,11 +53,7 @@ public class UsuarioSpringControllerTest {
         mockMvc.perform(
                         post("/usuario")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(asJsonString(usuarioDto))
+                                .content(JsonFormatUtil.asJsonString(usuarioDto))
                 ).andExpect(status().isOk());
-    }
-
-    private static String asJsonString(final Object obj) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(obj);
     }
 }
