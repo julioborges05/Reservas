@@ -30,7 +30,7 @@ public class ReservaDtoTest {
     public void validaReservaDtoComErro() {
         assertThrows(
                 NullPointerException.class,
-                () -> new ReservaDto(any())
+                () -> new ReservaDto(null)
         );
     }
 

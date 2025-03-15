@@ -6,6 +6,9 @@ import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusMesa;
+import br.com.fiap.reservas.infra.gateway.MesaRepositorioJpa;
+import br.com.fiap.reservas.infra.gateway.ReservaRepositorioJpa;
+import br.com.fiap.reservas.infra.gateway.RestauranteRepositorioJpa;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
 import br.com.fiap.reservas.interfaces.IReservaGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
@@ -24,13 +27,10 @@ import static org.mockito.Mockito.*;
 public class BuscarReservasControllerTest {
 
     @Mock
-    private IReservaGateway reservaGateway;
+    private ReservaRepositorioJpa reservaGateway;
 
     @Mock
-    private IRestauranteGateway restauranteGateway;
-
-    @Mock
-    private IMesaGateway mesasGateway;
+    private RestauranteRepositorioJpa restauranteGateway;
 
     private BuscarReservasController buscarReservasController;
 
@@ -44,16 +44,12 @@ public class BuscarReservasControllerTest {
 
     @BeforeEach
     void setUp() {
-        try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
-            buscarReservasController = new BuscarReservasController(
-                    reservaGateway, restauranteGateway);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MockitoAnnotations.openMocks(this);
+        buscarReservasController = new BuscarReservasController(reservaGateway, restauranteGateway);
     }
 
     @Test
-    public void validaBuscarReservasComRestauranteNaoEncontrado() throws Exception {
+    public void validaBuscarReservasComRestauranteNaoEncontrado() {
         when(restauranteGateway.findById(any())).thenThrow(new RuntimeException("Restaurante não encontrado"));
 
         assertThrows(RuntimeException.class,
@@ -63,9 +59,9 @@ public class BuscarReservasControllerTest {
     }
 
     @Test
-    public void validaBuscarReservasComSucesso() throws Exception {
-        when(restauranteGateway.findById(1L)).thenReturn(restaurante);
-        when(reservaGateway.buscarReservasPorRestaurante(any())).thenReturn(List.of(reserva));
+    public void validaBuscarReservasComSucesso() {
+        when(restauranteGateway.findById(anyLong())).thenReturn(restaurante);
+        when(reservaGateway.buscarReservasPorRestaurante(anyLong())).thenReturn(List.of(reserva));
 
         List<BuscarReservasDto> buscarReservas = buscarReservasController.buscarReservasPorRestaurante(1L);
 

@@ -4,10 +4,8 @@ import br.com.fiap.reservas.controller.AtualizarQtdPessoasReservaController;
 import br.com.fiap.reservas.controller.AtualizarStatusReservaController;
 import br.com.fiap.reservas.controller.BuscarReservasController;
 import br.com.fiap.reservas.controller.CadastrarReservaController;
-import br.com.fiap.reservas.infra.gateway.EnderecoRepositorioJpa;
-import br.com.fiap.reservas.infra.gateway.ReservaRepositorioJpa;
-import br.com.fiap.reservas.infra.gateway.ReservaVMesaRepositorioJpa;
-import br.com.fiap.reservas.infra.gateway.RestauranteRepositorioJpa;
+import br.com.fiap.reservas.infra.gateway.*;
+import br.com.fiap.reservas.infra.repository.mesa.MesaRepository;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaRepository;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesaRepository;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
@@ -55,5 +53,10 @@ public class ReservaConfig {
     @Bean
     ReservaVMesaRepositorioJpa criaReservaVMesaRepositorioJpa(ReservaVMesaRepository reservaVMesaRepository) {
         return new ReservaVMesaRepositorioJpa(reservaVMesaRepository);
+    }
+
+    @Bean
+    MesaRepositorioJpa criaMesaRepositorioJpa(MesaRepository mesaRepository) {
+        return new MesaRepositorioJpa(mesaRepository);
     }
 }

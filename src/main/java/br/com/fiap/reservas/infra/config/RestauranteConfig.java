@@ -22,9 +22,8 @@ public class RestauranteConfig {
 
     @Bean
     CadastrarRestauranteController criaCadastrarRestauranteController(IRestauranteGateway restauranteGateway,
-                                                                      IEnderecoGateway enderecoGateway,
-                                                                      IMesaGateway mesaGateway) {
-        return new CadastrarRestauranteController(restauranteGateway, enderecoGateway, mesaGateway);
+                                                                      IEnderecoGateway enderecoGateway) {
+        return new CadastrarRestauranteController(restauranteGateway, enderecoGateway);
     }
 
     @Bean
