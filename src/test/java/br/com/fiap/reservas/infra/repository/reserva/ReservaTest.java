@@ -99,10 +99,12 @@ public class ReservaTest {
     @Test
     public void validarGettersAndSetters() {
         Reserva reserva = new Reserva();
+        reserva.setId(3L);
         reserva.setNomeUsuario("nome");
         reserva.setHoraChegada(LocalDateTime.now());
 
         assertEquals("nome", reserva.getNomeUsuario());
+        assertEquals(3L, reserva.getId());
         assertNotNull(reserva.getHoraChegada());
     }
 }

@@ -54,10 +54,6 @@ public class ReservaVMesa {
         this.status = status;
     }
 
-    public Long getIdReserva() {
-        return idReserva;
-    }
-
     public void setIdReserva(Long idReserva) {
         this.idReserva = idReserva;
     }
@@ -74,7 +70,4 @@ public class ReservaVMesa {
         return status;
     }
 
-    public void setStatus(StatusReserva status) {
-        this.status = status;
-    }
 }

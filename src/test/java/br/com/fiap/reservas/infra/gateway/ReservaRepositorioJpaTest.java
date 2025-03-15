@@ -91,8 +91,6 @@ public class ReservaRepositorioJpaTest {
     void deveLancarExcecaoQuandoReservaNaoEncontradaAtualizarStatus() {
         when(reservaRepository.findByNomeUsuario(anyString(), any())).thenReturn(null);
 
-        System.out.println(LocalTime.of(10, 0));
-
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> reservaRepositorioJpa.atualizarStatusReserva("nome", "01/01/2025 10:00"));
 
