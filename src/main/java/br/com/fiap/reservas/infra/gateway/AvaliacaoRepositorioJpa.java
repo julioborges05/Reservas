@@ -8,13 +8,13 @@ import br.com.fiap.reservas.infra.repository.avaliacao.AvaliacaoRepository;
 import br.com.fiap.reservas.interfaces.IAvaliacaoGateway;
 import jakarta.transaction.Transactional;
 
-public class AvaliacaoRespositorioJpa implements IAvaliacaoGateway {
+public class AvaliacaoRepositorioJpa implements IAvaliacaoGateway {
 
     private final AvaliacaoRepository avaliacaoRepository;
     private final RestauranteRepositorioJpa restauranteRepositorioJpa;
     private final UsuarioRepositorioJpa usuarioRepositorioJpa;
 
-    public AvaliacaoRespositorioJpa(AvaliacaoRepository avaliacaoRepository, RestauranteRepositorioJpa restauranteRepositorioJpa, UsuarioRepositorioJpa usuarioRepositorioJpa) {
+    public AvaliacaoRepositorioJpa(AvaliacaoRepository avaliacaoRepository, RestauranteRepositorioJpa restauranteRepositorioJpa, UsuarioRepositorioJpa usuarioRepositorioJpa) {
         this.avaliacaoRepository = avaliacaoRepository;
         this.restauranteRepositorioJpa = restauranteRepositorioJpa;
         this.usuarioRepositorioJpa = usuarioRepositorioJpa;
@@ -33,6 +33,9 @@ public class AvaliacaoRespositorioJpa implements IAvaliacaoGateway {
     @Override
     public AvaliacaoEntity buscarAvaliacaoPorRestaurante(Long id) {
         Avaliacao avaliacao = avaliacaoRepository.findAvaliacaoByRestaurante(id);
+        if (avaliacao == null) {
+            throw new RuntimeException("Avaliação não encontrada");
+        }
         RestauranteEntity restauranteEntity = restauranteRepositorioJpa.buscarRestaurantePorId(avaliacao.getRestauranteId());
         UsuarioEntity usuarioEntity = usuarioRepositorioJpa.buscarUsuarioPorId(avaliacao.getUsuarioId());
 
