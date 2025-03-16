@@ -25,22 +25,23 @@ public class RestauranteSpringController {
     }
 
     @GetMapping("/buscar-nome")
-    public RestauranteDto buscarRestaurantePorNome(@PathVariable String nome) {
+    public RestauranteDto buscarRestaurantePorNome(@RequestParam String nome) {
         return buscaRestauranteController.buscarRestaurantePorNome(nome);
     }
 
     @GetMapping("/buscar-localizacao")
-    public RestauranteDto buscarRestaurantePorLocalizacao(@PathVariable String localizacao) {
+    public RestauranteDto buscarRestaurantePorLocalizacao(@RequestParam String localizacao) {
         return buscaRestauranteController.buscarRestaurantePorLocalizacao(localizacao);
     }
 
     @GetMapping("/buscar-tipoCozinha")
-    public RestauranteDto buscarRestaurantePorTipoCozinha(@PathVariable String tipoCozinha) {
+    public RestauranteDto buscarRestaurantePorTipoCozinha(@RequestParam String tipoCozinha) {
         return buscaRestauranteController.buscarRestaurantePorTipoCozinha(tipoCozinha);
     }
 
     @GetMapping("/buscar-nome-localizacao-tipoCozinha")
-    public RestauranteDto buscarRestaurantePorNomeLocalizacaoETipoCozinha(@PathVariable String nome, @PathVariable String localizacao, @RequestParam String tipoCozinha) {
+    public RestauranteDto buscarRestaurantePorNomeLocalizacaoETipoCozinha(@RequestParam String nome, @RequestParam String localizacao,
+                                                                          @RequestParam String tipoCozinha) {
         return buscaRestauranteController.buscarRestaurantePorNomeLocalizacaoETipoCozinha(nome, localizacao, tipoCozinha);
     }
 }

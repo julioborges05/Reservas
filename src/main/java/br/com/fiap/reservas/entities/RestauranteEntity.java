@@ -15,7 +15,6 @@ public class RestauranteEntity {
     private final LocalTime horarioAbertura;
     private final LocalTime horarioFechamento;
     private final int capacidade;
-    private int qtdReservas = 0;
     private List<MesaEntity> listaMesa;
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
