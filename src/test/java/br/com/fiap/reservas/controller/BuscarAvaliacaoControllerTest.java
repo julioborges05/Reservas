@@ -37,7 +37,7 @@ public class BuscarAvaliacaoControllerTest {
     }
 
     @Test
-    public void validaBuscarAvaliacaoComSucesso() throws Exception {
+    public void validaBuscarAvaliacaoComSucesso() {
         AvaliacaoEntity avaliacao = new AvaliacaoEntity(5, "Ótimo restaurante", null, null);
         when(avaliacaoGateway.buscarAvaliacaoPorRestaurante(1L)).thenReturn(avaliacao);
 

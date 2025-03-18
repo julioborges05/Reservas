@@ -7,9 +7,11 @@ import br.com.fiap.reservas.infra.repository.mesa.Mesa;
 import br.com.fiap.reservas.infra.repository.mesa.MesaRepository;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
+import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MesaRepositorioJpa implements IMesaGateway {
 
@@ -21,10 +23,22 @@ public class MesaRepositorioJpa implements IMesaGateway {
 
     @Override
     public List<MesaEntity> buscarMesasLivresPorRestaurante(Long restauranteId) {
-        List<MesaEntity> mesasEntityList = new ArrayList<>();
         List<Mesa> mesas = mesaRepository.findMesasByRestauranteAndStatus(
                 restauranteId, StatusMesa.LIVRE);
 
+        return converterMesaParaMesaEntity(mesas);
+    }
+
+    @Override
+    public List<MesaEntity> buscarMesasPorRestaurante(Long restauranteId) {
+        List<Mesa> mesas = mesaRepository.findMesasByRestaurante(
+                restauranteId);
+
+        return converterMesaParaMesaEntity(mesas);
+    }
+
+    private List<MesaEntity> converterMesaParaMesaEntity(List<Mesa> mesas) {
+        List<MesaEntity> mesasEntityList = new ArrayList<>();
         mesas.forEach(mesa -> {
             MesaEntity mesaEntityList = new MesaEntity(mesa.getRestaurante().getId(), mesa.getNumero(), mesa.getStatusMesa());
 
@@ -35,11 +49,16 @@ public class MesaRepositorioJpa implements IMesaGateway {
 
     @Override
     public void atualizarReservaMesa(Mesa mesa) {
-        this.mesaRepository.atualizarStatus(mesa.getId(), mesa.getStatusMesa());
-    }
+        Optional<Mesa> mesaOptional = this.mesaRepository.findByRestauranteIdAndNumero(mesa.getId().getRestauranteId(),
+                mesa.getId().getNumeroMesa());
 
-    @Override
-    public void save(Mesa mesa) {
-        this.mesaRepository.save(mesa);
+        if (mesaOptional.isPresent()) {
+            Mesa mesaSalva = mesaOptional.get();
+            mesaSalva.setStatusMesa(mesa.getStatusMesa());
+            this.mesaRepository.save(mesaSalva);
+            return;
+        }
+
+        throw new IllegalArgumentException("Mesa não encontrada");
     }
 }
