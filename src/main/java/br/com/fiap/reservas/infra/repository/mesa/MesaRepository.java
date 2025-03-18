@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MesaRepository extends JpaRepository<Mesa, Long> {
@@ -17,8 +18,9 @@ public interface MesaRepository extends JpaRepository<Mesa, Long> {
     @Query("SELECT m FROM Mesa m WHERE m.restaurante.id = :restauranteId AND m.statusMesa = :statusMesa")
     List<Mesa> findMesasByRestauranteAndStatus(@Param("restauranteId") Long restauranteId, @Param("statusMesa") StatusMesa statusMesa);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE Mesa e SET e.statusMesa = :statusMesa WHERE e.id = :id")
-    void atualizarStatus(@Param("id") MesaPK id, @Param("statusMesa") StatusMesa statusMesa);
+    @Query("SELECT m FROM Mesa m WHERE m.restaurante.id = :restauranteId")
+    List<Mesa> findMesasByRestaurante(@Param("restauranteId") Long restauranteId);
+
+    @Query("SELECT m FROM Mesa m WHERE m.id.restauranteId = :restauranteId AND m.id.numeroMesa = :numero")
+    Optional<Mesa> findByRestauranteIdAndNumero(Long restauranteId, Integer numero);
 }

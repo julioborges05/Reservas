@@ -9,8 +9,8 @@ public interface IMesaGateway {
 
     List<MesaEntity> buscarMesasLivresPorRestaurante(Long restauranteId);
 
-    void atualizarReservaMesa(Mesa mesa);
+    List<MesaEntity> buscarMesasPorRestaurante(Long restauranteId);
 
-    void save(Mesa mesa);
+    void atualizarReservaMesa(Mesa mesa);
 
 }
