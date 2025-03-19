@@ -67,36 +67,8 @@ public class Restaurante {
         this.capacidade = restauranteEntity.getCapacidade();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Long getIdEndereco() {
-        return idEndereco;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public LocalTime getHorarioAbertura() {
-        return horarioAbertura;
-    }
-
-    public LocalTime getHorarioFechamento() {
-        return horarioFechamento;
-    }
-
-    public int getCapacidade() {
-        return capacidade;
     }
 
     public List<Mesa> getMesas() {
@@ -105,5 +77,53 @@ public class Restaurante {
 
     public void setMesas(List<Mesa> mesas) {
         this.mesas = mesas;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
+
+    public LocalTime getHorarioFechamento() {
+        return horarioFechamento;
+    }
+
+    public void setHorarioFechamento(LocalTime horarioFechamento) {
+        this.horarioFechamento = horarioFechamento;
+    }
+
+    public LocalTime getHorarioAbertura() {
+        return horarioAbertura;
+    }
+
+    public void setHorarioAbertura(LocalTime horarioAbertura) {
+        this.horarioAbertura = horarioAbertura;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Long getIdEndereco() {
+        return idEndereco;
+    }
+
+    public void setIdEndereco(Long idEndereco) {
+        this.idEndereco = idEndereco;
     }
 }
