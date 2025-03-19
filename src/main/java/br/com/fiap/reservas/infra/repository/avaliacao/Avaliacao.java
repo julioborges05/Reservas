@@ -48,15 +48,31 @@ public class Avaliacao {
         return restauranteId;
     }
 
+    public void setRestauranteId(Long restauranteId) {
+        this.restauranteId = restauranteId;
+    }
+
     public int getNota() {
         return nota;
+    }
+
+    public void setNota(int nota) {
+        this.nota = nota;
     }
 
     public String getComentario() {
         return comentario;
     }
 
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
     public Long getUsuarioId() {
         return usuarioId;
+    }
+
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
     }
 }
