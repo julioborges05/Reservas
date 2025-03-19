@@ -2,11 +2,16 @@ package br.com.fiap.reservas.controller;
 
 import br.com.fiap.reservas.controller.dto.AvaliacaoDto;
 import br.com.fiap.reservas.entities.AvaliacaoEntity;
+import br.com.fiap.reservas.entities.EnderecoEntity;
+import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.entities.UsuarioEntity;
 import br.com.fiap.reservas.interfaces.IAvaliacaoGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -38,7 +43,13 @@ public class BuscarAvaliacaoControllerTest {
 
     @Test
     public void validaBuscarAvaliacaoComSucesso() {
-        AvaliacaoEntity avaliacao = new AvaliacaoEntity(5, "Ótimo restaurante", null, null);
+        EnderecoEntity enderecoEntity = new EnderecoEntity("cep", "logradouro", "bairro",
+                "cidade", "numero", "complemento");
+        UsuarioEntity usuarioEntity = new UsuarioEntity(1L, "nome", "email", "senha");
+        RestauranteEntity restauranteEntity = new RestauranteEntity("nome", enderecoEntity, "tipo",
+                LocalTime.of(10, 0), LocalTime.of(22, 0), 100);
+
+        AvaliacaoEntity avaliacao = new AvaliacaoEntity(5, "Ótimo restaurante", usuarioEntity, restauranteEntity);
         when(avaliacaoGateway.buscarAvaliacaoPorRestaurante(1L)).thenReturn(avaliacao);
 
         AvaliacaoDto result = controller.buscarAvaliacaoPorRestaurante(1L);

@@ -14,7 +14,8 @@ public class AvaliacaoRepositorioJpa implements IAvaliacaoGateway {
     private final RestauranteRepositorioJpa restauranteRepositorioJpa;
     private final UsuarioRepositorioJpa usuarioRepositorioJpa;
 
-    public AvaliacaoRepositorioJpa(AvaliacaoRepository avaliacaoRepository, RestauranteRepositorioJpa restauranteRepositorioJpa, UsuarioRepositorioJpa usuarioRepositorioJpa) {
+    public AvaliacaoRepositorioJpa(AvaliacaoRepository avaliacaoRepository, RestauranteRepositorioJpa restauranteRepositorioJpa,
+                                   UsuarioRepositorioJpa usuarioRepositorioJpa) {
         this.avaliacaoRepository = avaliacaoRepository;
         this.restauranteRepositorioJpa = restauranteRepositorioJpa;
         this.usuarioRepositorioJpa = usuarioRepositorioJpa;
