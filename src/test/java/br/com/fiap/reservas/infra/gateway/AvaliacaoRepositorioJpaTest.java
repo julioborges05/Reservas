@@ -1,93 +1,118 @@
 package br.com.fiap.reservas.infra.gateway;
 
-import br.com.fiap.reservas.entities.*;
+import br.com.fiap.reservas.entities.AvaliacaoEntity;
+import br.com.fiap.reservas.entities.EnderecoEntity;
+import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.entities.UsuarioEntity;
 import br.com.fiap.reservas.infra.repository.avaliacao.Avaliacao;
 import br.com.fiap.reservas.infra.repository.avaliacao.AvaliacaoRepository;
+import br.com.fiap.reservas.infra.repository.endereco.Endereco;
+import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
+import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
+import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
+import br.com.fiap.reservas.infra.repository.usuario.Usuario;
+import br.com.fiap.reservas.infra.repository.usuario.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class AvaliacaoRepositorioJpaTest {
 
     private AvaliacaoRepositorioJpa avaliacaoRepositorioJpa;
 
-    @Mock
+    @Autowired
     private AvaliacaoRepository avaliacaoRepository;
 
-    @Mock
-    private RestauranteRepositorioJpa restauranteRepositorioJpa;
+    @Autowired
+    private RestauranteRepository restauranteRepository;
 
-    @Mock
-    private UsuarioRepositorioJpa usuarioRepositorioJpa;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
-    @Mock
-    private EnderecoRepositorioJpa enderecoRepositorioJpa;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    private final EnderecoEntity enderecoEntityMock = new EnderecoEntity("13181701", "logradouro",
-            "bairro", "cidade", "numero", "complemento");
+    private Usuario usuarioSalvo;
+    private Endereco enderecoSalvo;
+    private Restaurante restauranteSalvo;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        RestauranteRepositorioJpa restauranteRepositorioJpa = new RestauranteRepositorioJpa(restauranteRepository, enderecoRepository);
+        UsuarioRepositorioJpa usuarioRepositorioJpa = new UsuarioRepositorioJpa(usuarioRepository);
+
         avaliacaoRepositorioJpa = new AvaliacaoRepositorioJpa(avaliacaoRepository, restauranteRepositorioJpa, usuarioRepositorioJpa);
+
+        Usuario usuario = new Usuario("teste", "email", "senha");
+        usuarioSalvo = usuarioRepository.save(usuario);
+
+        Endereco endereco = new Endereco("cep", "logradouro", "bairro", "cidade", "numero", "complemento");
+        enderecoSalvo = enderecoRepository.save(endereco);
+
+        Restaurante restaurante = new Restaurante("nome", enderecoSalvo.getId(), "tipo", LocalTime.of(10, 0),
+                LocalTime.of(22, 0), 0);
+        restauranteSalvo = restauranteRepository.save(restaurante);
     }
 
     @Test
-    void deveAvaliarRestaurante() {
+    void avaliarRestauranteComSucesso() {
+        UsuarioEntity usuarioEntity = new UsuarioEntity(usuarioSalvo.getId(), usuarioSalvo.getNome(), usuarioSalvo.getEmail(),
+                usuarioSalvo.getSenha());
+        RestauranteEntity restauranteEntity = getRestauranteEntity();
 
-        RestauranteEntity restauranteEntity = new RestauranteEntity(1L, "restaurante", enderecoEntityMock, "tipo",
-                LocalTime.now(), LocalTime.now(), 50, new ArrayList<>());
-        UsuarioEntity usuarioEntity = new UsuarioEntity(1L, "nome", "email", "senha");
-        AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity(5, "Ótimo restaurante", usuarioEntity, restauranteEntity);
-        Avaliacao avaliacaoMock = new Avaliacao(avaliacaoEntity);
+        AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity(5, "Muito bom", usuarioEntity, restauranteEntity);
 
-        when(avaliacaoRepository.save(any(Avaliacao.class))).thenReturn(avaliacaoMock);
+        avaliacaoRepositorioJpa.avaliarRestaurante(avaliacaoEntity);
 
-        AvaliacaoEntity resultado = avaliacaoRepositorioJpa.avaliarRestaurante(avaliacaoEntity);
-
-        assertNotNull(resultado);
-        assertEquals(5, resultado.getNota());
-        assertEquals("Ótimo restaurante", resultado.getComentario());
-        verify(avaliacaoRepository).save(any(Avaliacao.class));
+        Avaliacao avaliacao = avaliacaoRepository.findAvaliacaoByRestaurante(restauranteSalvo.getId());
+        assertEquals(5, avaliacao.getNota());
+        assertEquals("Muito bom", avaliacao.getComentario());
     }
 
     @Test
-    void deveBuscarAvaliacaoPorRestaurante() {
-        Avaliacao avaliacaoMock = new Avaliacao(1L, 5, "Ótimo restaurante", 1L);
-        RestauranteEntity restauranteEntity = new RestauranteEntity(1L, "restaurante", enderecoEntityMock, "tipo",
-                LocalTime.now(), LocalTime.now(), 50, new ArrayList<>());
-        UsuarioEntity usuarioEntity = new UsuarioEntity(1L, "nome", "email", "senha");
+    void buscarAvaliacaoPorRestaurante() {
+        UsuarioEntity usuarioEntity = new UsuarioEntity(usuarioSalvo.getId(), usuarioSalvo.getNome(), usuarioSalvo.getEmail(),
+                usuarioSalvo.getSenha());
+        RestauranteEntity restauranteEntity = getRestauranteEntity();
 
-        when(avaliacaoRepository.findAvaliacaoByRestaurante(anyLong())).thenReturn(avaliacaoMock);
-        when(restauranteRepositorioJpa.buscarRestaurantePorId(anyLong())).thenReturn(restauranteEntity);
-        when(usuarioRepositorioJpa.buscarUsuarioPorId(anyLong())).thenReturn(usuarioEntity);
+        Avaliacao avaliacao = new Avaliacao(restauranteEntity.getId(), 5, "Muito bom", usuarioEntity.getId());
+        avaliacaoRepository.save(avaliacao);
 
-        AvaliacaoEntity resultado = avaliacaoRepositorioJpa.buscarAvaliacaoPorRestaurante(1L);
+        AvaliacaoEntity avaliacaoEntity = avaliacaoRepositorioJpa.buscarAvaliacaoPorRestaurante(restauranteEntity.getId());
 
-        assertNotNull(resultado);
-        assertEquals(5, resultado.getNota());
-        assertEquals("Ótimo restaurante", resultado.getComentario());
-        assertEquals(restauranteEntity, resultado.getRestaurante());
-        assertEquals(usuarioEntity, resultado.getUsuario());
-        verify(avaliacaoRepository).findAvaliacaoByRestaurante(anyLong());
+        assertEquals(5, avaliacaoEntity.getNota());
+        assertEquals("Muito bom", avaliacaoEntity.getComentario());
     }
 
     @Test
-    void deveLancarExcecaoQuandoAvaliacaoNaoEncontrada() {
-        when(avaliacaoRepository.findAvaliacaoByRestaurante(anyLong())).thenReturn(null);
-
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> avaliacaoRepositorioJpa.buscarAvaliacaoPorRestaurante(1L));
-
-        assertEquals("Avaliação não encontrada", exception.getMessage());
+    void buscarAvaliacaoPorRestaurante_AvaliacaoNaoEncontrada() {
+        assertThrows(
+                RuntimeException.class,
+                () -> avaliacaoRepositorioJpa.buscarAvaliacaoPorRestaurante(1L),
+                "Avaliação não encontrada"
+        );
     }
+
+    private RestauranteEntity getRestauranteEntity() {
+        EnderecoEntity enderecoEntity = new EnderecoEntity(enderecoSalvo.getId(), enderecoSalvo.getCep(),
+                enderecoSalvo.getLogradouro(), enderecoSalvo.getBairro(), enderecoSalvo.getCidade(),
+                enderecoSalvo.getNumero(), enderecoSalvo.getComplemento());
+        RestauranteEntity restauranteEntity = new RestauranteEntity(restauranteSalvo.getId(), restauranteSalvo.getNome(), enderecoEntity,
+                restauranteSalvo.getTipo(), restauranteSalvo.getHorarioAbertura(), restauranteSalvo.getHorarioFechamento(),
+                restauranteSalvo.getCapacidade(), null);
+        return restauranteEntity;
+    }
+
 }
