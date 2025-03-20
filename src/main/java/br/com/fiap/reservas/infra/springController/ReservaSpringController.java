@@ -34,7 +34,7 @@ public class ReservaSpringController {
         this.atualizarQtdPessoasReservaController = atualizarQtdPessoasReservaController;
     }
 
-    @PostMapping
+    @PostMapping()
     public ReservaDto cadastrarReserva(@RequestBody ReservaDto reservaDto) throws Exception {
         return cadastrarReservaController.cadastrarReserva(reservaDto);
     }
