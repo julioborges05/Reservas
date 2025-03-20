@@ -81,9 +81,8 @@ public class AvaliacaoSpringControllerTest {
 
         when(buscarAvaliacaoController.buscarAvaliacaoPorRestaurante(id)).thenReturn(avaliacaoDto);
 
-        mockMvc.perform(get("/avaliacao")
+        mockMvc.perform(get("/avaliacao/avaliacao-por-restaurante/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonFormatUtil.asJsonString(id))
         ).andExpect(status().isOk());
 
         verify(buscarAvaliacaoController, times(1)).buscarAvaliacaoPorRestaurante(id);

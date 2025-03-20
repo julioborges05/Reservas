@@ -1,7 +1,10 @@
 package br.com.fiap.reservas.infra.repository.restaurante;
 
+import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.infra.repository.mesa.Mesa;
+import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
