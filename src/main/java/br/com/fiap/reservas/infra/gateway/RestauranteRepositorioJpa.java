@@ -22,10 +22,12 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
     private final RestauranteRepository restauranteRepository;
     private final EnderecoRepository enderecoRepository;
+    private final MesaRepository mesaRepository;
 
-    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository, EnderecoRepository enderecoRepository) {
+    public RestauranteRepositorioJpa(RestauranteRepository restauranteRepository, EnderecoRepository enderecoRepository, MesaRepository mesaRepository) {
         this.restauranteRepository = restauranteRepository;
         this.enderecoRepository = enderecoRepository;
+        this.mesaRepository = mesaRepository;
     }
 
     @Override
@@ -82,27 +84,23 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
 
     @Override
     public RestauranteEntity cadastrarRestaurante(RestauranteEntity restauranteEntity) {
-        List<Mesa> mesas = new ArrayList<>();
 
-        Restaurante restaurante = new Restaurante(
-                restauranteEntity.getNome(),
-                restauranteEntity.getEndereco().getId(),
-                restauranteEntity.getTipoCozinha(),
-                restauranteEntity.getHorarioAbertura(),
-                restauranteEntity.getHorarioFechamento(),
-                restauranteEntity.getCapacidade());
+        Restaurante restaurante = new Restaurante(restauranteEntity);
 
         Restaurante restauranteSalvo = restauranteRepository.save(restaurante);
 
-        List<MesaEntity> mesaEntityList = new ArrayList<>();
-        restauranteSalvo.getMesas().forEach(mesa -> {
+        List<Mesa> mesas = restauranteEntity.getListaMesa().stream().map(mesaEntity -> {
             MesaPK mesaPK = new MesaPK();
-            mesaPK.setNumeroMesa(mesa.getNumero());
-            mesaPK.setRestauranteId(mesa.getId().getRestauranteId());
-            MesaEntity mesaEntity = new MesaEntity(mesa.getRestaurante().getId(), mesa.getNumero(),
-                    StatusMesa.LIVRE);
-            mesaEntityList.add(mesaEntity);
-        });
+            mesaPK.setNumeroMesa(mesaEntity.getNumero());
+            mesaPK.setRestauranteId(restauranteSalvo.getId());
+            return new Mesa(mesaPK, restauranteSalvo, mesaEntity.getStatusMesa());
+        }).toList();
+
+        List<MesaEntity> mesasSalvas =  mesaRepository.saveAll(mesas)
+                .stream()
+                .map(mesa -> new MesaEntity(restaurante.getId(), mesa.getNumero(), mesa.getStatusMesa())).toList();
+
+
 
         return new RestauranteEntity(
                 restauranteSalvo.getId(),
@@ -112,7 +110,7 @@ public class RestauranteRepositorioJpa implements IRestauranteGateway {
                 restauranteSalvo.getHorarioAbertura(),
                 restauranteSalvo.getHorarioFechamento(),
                 restauranteSalvo.getCapacidade(),
-                mesaEntityList
+                mesasSalvas
         );
     }
 

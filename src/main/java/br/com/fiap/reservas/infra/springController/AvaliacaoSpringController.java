@@ -24,8 +24,8 @@ public class AvaliacaoSpringController {
         return realizarAvaliacaoController.realizarAvaliacao(avaliacaoDto);
     }
 
-    @GetMapping
-    public AvaliacaoDto buscarAvaliacaoPorRestaurante(@RequestBody Long id) {
+    @GetMapping("/avaliacao-por-restaurante/{id}")
+    public AvaliacaoDto buscarAvaliacaoPorRestaurante(@PathVariable Long id) {
         return buscarAvaliacaoController.buscarAvaliacaoPorRestaurante(id);
     }
 }

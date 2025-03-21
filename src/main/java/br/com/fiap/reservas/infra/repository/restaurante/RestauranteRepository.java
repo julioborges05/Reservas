@@ -15,8 +15,8 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
     Restaurante findByNome(String nome);
 
     @Query(value = """
-            select * from restaurante
-            where endereco = :localizacao
+            select r.* from restaurante r
+            JOIN endereco e ON r.id_endereco = e.id where logradouro = :localizacao
             """, nativeQuery = true)
     Restaurante findByLocalizacao(String localizacao);
 
@@ -27,8 +27,8 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
     Restaurante findByTipoCozinha(String tipoCozinha);
 
     @Query(value = """
-            select * from restaurante
-            where nome = :nome and endereco = :localizacao and tipo = :tipoCozinha
-            """, nativeQuery = true)
+            SELECT r.* FROM restaurante r
+            JOIN endereco e ON r.id_endereco = e.id WHERE r.nome= :nome AND e.logradouro = :localizacao
+            AND r.tipo = :tipoCozinha ;""", nativeQuery = true)
     Restaurante findByNomeLocalizacaoETipoCozinha(String nome, String localizacao, String tipoCozinha);
 }

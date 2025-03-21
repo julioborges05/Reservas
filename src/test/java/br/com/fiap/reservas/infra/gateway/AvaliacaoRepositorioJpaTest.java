@@ -8,6 +8,7 @@ import br.com.fiap.reservas.infra.repository.avaliacao.Avaliacao;
 import br.com.fiap.reservas.infra.repository.avaliacao.AvaliacaoRepository;
 import br.com.fiap.reservas.infra.repository.endereco.Endereco;
 import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
+import br.com.fiap.reservas.infra.repository.mesa.MesaRepository;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import br.com.fiap.reservas.infra.repository.restaurante.RestauranteRepository;
 import br.com.fiap.reservas.infra.repository.usuario.Usuario;
@@ -44,13 +45,16 @@ public class AvaliacaoRepositorioJpaTest {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private MesaRepository mesaRepository;
+
     private Usuario usuarioSalvo;
     private Endereco enderecoSalvo;
     private Restaurante restauranteSalvo;
 
     @BeforeEach
     void setUp() {
-        RestauranteRepositorioJpa restauranteRepositorioJpa = new RestauranteRepositorioJpa(restauranteRepository, enderecoRepository);
+        RestauranteRepositorioJpa restauranteRepositorioJpa = new RestauranteRepositorioJpa(restauranteRepository, enderecoRepository, mesaRepository);
         UsuarioRepositorioJpa usuarioRepositorioJpa = new UsuarioRepositorioJpa(usuarioRepository);
 
         avaliacaoRepositorioJpa = new AvaliacaoRepositorioJpa(avaliacaoRepository, restauranteRepositorioJpa, usuarioRepositorioJpa);
