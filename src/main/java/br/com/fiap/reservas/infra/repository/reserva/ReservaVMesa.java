@@ -70,4 +70,7 @@ public class ReservaVMesa {
         return status;
     }
 
+    public Long getIdReserva() {
+        return this.idReserva;
+    }
 }

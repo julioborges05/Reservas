@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.gateway;
 
+import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IReservaVMesaGateway;
 
@@ -12,7 +13,7 @@ public class ReservaVMesaGateway implements IReservaVMesaGateway {
     }
 
     @Override
-    public ReservaVMesa cadastrarReservaVMesa(ReservaVMesa reservaVMesa) {
+    public ReservaVMesaEntity cadastrarReservaVMesa(ReservaVMesaEntity reservaVMesa) {
         return reservaVMesaGateway.cadastrarReservaVMesa(reservaVMesa);
     }
 }

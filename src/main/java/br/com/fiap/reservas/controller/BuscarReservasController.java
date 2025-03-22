@@ -3,12 +3,16 @@ package br.com.fiap.reservas.controller;
 import br.com.fiap.reservas.controller.dto.BuscarReservasDto;
 import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
+import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IReservaGateway;
 import br.com.fiap.reservas.interfaces.IRestauranteGateway;
 import br.com.fiap.reservas.usecases.GerenciaReservaUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class BuscarReservasController {
 

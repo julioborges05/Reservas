@@ -46,6 +46,4 @@ public class EnderecoRepositorioJpa implements IEnderecoGateway {
             throw new RuntimeException("Endereço não encontrado");
         }
     }
-
-
 }

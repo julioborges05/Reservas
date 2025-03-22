@@ -86,7 +86,7 @@ public class ReservaSpringControllerTest {
     @Test
     public void buscarReservasPorRestauranteId() throws Exception {
         Long restauranteId = 1L;
-        List<BuscarReservasDto> reservas = Collections.singletonList(new BuscarReservasDto(new ReservaEntity(restauranteEntity, "usuario", 1)));
+        List<BuscarReservasDto> reservas = Collections.singletonList(new BuscarReservasDto(new ReservaEntity(restauranteEntity, "usuario", List.of(), LocalDateTime.now())));
 
         when(buscarReservasController.buscarReservasPorRestaurante(restauranteId)).thenReturn(reservas);
 

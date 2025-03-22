@@ -1,12 +1,10 @@
 package br.com.fiap.reservas.controller;
 
 import br.com.fiap.reservas.controller.dto.ReservaDto;
-import br.com.fiap.reservas.entities.EnderecoEntity;
-import br.com.fiap.reservas.entities.MesaEntity;
-import br.com.fiap.reservas.entities.ReservaEntity;
-import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.entities.*;
 import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
+import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
 import br.com.fiap.reservas.interfaces.IReservaGateway;
@@ -43,7 +41,7 @@ public class CadastrarReservaControllerTest {
     private final EnderecoEntity enderecoEntity = new EnderecoEntity("1318000", "logradouro", "bairro", "cidade", "numero", "complemento");
 
     private final LocalDateTime horarioChegada = LocalDateTime.of(2025, 2, 2, 10, 37);
-    private final ReservaVMesa reservaVMesa = new ReservaVMesa(1L, StatusReserva.LIVRE);
+    private final ReservaVMesaEntity reservaVMesa = new ReservaVMesaEntity(1L, 1L,new MesaPK(1L, 1), StatusReserva.LIVRE);
     private final MesaEntity mesaEntity = new MesaEntity(1, StatusMesa.LIVRE);
     private final RestauranteEntity restaurante = new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", LocalTime.now(), LocalTime.now(), 10, List.of(mesaEntity));
 
@@ -78,8 +76,8 @@ public class CadastrarReservaControllerTest {
         List<MesaEntity> mesasLivres = List.of(mesaEntity);
         when(mesasGateway.buscarMesasLivresPorRestaurante(reservaDto.restauranteId())).thenReturn(mesasLivres);
 
-        ReservaVMesa reservaVMesaMock = new ReservaVMesa(StatusReserva.RESERVADA);
-        List<ReservaVMesa> mesasParaReservar = List.of(reservaVMesaMock);
+        ReservaVMesaEntity reservaVMesaMock = new ReservaVMesaEntity(StatusReserva.RESERVADA);
+        List<ReservaVMesaEntity> mesasParaReservar = List.of(reservaVMesaMock);
         ReservaEntity reservaEntityMock = mock(ReservaEntity.class);
         when(reservaEntityMock.getReservaVMesaList()).thenReturn(mesasParaReservar);
 
