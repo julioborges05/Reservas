@@ -48,4 +48,22 @@ public class UsuarioRepositorioJpaTest {
 
         assertEquals("Usuário não encontrado", exception.getMessage());
     }
+
+    @Test
+    void deveCadastrarUsuario() {
+        UsuarioEntity usuarioEntity = new UsuarioEntity(1L, "nome", "nome@email.com", "123");
+
+        Usuario usuarioMock = new Usuario(usuarioEntity);
+
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioMock);
+        UsuarioEntity resultado = usuarioRepositorioJpa.cadastrarUsuario(usuarioEntity);
+
+        assertNotNull(resultado);
+        assertEquals(1L, resultado.getId());
+        assertEquals("nome", resultado.getNome());
+        assertEquals("nome@email.com", resultado.getEmail());
+        assertEquals("123", resultado.getSenha());
+
+        verify(usuarioRepository, times(1)).save(any(Usuario.class));
+    }
 }
