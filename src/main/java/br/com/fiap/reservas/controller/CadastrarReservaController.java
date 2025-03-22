@@ -3,6 +3,7 @@ package br.com.fiap.reservas.controller;
 import br.com.fiap.reservas.controller.dto.ReservaDto;
 import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
+import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IMesaGateway;
@@ -40,7 +41,7 @@ public class CadastrarReservaController {
                 restauranteEntity, reservaDto.usuario(), reservaDto.qtdPessoas(), mesasLivres,
                 DateFormat.convertFromStringToLocalDateTime(reservaDto.horaChegada()));
 
-        List<ReservaVMesa> mesasParaReservar = reservaEntity.getReservaVMesaList();
+        List<ReservaVMesaEntity> mesasParaReservar = reservaEntity.getReservaVMesaList();
         ReservaEntity reserva = reservaGateway.cadastrarReserva(restauranteEntity, reservaEntity.getNomeUsuario(),
                 mesasParaReservar, DateFormat.convertFromStringToLocalDateTime(reservaDto.horaChegada()));
 

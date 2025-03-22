@@ -2,6 +2,7 @@ package br.com.fiap.reservas.entities;
 
 import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
+import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ public class ReservaEntityTest {
 
     private final EnderecoEntity enderecoEntity = new EnderecoEntity("1318000", "logradouro", "bairro", "cidade", "numero", "complemento");
 
-    private final ReservaVMesa reservaVMesa = new ReservaVMesa(1L, StatusReserva.LIVRE);
+    private final ReservaVMesaEntity reservaVMesa = new ReservaVMesaEntity(1L, 1L,new MesaPK(1L, 1), StatusReserva.LIVRE);
     private final MesaEntity mesaEntity = new MesaEntity(1, StatusMesa.LIVRE);
     private final RestauranteEntity restaurante = new RestauranteEntity("nome", enderecoEntity, "tipoCozinha", LocalTime.now(), LocalTime.now(), 10, List.of(mesaEntity));
 

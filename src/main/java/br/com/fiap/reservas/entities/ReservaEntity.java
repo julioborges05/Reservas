@@ -11,11 +11,11 @@ public class ReservaEntity {
     private final RestauranteEntity restaurante;
     private final String nomeUsuario;
     private int qtdPessoas;
-    private List<ReservaVMesa> reservaVMesaList;
+    private List<ReservaVMesaEntity> reservaVMesaList;
 
     private LocalDateTime horaChegada;
 
-    public ReservaEntity(RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList,
+    public ReservaEntity(RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesaEntity> reservaVMesaList,
                          LocalDateTime horaChegada) {
         if (restaurante == null) {
             throw new IllegalArgumentException("Restaurante deve ser informado");
@@ -30,7 +30,7 @@ public class ReservaEntity {
         this.horaChegada = horaChegada;
     }
 
-    public ReservaEntity(Long id, RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList,
+    public ReservaEntity(Long id, RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesaEntity> reservaVMesaList,
                          LocalDateTime horaChegada) {
         if (restaurante == null) {
             throw new IllegalArgumentException("Restaurante deve ser informado");
@@ -49,7 +49,7 @@ public class ReservaEntity {
         this.horaChegada = horaChegada;
     }
 
-    public ReservaEntity(Long id, RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesa> reservaVMesaList) {
+    public ReservaEntity(Long id, RestauranteEntity restaurante, String nomeUsuario, List<ReservaVMesaEntity> reservaVMesaList) {
         if (restaurante == null) {
             throw new IllegalArgumentException("Restaurante deve ser informado");
         }
@@ -98,7 +98,7 @@ public class ReservaEntity {
         return qtdPessoas;
     }
 
-    public List<ReservaVMesa> getReservaVMesaList() {
+    public List<ReservaVMesaEntity> getReservaVMesaList() {
         return reservaVMesaList;
     }
 

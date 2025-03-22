@@ -2,6 +2,7 @@ package br.com.fiap.reservas.usecases;
 
 import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
+import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
@@ -26,11 +27,11 @@ public class CadastrarReservaUseCase {
             throw new RuntimeException("Número de mesas indisponível");
         }
 
-        List<ReservaVMesa> mesasParaReservar = new ArrayList<>();
+        List<ReservaVMesaEntity> mesasParaReservar = new ArrayList<>();
         mesasLivres.stream()
                 .limit(numeroMesas)
                 .forEach(mesa -> {
-                    ReservaVMesa reservaVMesa = new ReservaVMesa(StatusReserva.RESERVADA);
+                    ReservaVMesaEntity reservaVMesa = new ReservaVMesaEntity(StatusReserva.RESERVADA);
                     reservaVMesa.setIdMesa(new MesaPK(mesa.getRestauranteId(), mesa.getNumero()));
                     mesasParaReservar.add(reservaVMesa);
         });

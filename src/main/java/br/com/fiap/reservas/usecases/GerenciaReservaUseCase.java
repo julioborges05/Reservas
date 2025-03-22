@@ -2,6 +2,7 @@ package br.com.fiap.reservas.usecases;
 
 import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
+import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
@@ -14,7 +15,7 @@ import java.util.List;
 public class GerenciaReservaUseCase {
 
     public static ReservaEntity buscarReservaPorRestaurante(RestauranteEntity restauranteEntity, String nomeUsuario,
-                                                            List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
+                                                            List<ReservaVMesaEntity> reservaVMesaList, LocalDateTime horaChegada) {
         return new ReservaEntity(restauranteEntity, nomeUsuario, reservaVMesaList, horaChegada);
     }
 
@@ -35,11 +36,11 @@ public class GerenciaReservaUseCase {
 
         reservaEntity.getReservaVMesaList().clear();
 
-        List<ReservaVMesa> mesasParaReservar = new ArrayList<>();
+        List<ReservaVMesaEntity> mesasParaReservar = new ArrayList<>();
         mesasLivres.stream()
                 .limit(numeroMesas)
                 .forEach(mesa -> {
-                    ReservaVMesa reservaVMesa = new ReservaVMesa(StatusReserva.RESERVADA);
+                    ReservaVMesaEntity reservaVMesa = new ReservaVMesaEntity(StatusReserva.RESERVADA);
                     reservaVMesa.setIdReserva(reservaEntity.getId());
                     reservaVMesa.setIdMesa(new MesaPK(mesa.getRestauranteId(), mesa.getNumero()));
                     mesasParaReservar.add(reservaVMesa);

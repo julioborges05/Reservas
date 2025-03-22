@@ -1,9 +1,6 @@
 package br.com.fiap.reservas.infra.gateway;
 
-import br.com.fiap.reservas.entities.EnderecoEntity;
-import br.com.fiap.reservas.entities.MesaEntity;
-import br.com.fiap.reservas.entities.ReservaEntity;
-import br.com.fiap.reservas.entities.RestauranteEntity;
+import br.com.fiap.reservas.entities.*;
 import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
@@ -55,7 +52,8 @@ public class ReservaRepositorioJpaTest {
     void deveBuscarReservasPorRestaurante() {
         Long restauranteId = 1L;
         Restaurante restauranteMock = new Restaurante(1L, "restaurante", 1L, "tipo", LocalTime.now(), LocalTime.now(), 50);
-        Reserva reservaMock = new Reserva(restauranteMock, "nome", List.of(), LocalDateTime.now());
+        Reserva reservaMock = new Reserva(1L, "nome", restauranteMock , List.of(), LocalDateTime.now());
+
 
         when(reservaRepository.findByRestauranteId(restauranteId, StatusReserva.RESERVADA)).thenReturn(List.of(reservaMock));
         when(enderecoRepositorioJpa.buscarEnderecoPeloId(restauranteMock.getIdEndereco())).thenReturn(enderecoEntityMock);
@@ -77,10 +75,14 @@ public class ReservaRepositorioJpaTest {
         LocalDateTime horaChegada = LocalDateTime.now();
 
         Reserva reservaMock = new Reserva(new Restaurante(restauranteEntity), "nome", reservaVMesas, horaChegada);
+
+        List<ReservaVMesaEntity> reservaVMesaEntity = List.of(new ReservaVMesaEntity(1L, 1L,
+                new MesaPK(1L, 2), StatusReserva.RESERVADA));
+
         when(restauranteRepositorioJpa.buscarRestaurantePorId(anyLong())).thenReturn(restauranteEntity);
         when(reservaRepository.save(any(Reserva.class))).thenReturn(reservaMock);
 
-        ReservaEntity resultado = reservaRepositorioJpa.cadastrarReserva(restauranteEntity, "nome", reservaVMesas, horaChegada);
+        ReservaEntity resultado = reservaRepositorioJpa.cadastrarReserva(restauranteEntity, "nome", reservaVMesaEntity, horaChegada);
 
         assertNotNull(resultado);
         assertEquals("nome", resultado.getNomeUsuario());

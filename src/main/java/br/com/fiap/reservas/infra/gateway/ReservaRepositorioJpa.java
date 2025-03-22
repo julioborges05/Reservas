@@ -2,8 +2,10 @@ package br.com.fiap.reservas.infra.gateway;
 
 import br.com.fiap.reservas.entities.EnderecoEntity;
 import br.com.fiap.reservas.entities.ReservaEntity;
+import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.enums.StatusReserva;
+import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import br.com.fiap.reservas.infra.repository.reserva.Reserva;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaRepository;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
@@ -15,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class ReservaRepositorioJpa implements IReservaGateway {
 
@@ -50,11 +55,17 @@ public class ReservaRepositorioJpa implements IReservaGateway {
 
     @Override
     public ReservaEntity cadastrarReserva(RestauranteEntity restauranteEntity, String nomeUsuario,
-                                          List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
-        Reserva reservaSalvo = reservaRepository.save(getReserva(restauranteEntity.getId(), nomeUsuario,
-                reservaVMesaList, horaChegada));
+                                          List<ReservaVMesaEntity> reservaVMesaList, LocalDateTime horaChegada) {
+        List<ReservaVMesa> reservaVMesas = reservaVMesaList.stream().map(reservaVMesaEntity ->
+                new ReservaVMesa(reservaVMesaEntity.getId(), reservaVMesaEntity.getIdReserva(),
+                        new MesaPK(reservaVMesaEntity.getIdMesa().getRestauranteId(), reservaVMesaEntity.getIdMesa().getNumeroMesa()),
+                        reservaVMesaEntity.getStatus())).collect(toList());
 
-        List<ReservaVMesa> mesaEntityList = new ArrayList<>();
+
+        Reserva reservaSalvo = reservaRepository.save(getReserva(restauranteEntity.getId(), nomeUsuario,
+                reservaVMesas, horaChegada));
+
+        List<ReservaVMesaEntity> mesaEntityList = new ArrayList<>();
         mesaEntityList.addAll(reservaVMesaList);
 
         return new ReservaEntity(
@@ -69,6 +80,7 @@ public class ReservaRepositorioJpa implements IReservaGateway {
     public ReservaEntity atualizarStatusReserva(String nomeUsuario, String horaChegada) {
         Reserva reserva = reservaRepository.findByNomeUsuario(nomeUsuario,
                 DateFormat.convertFromStringToLocalDateTime(horaChegada));
+
         List<ReservaVMesa> reservaVMesas = new ArrayList<>();
 
         if (reserva == null) {
@@ -98,7 +110,12 @@ public class ReservaRepositorioJpa implements IReservaGateway {
 
         if (reserva.isPresent()) {
             Reserva reservaSalva = reserva.get();
-            reservaSalva.setReservaVMesaList(reservaEntity.getReservaVMesaList());
+            reservaSalva.setReservaVMesaList(reservaEntity.getReservaVMesaList()
+                    .stream()
+                    .map(reservaVMesaEntity -> new ReservaVMesa(reservaVMesaEntity.getId(),
+                            reservaVMesaEntity.getIdReserva(),
+                            reservaVMesaEntity.getIdMesa(),
+                            reservaVMesaEntity.getStatus())).toList());
 
             reservaRepository.save(reservaSalva);
         } else {
@@ -112,6 +129,7 @@ public class ReservaRepositorioJpa implements IReservaGateway {
     public ReservaEntity buscaReservaPeloId(Long id) {
         Optional<Reserva> reservaOptional = reservaRepository.findById(id);
 
+
         if (reservaOptional.isPresent()) {
             Reserva reserva = reservaOptional.get();
             Restaurante restaurante = reserva.getRestaurante();
@@ -121,7 +139,12 @@ public class ReservaRepositorioJpa implements IReservaGateway {
                     restaurante.getHorarioFechamento(), restaurante.getCapacidade());
 
             return new ReservaEntity(reserva.getId(), restauranteEntity, reserva.getNomeUsuario(),
-                    reserva.getReservaVMesaList(), reserva.getHoraChegada());
+                    reserva.getReservaVMesaList()
+                            .stream()
+                            .map(reservaVMesa -> new ReservaVMesaEntity(reservaVMesa.getId(),
+                                    reservaVMesa.getIdReserva(),
+                                    reservaVMesa.getIdMesa(),
+                                    reservaVMesa.getStatus())).toList());
         } else {
             throw new RuntimeException("Reserva não encontrada");
         }
@@ -137,7 +160,12 @@ public class ReservaRepositorioJpa implements IReservaGateway {
     private static ReservaEntity getReservaEntity(Reserva reserva, RestauranteEntity restauranteEntity,
                                                   LocalDateTime horaChegada) {
         List<ReservaVMesa> reservaVMesas = reserva.getReservaVMesaList();
-        return new ReservaEntity(restauranteEntity, reserva.getNomeUsuario(),
-                reservaVMesas, horaChegada);
+        return new ReservaEntity(reserva.getId(), restauranteEntity, reserva.getNomeUsuario(),
+                reserva.getReservaVMesaList()
+                        .stream()
+                        .map(reservaVMesa -> new ReservaVMesaEntity(reservaVMesa.getId(),
+                                reservaVMesa.getIdReserva(),
+                                reservaVMesa.getIdMesa(),
+                                reservaVMesa.getStatus())).toList());
     }
 }

@@ -1,6 +1,7 @@
 package br.com.fiap.reservas.gateway;
 
 import br.com.fiap.reservas.entities.ReservaEntity;
+import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
 import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.interfaces.IReservaGateway;
@@ -22,7 +23,7 @@ public class ReservaGateway implements IReservaGateway {
     }
 
     public ReservaEntity cadastrarReserva(RestauranteEntity restauranteId, String nomeUsuario,
-                                          List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
+                                          List<ReservaVMesaEntity> reservaVMesaList, LocalDateTime horaChegada) {
         return reservaDatabaseGateway.cadastrarReserva(restauranteId, nomeUsuario, reservaVMesaList, horaChegada);
     }
 
