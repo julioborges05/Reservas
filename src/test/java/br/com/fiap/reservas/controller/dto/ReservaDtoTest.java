@@ -4,7 +4,6 @@ import br.com.fiap.reservas.entities.*;
 import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
-import br.com.fiap.reservas.infra.repository.reserva.ReservaVMesa;
 import br.com.fiap.reservas.utils.DateFormat;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +12,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 
 public class ReservaDtoTest {
     private final EnderecoEntity enderecoEntity = new EnderecoEntity("1318000", "logradouro", "bairro", "cidade", "numero", "complemento");
