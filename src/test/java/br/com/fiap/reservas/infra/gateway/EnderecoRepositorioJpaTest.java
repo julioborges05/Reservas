@@ -5,8 +5,13 @@ import br.com.fiap.reservas.infra.repository.endereco.Endereco;
 import br.com.fiap.reservas.infra.repository.endereco.EnderecoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
@@ -14,38 +19,79 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class EnderecoRepositorioJpaTest {
 
     private EnderecoRepositorioJpa enderecoRepositorioJpa;
 
-    @Mock
+    @Autowired
     private EnderecoRepository enderecoRepository;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         enderecoRepositorioJpa = new EnderecoRepositorioJpa(enderecoRepository);
     }
 
     @Test
-    void deveBuscarEnderecoPeloId() {
-        Endereco enderecoMock = new Endereco("13181701", "logradouro", "bairro", "cidade", "numero", "complemento");
-        when(enderecoRepository.findById(anyLong())).thenReturn(Optional.of(enderecoMock));
+    void cadastrarEndereco_enderecoExistente() {
+        EnderecoEntity enderecoEntity = new EnderecoEntity("cep", "logradouro", "bairro", "cidade", "numero", "complemento");
+        Endereco endereco = new Endereco(enderecoEntity);
 
-        EnderecoEntity resultado = enderecoRepositorioJpa.buscarEnderecoPeloId(1L);
+        enderecoRepository.save(endereco);
 
-        assertNotNull(resultado);
-        assertEquals("13181701", resultado.getCep());
-        assertEquals("logradouro", resultado.getLogradouro());
-        verify(enderecoRepository).findById(anyLong());
+        EnderecoEntity resultado = enderecoRepositorioJpa.cadastrarEndereco(enderecoEntity);
+
+        assertNotNull(resultado.getId());
+        assertEquals(enderecoEntity.getCep(), resultado.getCep());
+        assertEquals(enderecoEntity.getLogradouro(), resultado.getLogradouro());
+        assertEquals(enderecoEntity.getBairro(), resultado.getBairro());
+        assertEquals(enderecoEntity.getCidade(), resultado.getCidade());
+        assertEquals(enderecoEntity.getNumero(), resultado.getNumero());
+        assertEquals(enderecoEntity.getComplemento(), resultado.getComplemento());
+    }
+
+
+
+    @Test
+    void cadastrarEndereco_enderecoInexistente() {
+        EnderecoEntity enderecoEntity = new EnderecoEntity("cep", "logradouro", "bairro", "cidade", "numero", "complemento");
+
+        EnderecoEntity resultado = enderecoRepositorioJpa.cadastrarEndereco(enderecoEntity);
+
+        assertNotNull(resultado.getId());
+        assertEquals(enderecoEntity.getCep(), resultado.getCep());
+        assertEquals(enderecoEntity.getLogradouro(), resultado.getLogradouro());
+        assertEquals(enderecoEntity.getBairro(), resultado.getBairro());
+        assertEquals(enderecoEntity.getCidade(), resultado.getCidade());
+        assertEquals(enderecoEntity.getNumero(), resultado.getNumero());
+        assertEquals(enderecoEntity.getComplemento(), resultado.getComplemento());
     }
 
     @Test
-    void deveLancarExcecaoQuandoEnderecoNaoEncontrado() {
-        when(enderecoRepository.findById(anyLong())).thenReturn(Optional.empty());
+    void buscarEnderecoPeloId_enderecoExistente() {
+        EnderecoEntity enderecoEntity = new EnderecoEntity("cep", "logradouro", "bairro", "cidade", "numero", "complemento");
+        Endereco enderecoSalvo = enderecoRepository.save(new Endereco(enderecoEntity));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> enderecoRepositorioJpa.buscarEnderecoPeloId(1L));
+        EnderecoEntity resultado = enderecoRepositorioJpa.buscarEnderecoPeloId(enderecoSalvo.getId());
 
-        assertEquals("Endereço não encontrado", exception.getMessage());
+        assertEquals(enderecoSalvo.getId(), resultado.getId());
+        assertEquals(enderecoEntity.getCep(), resultado.getCep());
+        assertEquals(enderecoEntity.getLogradouro(), resultado.getLogradouro());
+        assertEquals(enderecoEntity.getBairro(), resultado.getBairro());
+        assertEquals(enderecoEntity.getCidade(), resultado.getCidade());
+        assertEquals(enderecoEntity.getNumero(), resultado.getNumero());
+        assertEquals(enderecoEntity.getComplemento(), resultado.getComplemento());
     }
+
+    @Test
+    void buscarEnderecoPeloId_enderecoInexistente() {
+        assertThrows(
+                RuntimeException.class,
+                () -> enderecoRepositorioJpa.buscarEnderecoPeloId(1L),
+                "Endereço não encontrado"
+        );
+    }
+
 }

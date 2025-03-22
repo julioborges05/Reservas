@@ -14,12 +14,9 @@ import br.com.fiap.reservas.interfaces.IReservaGateway;
 import br.com.fiap.reservas.utils.DateFormat;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 public class ReservaRepositorioJpa implements IReservaGateway {
 
@@ -34,138 +31,87 @@ public class ReservaRepositorioJpa implements IReservaGateway {
         this.restauranteRepositorioJpa = restauranteRepositorioJpa;
     }
 
+    @Override
     public List<ReservaEntity> buscarReservasPorRestaurante(Long restauranteId) {
-        List<Reserva> reserva = reservaRepository.findByRestauranteId(restauranteId, StatusReserva.RESERVADA);
-        List<ReservaEntity> reservaEntityList = new ArrayList<>();
-
-        reserva.forEach(res -> {
-            Restaurante restaurante = res.getRestaurante();
-            EnderecoEntity enderecoEntity = enderecoRepositorioJpa.buscarEnderecoPeloId(restaurante.getIdEndereco());
-            RestauranteEntity restauranteEntity = new RestauranteEntity(restaurante.getNome(),
-                    enderecoEntity, restaurante.getTipo(), restaurante.getHorarioAbertura(),
-                    restaurante.getHorarioFechamento(), restaurante.getCapacidade());
-
-            ReservaEntity reservaEntity = getReservaEntity(res, restauranteEntity, res.getHoraChegada());
-
-            reservaEntityList.add(reservaEntity);
-        });
-
-        return reservaEntityList;
+        return reservaRepository.findByRestauranteId(restauranteId, StatusReserva.RESERVADA)
+                .stream()
+                .map(this::convertToReservaEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ReservaEntity cadastrarReserva(RestauranteEntity restauranteEntity, String nomeUsuario,
                                           List<ReservaVMesaEntity> reservaVMesaList, LocalDateTime horaChegada) {
-        List<ReservaVMesa> reservaVMesas = reservaVMesaList.stream().map(reservaVMesaEntity ->
-                new ReservaVMesa(reservaVMesaEntity.getId(), reservaVMesaEntity.getIdReserva(),
-                        new MesaPK(reservaVMesaEntity.getIdMesa().getRestauranteId(), reservaVMesaEntity.getIdMesa().getNumeroMesa()),
-                        reservaVMesaEntity.getStatus())).collect(toList());
-
-
-        Reserva reservaSalvo = reservaRepository.save(getReserva(restauranteEntity.getId(), nomeUsuario,
-                reservaVMesas, horaChegada));
-
-        List<ReservaVMesaEntity> mesaEntityList = new ArrayList<>();
-        mesaEntityList.addAll(reservaVMesaList);
-
-        return new ReservaEntity(
-                restauranteEntity,
-                reservaSalvo.getNomeUsuario(),
-                mesaEntityList,
-                horaChegada
-        );
+        List<ReservaVMesa> reservaVMesas = convertToReservaVMesaList(reservaVMesaList);
+        Reserva reservaSalva = reservaRepository.save(createReserva(restauranteEntity.getId(), nomeUsuario, reservaVMesas, horaChegada));
+        return createReservaEntity(restauranteEntity, reservaSalva, reservaVMesaList, horaChegada);
     }
 
     @Override
     public ReservaEntity atualizarStatusReserva(String nomeUsuario, String horaChegada) {
-        Reserva reserva = reservaRepository.findByNomeUsuario(nomeUsuario,
-                DateFormat.convertFromStringToLocalDateTime(horaChegada));
-
-        List<ReservaVMesa> reservaVMesas = new ArrayList<>();
-
-        if (reserva == null) {
-            throw new RuntimeException("Reserva não encontrada");
-        }
-
-        reserva.getReservaVMesaList().forEach(reservaVMesa -> {
-            ReservaVMesa reservaMesa = new ReservaVMesa(reservaVMesa.getId(), reserva.getId(),
-                    reservaVMesa.getIdMesa(), StatusReserva.CANCELADA);
-            reservaVMesas.add(reservaMesa);
-
-        });
-        reserva.setReservaVMesaList(reservaVMesas);
-        reservaRepository.save(reserva);
-        return null;
+        Reserva reserva = findReservaByNomeUsuarioAndHoraChegada(nomeUsuario, horaChegada);
+        reserva.setReservaVMesaList(updateReservaVMesaStatus(reserva.getReservaVMesaList(), StatusReserva.CANCELADA));
+        Reserva reservaSalva = reservaRepository.save(reserva);
+        return convertToReservaEntity(reservaSalva);
     }
 
     @Override
     public void atualizarQtdPessoasReserva(ReservaEntity reservaEntity) {
-        RestauranteEntity restauranteEntity = reservaEntity.getRestaurante();
-
-        Restaurante restaurante = new Restaurante(restauranteEntity.getId(), restauranteEntity.getNome(), restauranteEntity.getEndereco().getId(),
-                restauranteEntity.getTipoCozinha(), restauranteEntity.getHorarioAbertura(),
-                restauranteEntity.getHorarioFechamento(), restauranteEntity.getCapacidade());
-
-        Optional<Reserva> reserva = reservaRepository.findById(reservaEntity.getId());
-
-        if (reserva.isPresent()) {
-            Reserva reservaSalva = reserva.get();
-            reservaSalva.setReservaVMesaList(reservaEntity.getReservaVMesaList()
-                    .stream()
-                    .map(reservaVMesaEntity -> new ReservaVMesa(reservaVMesaEntity.getId(),
-                            reservaVMesaEntity.getIdReserva(),
-                            reservaVMesaEntity.getIdMesa(),
-                            reservaVMesaEntity.getStatus())).toList());
-
-            reservaRepository.save(reservaSalva);
-        } else {
-            throw new RuntimeException("Reserva não encontrada");
-        }
-
-
+        Reserva reserva = reservaRepository.findById(reservaEntity.getId())
+                .orElseThrow(() -> new RuntimeException("Reserva não encontrada"));
+        reserva.setReservaVMesaList(convertToReservaVMesaList(reservaEntity.getReservaVMesaList()));
+        reservaRepository.save(reserva);
     }
 
     @Override
     public ReservaEntity buscaReservaPeloId(Long id) {
-        Optional<Reserva> reservaOptional = reservaRepository.findById(id);
-
-
-        if (reservaOptional.isPresent()) {
-            Reserva reserva = reservaOptional.get();
-            Restaurante restaurante = reserva.getRestaurante();
-            EnderecoEntity enderecoEntity = enderecoRepositorioJpa.buscarEnderecoPeloId(restaurante.getIdEndereco());
-            RestauranteEntity restauranteEntity = new RestauranteEntity(restaurante.getNome(),
-                    enderecoEntity, restaurante.getTipo(), restaurante.getHorarioAbertura(),
-                    restaurante.getHorarioFechamento(), restaurante.getCapacidade());
-
-            return new ReservaEntity(reserva.getId(), restauranteEntity, reserva.getNomeUsuario(),
-                    reserva.getReservaVMesaList()
-                            .stream()
-                            .map(reservaVMesa -> new ReservaVMesaEntity(reservaVMesa.getId(),
-                                    reservaVMesa.getIdReserva(),
-                                    reservaVMesa.getIdMesa(),
-                                    reservaVMesa.getStatus())).toList());
-        } else {
-            throw new RuntimeException("Reserva não encontrada");
-        }
+        Reserva reserva = reservaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reserva não encontrada"));
+        return convertToReservaEntity(reserva);
     }
 
-    private Reserva getReserva(Long restauranteId, String nomeUsuario, List<ReservaVMesa> reservaVMesaList,
-                                      LocalDateTime horaChegada) {
+    private Reserva findReservaByNomeUsuarioAndHoraChegada(String nomeUsuario, String horaChegada) {
+        return reservaRepository.findByNomeUsuario(nomeUsuario, DateFormat.convertFromStringToLocalDateTime(horaChegada))
+                .orElseThrow(() -> new RuntimeException("Reserva não encontrada"));
+    }
+
+    private List<ReservaVMesa> convertToReservaVMesaList(List<ReservaVMesaEntity> reservaVMesaEntities) {
+        return reservaVMesaEntities.stream()
+                .map(entity -> new ReservaVMesa(entity.getId(), entity.getIdReserva(), entity.getIdMesa(), entity.getStatus()))
+                .collect(Collectors.toList());
+    }
+
+    private List<ReservaVMesa> updateReservaVMesaStatus(List<ReservaVMesa> reservaVMesas, StatusReserva status) {
+        return reservaVMesas.stream()
+                .map(reservaVMesa -> new ReservaVMesa(reservaVMesa.getId(), reservaVMesa.getIdReserva(), reservaVMesa.getIdMesa(), status))
+                .collect(Collectors.toList());
+    }
+
+    private Reserva createReserva(Long restauranteId, String nomeUsuario, List<ReservaVMesa> reservaVMesaList, LocalDateTime horaChegada) {
         RestauranteEntity restauranteEntity = restauranteRepositorioJpa.buscarRestaurantePorId(restauranteId);
         Restaurante restaurante = new Restaurante(restauranteEntity);
         return new Reserva(restaurante, nomeUsuario, reservaVMesaList, horaChegada);
     }
 
-    private static ReservaEntity getReservaEntity(Reserva reserva, RestauranteEntity restauranteEntity,
-                                                  LocalDateTime horaChegada) {
-        List<ReservaVMesa> reservaVMesas = reserva.getReservaVMesaList();
-        return new ReservaEntity(reserva.getId(), restauranteEntity, reserva.getNomeUsuario(),
-                reserva.getReservaVMesaList()
-                        .stream()
-                        .map(reservaVMesa -> new ReservaVMesaEntity(reservaVMesa.getId(),
-                                reservaVMesa.getIdReserva(),
-                                reservaVMesa.getIdMesa(),
-                                reservaVMesa.getStatus())).toList());
+    private ReservaEntity createReservaEntity(RestauranteEntity restauranteEntity, Reserva reservaSalva, List<ReservaVMesaEntity> reservaVMesaList, LocalDateTime horaChegada) {
+        return new ReservaEntity(
+                restauranteEntity,
+                reservaSalva.getNomeUsuario(),
+                reservaVMesaList,
+                horaChegada
+        );
+    }
+
+    private ReservaEntity convertToReservaEntity(Reserva reserva) {
+        Restaurante restaurante = reserva.getRestaurante();
+        EnderecoEntity enderecoEntity = enderecoRepositorioJpa.buscarEnderecoPeloId(restaurante.getIdEndereco());
+        RestauranteEntity restauranteEntity = new RestauranteEntity(restaurante.getNome(), enderecoEntity, restaurante.getTipo(), restaurante.getHorarioAbertura(), restaurante.getHorarioFechamento(), restaurante.getCapacidade());
+        return new ReservaEntity(reserva.getId(), restauranteEntity, reserva.getNomeUsuario(), convertToReservaVMesaEntityList(reserva.getReservaVMesaList()));
+    }
+
+    private List<ReservaVMesaEntity> convertToReservaVMesaEntityList(List<ReservaVMesa> reservaVMesas) {
+        return reservaVMesas.stream()
+                .map(reservaVMesa -> new ReservaVMesaEntity(reservaVMesa.getId(), reservaVMesa.getIdReserva(), reservaVMesa.getIdMesa(), reservaVMesa.getStatus()))
+                .collect(Collectors.toList());
     }
 }

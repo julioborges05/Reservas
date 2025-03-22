@@ -1,11 +1,14 @@
 package br.com.fiap.reservas.infra.repository.reserva;
 
+import br.com.fiap.reservas.entities.EnderecoEntity;
+import br.com.fiap.reservas.entities.ReservaEntity;
 import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.infra.repository.restaurante.Restaurante;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Reserva {
@@ -85,4 +88,5 @@ public class Reserva {
     public void setHoraChegada(LocalDateTime horaChegada) {
         this.horaChegada = horaChegada;
     }
+
 }
