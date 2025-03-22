@@ -43,16 +43,17 @@ public class AvaliacaoTest {
         Restaurante restaurante = new Restaurante("restaurante", savedEndereco.getId(), "tipo", LocalTime.now(), LocalTime.now(), 50);
         Restaurante savedRestaurante = restauranteRepository.save(restaurante);
 
-        Usuario usuario = new Usuario(1L, "nome", "email", "senha");
+        Usuario usuario = new Usuario("nome", "email", "senha");
         Usuario savedUsuario = usuarioRepository.save(usuario);
 
         Avaliacao avaliacao = new Avaliacao(savedRestaurante.getId(), 5, "Ótimo restaurante", savedUsuario.getId());;
         Avaliacao savedAvaliacao = avaliacaoRepository.save(avaliacao);
 
         assertNotNull(savedAvaliacao.getId());
+        assertEquals(savedRestaurante.getId(), savedAvaliacao.getRestauranteId());
         assertEquals(5, savedAvaliacao.getNota());
         assertEquals("Ótimo restaurante", savedAvaliacao.getComentario());
-        assertEquals(1L, savedAvaliacao.getUsuarioId());
+        assertEquals(savedUsuario.getId(), savedAvaliacao.getUsuarioId());
     }
 
     @Test
@@ -63,7 +64,7 @@ public class AvaliacaoTest {
         Restaurante restaurante = new Restaurante("restaurante", savedEndereco.getId(), "tipo", LocalTime.now(), LocalTime.now(), 50);
         Restaurante savedRestaurante = restauranteRepository.save(restaurante);
 
-        Usuario usuario = new Usuario( "nome", "email", "senha");
+        Usuario usuario = new Usuario("nome", "email", "senha");
         Usuario savedUsuario = usuarioRepository.save(usuario);
 
         Avaliacao avaliacao = new Avaliacao(savedRestaurante.getId(), 5, "Ótimo restaurante", savedUsuario.getId());;
