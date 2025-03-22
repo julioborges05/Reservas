@@ -1,10 +1,9 @@
 package br.com.fiap.reservas.infra.repository.restaurante;
 
+import br.com.fiap.reservas.entities.EnderecoEntity;
 import br.com.fiap.reservas.entities.MesaEntity;
 import br.com.fiap.reservas.entities.RestauranteEntity;
-import br.com.fiap.reservas.enums.StatusMesa;
 import br.com.fiap.reservas.infra.repository.mesa.Mesa;
-import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -41,17 +40,6 @@ public class Restaurante {
 
     public Restaurante(String nome, Long idEndereco, String tipo, LocalTime horarioAbertura, LocalTime horarioFechamento,
                        int capacidade) {
-        this.nome = nome;
-        this.idEndereco = idEndereco;
-        this.tipo = tipo;
-        this.horarioAbertura = horarioAbertura;
-        this.horarioFechamento = horarioFechamento;
-        this.capacidade = capacidade;
-    }
-
-    public Restaurante(Long id, String nome, Long idEndereco, String tipo, LocalTime horarioAbertura, LocalTime horarioFechamento,
-                       int capacidade) {
-        this.id = id;
         this.nome = nome;
         this.idEndereco = idEndereco;
         this.tipo = tipo;
@@ -128,5 +116,16 @@ public class Restaurante {
 
     public void setIdEndereco(Long idEndereco) {
         this.idEndereco = idEndereco;
+    }
+
+    public RestauranteEntity converteParaEntity(EnderecoEntity enderecoEntity) {
+        List<MesaEntity> listaMesa = this.mesas
+                .stream()
+                .map(mesa -> new MesaEntity(mesa.getRestaurante().getId(), mesa.getNumero(), mesa.getStatusMesa()))
+                .toList();
+
+        return new RestauranteEntity(this.id, this.nome,
+                enderecoEntity, this.tipo, this.horarioAbertura,
+                this.horarioFechamento, this.capacidade, listaMesa);
     }
 }

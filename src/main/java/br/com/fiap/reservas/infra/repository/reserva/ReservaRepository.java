@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
@@ -24,5 +25,5 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
             select * from reserva
             where nome_usuario = :nomeUsuario and hora_chegada = :horaChegada
             """, nativeQuery = true)
-    Reserva findByNomeUsuario(@Param("nomeUsuario") String nomeUsuario, @Param("horaChegada") LocalDateTime horaChegada);
+    Optional<Reserva> findByNomeUsuario(@Param("nomeUsuario") String nomeUsuario, @Param("horaChegada") LocalDateTime horaChegada);
 }

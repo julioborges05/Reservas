@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.infra.repository.reserva;
 
+import br.com.fiap.reservas.entities.ReservaVMesaEntity;
 import br.com.fiap.reservas.enums.StatusReserva;
 import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 import jakarta.persistence.*;

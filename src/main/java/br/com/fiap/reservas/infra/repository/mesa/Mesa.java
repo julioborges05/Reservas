@@ -27,14 +27,6 @@ public class Mesa {
     public Mesa() {
     }
 
-    public Mesa(MesaPK id) {
-        this.id = id;
-    }
-
-    public Mesa(MesaPK id, Restaurante restaurante) {
-        this.id = id;
-        this.restaurante = restaurante;
-    }
 
     public Mesa(MesaPK id, Restaurante restaurante, StatusMesa statusMesa) {
         this.id = id;
@@ -60,14 +52,6 @@ public class Mesa {
 
     public void setRestaurante(Restaurante restaurante) {
         this.restaurante = restaurante;
-    }
-
-    public ReservaVMesa getReservaVMesa() {
-        return reservaVMesa;
-    }
-
-    public void setReservaVMesa(ReservaVMesa reservaVMesa) {
-        this.reservaVMesa = reservaVMesa;
     }
 
     public StatusMesa getStatusMesa() {

@@ -22,8 +22,8 @@ public class EnderecoRepositorioJpa implements IEnderecoGateway {
 
         if (enderecoExistente.isPresent()) {
             Endereco endereco = enderecoExistente.get();
-            return new EnderecoEntity(endereco.getId(), endereco.getCep(), endereco.getLogradouro(), endereco.getBairro(), endereco.getCidade(),
-                    endereco.getNumero(), endereco.getComplemento());
+            return new EnderecoEntity(endereco.getId(), endereco.getCep(), endereco.getLogradouro(), endereco.getBairro(),
+                    endereco.getCidade(), endereco.getNumero(), endereco.getComplemento());
         }
 
         Endereco endereco = new Endereco(enderecoEntity.getCep(), enderecoEntity.getLogradouro(), enderecoEntity.getBairro(),
@@ -40,7 +40,7 @@ public class EnderecoRepositorioJpa implements IEnderecoGateway {
 
         if (enderecoOptional.isPresent()) {
             Endereco endereco = enderecoOptional.get();
-            return new EnderecoEntity(endereco.getCep(), endereco.getLogradouro(),
+            return new EnderecoEntity(endereco.getId(), endereco.getCep(), endereco.getLogradouro(),
                     endereco.getBairro(), endereco.getCidade(), endereco.getNumero(), endereco.getComplemento());
         } else {
             throw new RuntimeException("Endereço não encontrado");

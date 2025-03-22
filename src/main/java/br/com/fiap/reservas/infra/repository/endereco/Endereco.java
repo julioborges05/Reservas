@@ -1,5 +1,6 @@
 package br.com.fiap.reservas.infra.repository.endereco;
 
+import br.com.fiap.reservas.entities.EnderecoEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,15 @@ public class Endereco {
         this.cidade = cidade;
         this.numero = numero;
         this.complemento = complemento;
+    }
+
+    public Endereco(EnderecoEntity enderecoEntity) {
+        this.cep = enderecoEntity.getCep();
+        this.logradouro = enderecoEntity.getLogradouro();
+        this.bairro = enderecoEntity.getBairro();
+        this.cidade = enderecoEntity.getCidade();
+        this.numero = enderecoEntity.getNumero();
+        this.complemento = enderecoEntity.getComplemento();
     }
 
     public Long getId() {
@@ -80,5 +90,9 @@ public class Endereco {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
+    }
+
+    public EnderecoEntity converterParaEntity() {
+        return new EnderecoEntity(id, cep, logradouro, bairro, cidade, numero, complemento);
     }
 }
