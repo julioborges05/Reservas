@@ -70,6 +70,10 @@ public class ReservaVMesa {
         return status;
     }
 
+    public void setStatus(StatusReserva status) {
+        this.status = status;
+    }
+
     public Long getIdReserva() {
         return this.idReserva;
     }

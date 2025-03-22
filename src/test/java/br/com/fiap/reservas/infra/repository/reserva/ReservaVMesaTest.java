@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,29 +37,58 @@ public class ReservaVMesaTest {
 
     @Test
     public void validarSalvarReservaComValores() {
-        Endereco endereco = new Endereco("13181701", "logradouro","bairro","cidade","numero","complemento");
+        Endereco endereco = new Endereco("13181701", "logradouro", "bairro", "cidade", "numero", "complemento");
         enderecoRepository.save(endereco);
 
         Restaurante restaurante = new Restaurante("restaurante", endereco.getId(), "tipo", horarioAbertura, horarioFechamento, 12);
         restauranteRepository.save(restaurante);
 
         MesaPK mesaPK = new MesaPK();
+        StatusReserva status = StatusReserva.RESERVADA;
         mesaPK.setNumeroMesa(1);
         mesaPK.setRestauranteId(restaurante.getId());
 
-        ReservaVMesa reservaVMesa = new ReservaVMesa(mesaPK, StatusReserva.RESERVADA);
+        ReservaVMesa reservaVMesa = new ReservaVMesa();
+        reservaVMesa.setIdMesa(mesaPK);
+        reservaVMesa.setStatus(status);
         ReservaVMesa savedReserva = reservaVMesaRepository.save(reservaVMesa);
 
         assertNotNull(savedReserva.getId());
         assertEquals(mesaPK, reservaVMesa.getIdMesa());
         assertEquals(1, mesaPK.getNumeroMesa());
         assertEquals(restaurante.getId(), mesaPK.getRestauranteId());
+        assertEquals(mesaPK, savedReserva.getIdMesa());
+        assertEquals(status, savedReserva.getStatus());
+        assertEquals(reservaVMesa.getIdReserva(), savedReserva.getIdReserva());
     }
 
     @Test
-    public void validarGettersAndSetters() {
-        ReservaVMesa reservaVMesa = new ReservaVMesa();
-        reservaVMesa.setId(3L);
-        assertEquals(3L, reservaVMesa.getId());
+    public void validarUpdateReservaVMesa() {
+        Endereco endereco = new Endereco("13181701", "logradouro", "bairro", "cidade", "numero", "complemento");
+        enderecoRepository.save(endereco);
+
+        Restaurante restaurante = new Restaurante("restaurante", endereco.getId(), "tipo", horarioAbertura, horarioFechamento, 12);
+        restauranteRepository.save(restaurante);
+
+        StatusReserva status = StatusReserva.RESERVADA;
+        MesaPK mesaPK = new MesaPK();
+        mesaPK.setNumeroMesa(1);
+        mesaPK.setRestauranteId(restaurante.getId());
+
+        ReservaVMesa reservaVMesa = new ReservaVMesa(mesaPK, status);
+        ReservaVMesa savedReservaVMesa = reservaVMesaRepository.save(reservaVMesa);
+
+        StatusReserva statusUpdate = StatusReserva.CANCELADA;
+        ReservaVMesa reservaVMesaToUpdate = new ReservaVMesa(savedReservaVMesa.getIdReserva(), statusUpdate);
+        reservaVMesaToUpdate.setId(savedReservaVMesa.getId());
+        reservaVMesaToUpdate.setIdMesa(savedReservaVMesa.getIdMesa());
+        reservaVMesaToUpdate.setIdReserva(savedReservaVMesa.getIdReserva());
+
+        ReservaVMesa updatedReservaVMesa = reservaVMesaRepository.save(reservaVMesaToUpdate);
+        assertNotNull(updatedReservaVMesa.getId());
+        assertEquals(reservaVMesaToUpdate.getId(), updatedReservaVMesa.getId());
+        assertEquals(reservaVMesaToUpdate.getIdReserva(), updatedReservaVMesa.getIdReserva());
+        assertEquals(mesaPK, updatedReservaVMesa.getIdMesa());
+        assertEquals(statusUpdate, updatedReservaVMesa.getStatus());
     }
 }
