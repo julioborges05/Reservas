@@ -9,6 +9,4 @@ Funcionalidade: Gerenciamento de reservas
 
     Cenário: Atualizar o status da reserva
         Dado que existe reserva para o usuário
-        Quando buscar a reserva do usuário
-        Então deve atualizar o status da reserva
-        E deve retornar a reserva atualizada
+        Quando atualizar a reserva do usuário
