@@ -18,19 +18,13 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
     {
         SimulacaoDePerformanceDaCriacaoDeRestaurante simulacaoDeCriacaoDeRestaurante;
         SimulacaoDePerformanceDaReserva simulacaoDeReserva;
-<<<<<<< Updated upstream
         SimulacaoDePerformanceDaAvaliacao simulacaoDeAvaliacao;
-        try {
-            simulacaoDeCriacaoDeRestaurante = new SimulacaoDePerformanceDaCriacaoDeRestaurante();
-            simulacaoDeReserva = new SimulacaoDePerformanceDaReserva();
-            simulacaoDeAvaliacao = new SimulacaoDePerformanceDaAvaliacao();
-=======
         SimulacaoDePerformanceDaBuscaDeRestaurante simulacaoDeBuscaDeRestaurante;
         try {
             simulacaoDeCriacaoDeRestaurante = new SimulacaoDePerformanceDaCriacaoDeRestaurante();
             simulacaoDeReserva = new SimulacaoDePerformanceDaReserva();
             simulacaoDeBuscaDeRestaurante = new SimulacaoDePerformanceDaBuscaDeRestaurante();
->>>>>>> Stashed changes
+            simulacaoDeAvaliacao = new SimulacaoDePerformanceDaAvaliacao();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
