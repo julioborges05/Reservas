@@ -47,7 +47,7 @@ public class UsuarioSpringControllerTest {
 
     @Test
     public void testCadastrarUsuario() throws Exception {
-        UsuarioDto usuarioDto = new UsuarioDto("nome", "email", "senha");
+        UsuarioDto usuarioDto = new UsuarioDto(1L, "nome", "email", "senha");
         when(cadastrarUsuarioController.cadastrarUsuario(anyString(), anyString(), anyString())).thenReturn(usuarioDto);
 
         mockMvc.perform(

@@ -21,7 +21,7 @@ public class DefinicaoDePassosCadastroRestaurante {
 
     @Quando("submeter o registro de um restaurante")
     public RestauranteDto cadastrarUmRestaurante() {
-        RestauranteDto request = new RestauranteDto("Nome", endereco, "TipoCozinha",
+        RestauranteDto request = new RestauranteDto(1L, "Nome", endereco, "TipoCozinha",
                 LocalTime.of(10, 20), LocalTime.of(18, 30), 10);
 
         response = given()
