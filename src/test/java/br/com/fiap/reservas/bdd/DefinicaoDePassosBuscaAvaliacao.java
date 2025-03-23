@@ -4,6 +4,7 @@ import br.com.fiap.reservas.controller.dto.AvaliacaoDto;
 import br.com.fiap.reservas.controller.dto.EnderecoDto;
 import br.com.fiap.reservas.controller.dto.RestauranteDto;
 import br.com.fiap.reservas.controller.dto.UsuarioDto;
+import br.com.fiap.reservas.infra.repository.usuario.Usuario;
 import io.cucumber.java.it.Quando;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
@@ -21,6 +22,16 @@ public class DefinicaoDePassosBuscaAvaliacao {
 
     private AvaliacaoDto avaliacaoResponse;
 
+    private Response responseAvaliacaoSalva;
+
+    private Response responseUsuarioSalvo;
+
+    private Response responseRestauranteSalvo;
+
+    private Long usuarioSalvoId;
+
+    private Long restauranteSalvoId;
+
     @Dado("que existe um restaurante cadastrado")
     public void queExisteUmRestauranteCadastrado() {
         EnderecoDto endereco = new EnderecoDto("123", "rua 1", "bairro a", "cidade 1",
@@ -29,29 +40,33 @@ public class DefinicaoDePassosBuscaAvaliacao {
         RestauranteDto request = new RestauranteDto(2L, "Restaurante", endereco, "TipoCozinha",
                 LocalTime.of(10, 20), LocalTime.of(18, 30), 10);
 
-        given()
+        responseRestauranteSalvo = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when()
                 .post("/restaurante");
+
+        restauranteSalvoId = responseRestauranteSalvo.then().extract().as(RestauranteDto.class).id();
     }
 
     @Dado("que existe um usuario cadastrado")
     public void queExisteUmUsuarioCadastrado() {
         UsuarioDto request = new UsuarioDto(2L, "User", "user@email.com", "12345");
 
-        given()
+        responseUsuarioSalvo = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when()
                 .post("/usuario");
+
+        usuarioSalvoId = responseUsuarioSalvo.then().extract().as(Usuario.class).getId();
     }
 
     @Dado("que existe uma avaliacao cadastrada")
     public void queExisteUmaAvaliacaoCadastrada() {
-        AvaliacaoDto request = new AvaliacaoDto(2L, 4, "Bom!", 2L);
+        AvaliacaoDto request = new AvaliacaoDto(restauranteSalvoId, 4, "Bom!", usuarioSalvoId);
 
-        response = given()
+        responseAvaliacaoSalva = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when()
@@ -59,14 +74,13 @@ public class DefinicaoDePassosBuscaAvaliacao {
     }
 
     @Quando("submeter a busca de uma avaliacao por id")
-    public AvaliacaoDto buscarAvaliacao() {
+    public void buscarAvaliacao() {
 
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("restauranteSalvoId", restauranteSalvoId)
                 .when()
-                .get("/avaliacao/avaliacao-por-restaurante/2");
-
-        return response.then().extract().as(AvaliacaoDto.class);
+                .get("/avaliacao/avaliacao-por-restaurante/{restauranteSalvoId}");
     }
 
     @Então("a avaliacao deve ser encontrada com sucesso")
