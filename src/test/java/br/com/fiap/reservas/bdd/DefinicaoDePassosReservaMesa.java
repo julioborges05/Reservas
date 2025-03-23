@@ -10,13 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class DefinicaoDePassosReservaMesas {
+public class DefinicaoDePassosReservaMesa {
 
     private Response response;
     private ReservaDto reservaResponse;
