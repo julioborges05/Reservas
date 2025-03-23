@@ -40,7 +40,7 @@ public class DefinicaoDePassosCadastroRestaurante {
 
     @Então("deve retornar o restaurante criado")
     public void deveRetornarORestauranteCriado() {
-        restauranteResponse = response.then().extract().as(RestauranteDto.class);
+        response.then().extract().as(RestauranteDto.class);
     }
 
 }

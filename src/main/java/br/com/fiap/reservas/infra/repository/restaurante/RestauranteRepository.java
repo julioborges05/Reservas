@@ -12,18 +12,21 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
     @Query(value = """
             select * from restaurante
             where nome = :nome
+            limit 1
             """, nativeQuery = true)
     Optional<Restaurante> findByNome(String nome);
 
     @Query(value = """
             select r.* from restaurante r
             JOIN endereco e ON r.id_endereco = e.id where logradouro = :localizacao
+            limit 1
             """, nativeQuery = true)
     Optional<Restaurante> findByLocalizacao(String localizacao);
 
     @Query(value = """
             select * from restaurante
             where tipo = :tipoCozinha
+            limit 1
             """, nativeQuery = true)
     Optional<Restaurante> findByTipoCozinha(String tipoCozinha);
 
@@ -39,6 +42,7 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
                            or e.cidade = :localizacao
                            or e.numero = :localizacao
                            or e.complemento = :localizacao)
+            limit 1
             """, nativeQuery = true)
     Optional<Restaurante> findByNomeLocalizacaoETipoCozinha(String nome, String localizacao, String tipoCozinha);
 
@@ -46,6 +50,7 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
                     select r.*
                     from restaurante r
                     where r.id_endereco = :idEndereco
+                    limit 1
                     """, nativeQuery = true)
     Optional<Restaurante> findByEnderecoId(Long idEndereco);
 }
