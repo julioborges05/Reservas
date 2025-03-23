@@ -5,6 +5,7 @@ import br.com.fiap.reservas.controller.dto.EnderecoDto;
 import br.com.fiap.reservas.controller.dto.RestauranteDto;
 import br.com.fiap.reservas.controller.dto.UsuarioDto;
 import br.com.fiap.reservas.entities.AvaliacaoEntity;
+import br.com.fiap.reservas.infra.repository.usuario.Usuario;
 import io.cucumber.java.it.Quando;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
@@ -22,6 +23,14 @@ public class DefinicaoDePassosAvaliacaoRestaurante {
 
     private AvaliacaoEntity avaliacaoResponse;
 
+    private Response responseUsuarioSalvo;
+
+    private Response responseRestauranteSalvo;
+
+    private Long usuarioSalvoId;
+
+    private Long restauranteSalvoId;
+
     @Dado("que existe restaurante cadastrado")
     public void queExisteRestauranteCadastrado() {
         EnderecoDto endereco = new EnderecoDto("123", "rua 1", "bairro a", "cidade 1",
@@ -30,27 +39,32 @@ public class DefinicaoDePassosAvaliacaoRestaurante {
         RestauranteDto request = new RestauranteDto(1L, "Restaurante", endereco, "TipoCozinha",
                 LocalTime.of(10, 20), LocalTime.of(18, 30), 10);
 
-        given()
+        responseRestauranteSalvo = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when()
                 .post("/restaurante");
+
+        restauranteSalvoId = responseRestauranteSalvo.then().extract().as(RestauranteDto.class).id();
     }
 
     @Dado("que existe usuario cadastrado")
     public void queExisteUsuarioCadastrado() {
         UsuarioDto request = new UsuarioDto(1L, "User", "user@email.com", "12345");
 
-        given()
+        responseUsuarioSalvo = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when()
                 .post("/usuario");
+
+        usuarioSalvoId = responseUsuarioSalvo.then().extract().as(Usuario.class).getId();
+
     }
 
     @Quando("submeter o formulario para avaliacao de um restaurante")
-    public AvaliacaoEntity avaliarUmRestaurante() {
-        AvaliacaoDto request = new AvaliacaoDto(1L, 4, "Bom!", 1L);
+    public void avaliarUmRestaurante() {
+        AvaliacaoDto request = new AvaliacaoDto(restauranteSalvoId, 4, "Bom!", usuarioSalvoId);
 
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -58,7 +72,6 @@ public class DefinicaoDePassosAvaliacaoRestaurante {
                 .when()
                 .post("/avaliacao");
 
-        return response.then().extract().as(AvaliacaoEntity.class);
     }
 
     @Então("a avaliacao deve ser registrada com sucesso")
