@@ -6,8 +6,10 @@ import br.com.fiap.reservas.infra.repository.mesa.MesaPK;
 public class MesaEntity {
 
     private Long restauranteId;
-    private final Integer numero;
+    private Integer numero;
     private StatusMesa statusMesa;
+
+    public MesaEntity() {}
 
     public MesaEntity(Integer numero, StatusMesa statusMesa) {
         validarNumero(numero);
@@ -38,15 +40,27 @@ public class MesaEntity {
         }
     }
 
-    public Integer getNumero() {
-        return numero;
-    }
-
     public Long getRestauranteId() {
         return restauranteId;
     }
 
+    public void setRestauranteId(Long restauranteId) {
+        this.restauranteId = restauranteId;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
     public StatusMesa getStatusMesa() {
         return statusMesa;
+    }
+
+    public void setStatusMesa(StatusMesa statusMesa) {
+        this.statusMesa = statusMesa;
     }
 }

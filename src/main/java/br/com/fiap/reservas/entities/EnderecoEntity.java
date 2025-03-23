@@ -5,12 +5,14 @@ import io.micrometer.common.util.StringUtils;
 public class EnderecoEntity {
 
     private Long id;
-    private final String cep;
-    private final String logradouro;
-    private final String bairro;
-    private final String cidade;
-    private final String numero;
-    private final String complemento;
+    private String cep;
+    private String logradouro;
+    private String bairro;
+    private String cidade;
+    private String numero;
+    private String complemento;
+
+    public EnderecoEntity() {}
 
     public EnderecoEntity(Long id, String cep, String logradouro, String bairro, String cidade, String numero, String complemento) {
         validaCep(cep);
@@ -83,27 +85,55 @@ public class EnderecoEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCep() {
         return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public String getLogradouro() {
         return logradouro;
     }
 
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
     public String getBairro() {
         return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
     }
 
     public String getCidade() {
         return cidade;
     }
 
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
     public String getNumero() {
         return numero;
     }
 
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
     public String getComplemento() {
         return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 }

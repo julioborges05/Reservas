@@ -1,10 +1,13 @@
 package br.com.fiap.reservas.entities;
 
 public class AvaliacaoEntity {
-    private final int nota;
-    private final String comentario;
-    private final UsuarioEntity usuarioId;
-    private final RestauranteEntity restauranteId;
+
+    private int nota;
+    private String comentario;
+    private UsuarioEntity usuarioId;
+    private RestauranteEntity restauranteId;
+
+    public AvaliacaoEntity() {}
 
     public AvaliacaoEntity(int nota, String comentario, UsuarioEntity usuario, RestauranteEntity restaurante) {
         validarNota(nota);
@@ -41,19 +44,35 @@ public class AvaliacaoEntity {
         }
     }
 
-    public RestauranteEntity getRestaurante() {
-        return restauranteId;
-    }
-
     public int getNota() {
         return nota;
+    }
+
+    public void setNota(int nota) {
+        this.nota = nota;
     }
 
     public String getComentario() {
         return comentario;
     }
 
-    public UsuarioEntity getUsuario(){
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public UsuarioEntity getUsuario() {
         return usuarioId;
+    }
+
+    public void setUsuario(UsuarioEntity usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public RestauranteEntity getRestaurante() {
+        return restauranteId;
+    }
+
+    public void setRestaurante(RestauranteEntity restauranteId) {
+        this.restauranteId = restauranteId;
     }
 }

@@ -10,6 +10,7 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     @Query(value = """
             select * from avaliacao
             where restaurante_id = :id
+            LIMIT 1
             """, nativeQuery = true)
     Avaliacao findAvaliacaoByRestaurante(Long id);
 

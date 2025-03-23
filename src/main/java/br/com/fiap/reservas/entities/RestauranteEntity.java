@@ -9,13 +9,15 @@ import java.util.List;
 
 public class RestauranteEntity {
     private Long id;
-    private final String nome;
-    private final EnderecoEntity endereco;
-    private final String tipoCozinha;
-    private final LocalTime horarioAbertura;
-    private final LocalTime horarioFechamento;
-    private final int capacidade;
+    private String nome;
+    private EnderecoEntity endereco;
+    private String tipoCozinha;
+    private LocalTime horarioAbertura;
+    private LocalTime horarioFechamento;
+    private int capacidade;
     private List<MesaEntity> listaMesa;
+
+    public RestauranteEntity() {}
 
     public RestauranteEntity(String nome, EnderecoEntity endereco, String tipoCozinha, LocalTime horarioAbertura,
                              LocalTime horarioFechamento, int capacidade) {
@@ -102,35 +104,63 @@ public class RestauranteEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public EnderecoEntity getEndereco() {
         return endereco;
     }
 
+    public void setEndereco(EnderecoEntity endereco) {
+        this.endereco = endereco;
+    }
+
     public String getTipoCozinha() {
         return tipoCozinha;
+    }
+
+    public void setTipoCozinha(String tipoCozinha) {
+        this.tipoCozinha = tipoCozinha;
     }
 
     public LocalTime getHorarioAbertura() {
         return horarioAbertura;
     }
 
+    public void setHorarioAbertura(LocalTime horarioAbertura) {
+        this.horarioAbertura = horarioAbertura;
+    }
+
     public LocalTime getHorarioFechamento() {
         return horarioFechamento;
+    }
+
+    public void setHorarioFechamento(LocalTime horarioFechamento) {
+        this.horarioFechamento = horarioFechamento;
     }
 
     public int getCapacidade() {
         return capacidade;
     }
 
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
+
     public List<MesaEntity> getListaMesa() {
         return listaMesa;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setListaMesa(List<MesaEntity> listaMesa) {
+        this.listaMesa = listaMesa;
     }
 }

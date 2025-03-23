@@ -39,7 +39,7 @@ public class CadastrarRestauranteControllerTest {
     private final LocalTime horarioAbertura = LocalTime.of(10, 0);
     private final LocalTime horarioFechamento = LocalTime.of(22, 0);
     private final EnderecoDto enderecoDto = new EnderecoDto("cep", "logradouro", "bairro", "cidade", "numero", "complemento");
-    private final RestauranteDto restauranteDto = new RestauranteDto("nome", enderecoDto,
+    private final RestauranteDto restauranteDto = new RestauranteDto(1L, "nome", enderecoDto,
             "tipoCozinha", horarioAbertura, horarioFechamento, 10);
 
     @BeforeEach
