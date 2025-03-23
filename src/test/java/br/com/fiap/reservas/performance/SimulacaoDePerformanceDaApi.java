@@ -18,6 +18,7 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
     {
         SimulacaoDePerformanceDaCriacaoDeRestaurante simulacaoDeCriacaoDeRestaurante;
         SimulacaoDePerformanceDaReserva simulacaoDeReserva;
+        SimulacaoDePerformanceDeGerenciamentoDaReserva simulacaoDeDeGerenciamentoDaReserva;
         SimulacaoDePerformanceDaAvaliacao simulacaoDeAvaliacao;
         SimulacaoDePerformanceDaBuscaDeRestaurante simulacaoDeBuscaDeRestaurante;
         try {
@@ -25,6 +26,7 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
             simulacaoDeReserva = new SimulacaoDePerformanceDaReserva();
             simulacaoDeBuscaDeRestaurante = new SimulacaoDePerformanceDaBuscaDeRestaurante();
             simulacaoDeAvaliacao = new SimulacaoDePerformanceDaAvaliacao();
+            simulacaoDeDeGerenciamentoDaReserva = new SimulacaoDePerformanceDeGerenciamentoDaReserva();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -59,6 +61,15 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
                                             .to(1)
                                             .during(Duration.ofSeconds(10))),
                     simulacaoDeBuscaDeRestaurante.criaCenarioDePerformanceParaBuscaDeRestaurante().injectOpen(
+                                    rampUsersPerSec(1)
+                                            .to(10)
+                                            .during(Duration.ofSeconds(10)),
+                                    constantUsersPerSec(10)
+                                            .during(Duration.ofSeconds(60)),
+                                    rampUsersPerSec(10)
+                                            .to(1)
+                                            .during(Duration.ofSeconds(10))),
+                    simulacaoDeDeGerenciamentoDaReserva.criaCenarioDePerformanceParaGerenciamentoDeReserva().injectOpen(
                                     rampUsersPerSec(1)
                                             .to(10)
                                             .during(Duration.ofSeconds(10)),

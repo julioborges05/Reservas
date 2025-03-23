@@ -59,7 +59,7 @@ public class SimulacaoDePerformanceDaReserva extends Simulation {
     }
 
 
-    public ActionBuilder criaActionBuilderParaCadatroDeReserva() throws JsonProcessingException {
+    public ActionBuilder criaActionBuilderParaCadastroDeReserva() throws JsonProcessingException {
         return http("cadastrar reserva")
                 .post("/reservas")
                 .body(StringBody(JsonFormatUtil.asJsonString(reservaDto)))
@@ -68,7 +68,7 @@ public class SimulacaoDePerformanceDaReserva extends Simulation {
 
     public ScenarioBuilder criaCenarioDePerformanceParaCadastroDeReserva() throws JsonProcessingException {
         return scenario("Cenário de performance para cadastro de reserva")
-                .exec(criaActionBuilderParaCadatroDeReserva());
+                .exec(criaActionBuilderParaCadastroDeReserva());
     }
 
 
