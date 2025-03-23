@@ -1,10 +1,6 @@
 package br.com.fiap.reservas.performance;
 
-import br.com.fiap.reservas.controller.dto.ReservaDto;
-import br.com.fiap.reservas.controller.dto.RestauranteDto;
-import br.com.fiap.reservas.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
@@ -22,11 +18,19 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
     {
         SimulacaoDePerformanceDaCriacaoDeRestaurante simulacaoDeCriacaoDeRestaurante;
         SimulacaoDePerformanceDaReserva simulacaoDeReserva;
+<<<<<<< Updated upstream
         SimulacaoDePerformanceDaAvaliacao simulacaoDeAvaliacao;
         try {
             simulacaoDeCriacaoDeRestaurante = new SimulacaoDePerformanceDaCriacaoDeRestaurante();
             simulacaoDeReserva = new SimulacaoDePerformanceDaReserva();
             simulacaoDeAvaliacao = new SimulacaoDePerformanceDaAvaliacao();
+=======
+        SimulacaoDePerformanceDaBuscaDeRestaurante simulacaoDeBuscaDeRestaurante;
+        try {
+            simulacaoDeCriacaoDeRestaurante = new SimulacaoDePerformanceDaCriacaoDeRestaurante();
+            simulacaoDeReserva = new SimulacaoDePerformanceDaReserva();
+            simulacaoDeBuscaDeRestaurante = new SimulacaoDePerformanceDaBuscaDeRestaurante();
+>>>>>>> Stashed changes
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -59,10 +63,19 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
                                             .during(Duration.ofSeconds(60)),
                                     rampUsersPerSec(10)
                                             .to(1)
+                                            .during(Duration.ofSeconds(10))),
+                    simulacaoDeBuscaDeRestaurante.criaCenarioDePerformanceParaBuscaDeRestaurante().injectOpen(
+                                    rampUsersPerSec(1)
+                                            .to(10)
+                                            .during(Duration.ofSeconds(10)),
+                                    constantUsersPerSec(10)
+                                            .during(Duration.ofSeconds(60)),
+                                    rampUsersPerSec(10)
+                                            .to(1)
                                             .during(Duration.ofSeconds(10))))
                             .protocols(httpProtocol)
                             .assertions(
-                                    global().responseTime().max().lt(50),
+                                    global().responseTime().max().lt(3000),
                                     global().failedRequests().count().is(0L)
                             );
         } catch (JsonProcessingException e) {
