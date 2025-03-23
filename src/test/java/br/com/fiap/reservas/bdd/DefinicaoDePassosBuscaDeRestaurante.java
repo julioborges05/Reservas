@@ -22,7 +22,7 @@ public class DefinicaoDePassosBuscaDeRestaurante {
         EnderecoDto endereco = new EnderecoDto("123", "rua 1", "bairro a", "cidade 1",
                 "1", "complemento");
 
-        RestauranteDto request = new RestauranteDto("Restaurante", endereco, "TipoCozinha",
+        RestauranteDto request = new RestauranteDto(1L, "Restaurante", endereco, "TipoCozinha",
                 LocalTime.of(10, 20), LocalTime.of(18, 30), 10);
 
         given()

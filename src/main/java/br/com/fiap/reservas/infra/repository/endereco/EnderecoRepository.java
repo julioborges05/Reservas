@@ -20,6 +20,7 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
                            or e.cidade = :texto
                            or e.numero = :texto
                            or e.complemento = :texto
+                        limit 1
                         """, nativeQuery = true)
     Optional<Endereco> findByCepOrLogradouroOrBairroOrCidadeOrNumeroOrComplemento(String texto);
 }
