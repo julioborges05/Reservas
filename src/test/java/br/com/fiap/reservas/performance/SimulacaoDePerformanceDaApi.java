@@ -22,9 +22,11 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
     {
         SimulacaoDePerformanceDaCriacaoDeRestaurante simulacaoDeCriacaoDeRestaurante;
         SimulacaoDePerformanceDaReserva simulacaoDeReserva;
+        SimulacaoDePerformanceDaAvaliacao simulacaoDeAvaliacao;
         try {
             simulacaoDeCriacaoDeRestaurante = new SimulacaoDePerformanceDaCriacaoDeRestaurante();
             simulacaoDeReserva = new SimulacaoDePerformanceDaReserva();
+            simulacaoDeAvaliacao = new SimulacaoDePerformanceDaAvaliacao();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -32,6 +34,15 @@ public class SimulacaoDePerformanceDaApi extends Simulation {
         try {
             setUp(
                     simulacaoDeCriacaoDeRestaurante.cenarioDePerformanceParaCadastroDeRestaurante.injectOpen(
+                                    rampUsersPerSec(1)
+                                            .to(10)
+                                            .during(Duration.ofSeconds(10)),
+                                    constantUsersPerSec(10)
+                                            .during(Duration.ofSeconds(60)),
+                                    rampUsersPerSec(10)
+                                            .to(1)
+                                            .during(Duration.ofSeconds(10))),
+                    simulacaoDeAvaliacao.criaCenarioDePerformanceParaCadastroDeAvaliacao().injectOpen(
                                     rampUsersPerSec(1)
                                             .to(10)
                                             .during(Duration.ofSeconds(10)),
