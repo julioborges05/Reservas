@@ -16,6 +16,8 @@ services:
     container_name: reservas_app
     environment:
       - DB_URL=jdbc:postgresql://restaurante:5432/restaurantedb
+      - DB_USER=user
+      - DB_PASSWORD=password
     depends_on:
       - restaurante
     ports:
