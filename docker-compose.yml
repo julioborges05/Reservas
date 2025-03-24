@@ -14,6 +14,8 @@ services:
   reservas-app:
     image: julioborges05/reservas-app
     container_name: reservas_app
+    environment:
+      - DB_URL=jdbc:postgresql://restaurante:5432/restaurantedb
     depends_on:
       - restaurante
     ports:

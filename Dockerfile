@@ -2,7 +2,7 @@ FROM amazoncorretto:21.0.4-alpine3.18
 
 WORKDIR /app
 
-ENV DB_URL=jdbc:postgresql://restaurante:5432/restaurantedb
+ENV DB_URL=${DB_URL}
 
 COPY target/reservas-0.0.1-SNAPSHOT.jar app.jar
 
