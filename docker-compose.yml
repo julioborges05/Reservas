@@ -10,3 +10,15 @@ services:
       - POSTGRES_DB=restaurantedb
     ports:
       - "5433:5432"
+
+  reservas-app:
+    image: julioborges05/reservas-app
+    container_name: reservas_app
+    environment:
+      - DB_URL=jdbc:postgresql://restaurante:5432/restaurantedb
+      - DB_USER=user
+      - DB_PASSWORD=password
+    depends_on:
+      - restaurante
+    ports:
+      - "8080:8080"
