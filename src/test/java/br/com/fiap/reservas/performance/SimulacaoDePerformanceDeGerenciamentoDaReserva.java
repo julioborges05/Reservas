@@ -4,6 +4,7 @@ import br.com.fiap.reservas.controller.dto.DataHoraDto;
 import br.com.fiap.reservas.controller.dto.EnderecoDto;
 import br.com.fiap.reservas.controller.dto.ReservaDto;
 import br.com.fiap.reservas.controller.dto.RestauranteDto;
+import br.com.fiap.reservas.utils.DateFormat;
 import br.com.fiap.reservas.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
@@ -26,7 +28,8 @@ import static io.gatling.javaapi.http.internal.HttpCheckBuilders.status;
 
 public class SimulacaoDePerformanceDeGerenciamentoDaReserva extends Simulation {
 
-    private final DataHoraDto dataHoraDto;
+    private final LocalDateTime horarioAtual = LocalDateTime.now();
+    private final DataHoraDto dataHoraDto = new DataHoraDto(DateFormat.convertFromLocalDateTimeToString(horarioAtual));
 
     public RestauranteDto criaORestaurante() {
         try {
@@ -55,7 +58,8 @@ public class SimulacaoDePerformanceDeGerenciamentoDaReserva extends Simulation {
 
     public ReservaDto criaAReserva(RestauranteDto restauranteDto) {
         try {
-            ReservaDto reservaDto = new ReservaDto(restauranteDto.id(), "usuario", 10, null, "05/02/2025 10:20");
+            ReservaDto reservaDto = new ReservaDto(restauranteDto.id(), "usuario", 10, null,
+                    DateFormat.convertFromLocalDateTimeToString(horarioAtual));
             String jsonString = JsonFormatUtil.asJsonString(reservaDto);
 
             HttpClient client = HttpClient.newHttpClient();
@@ -77,10 +81,8 @@ public class SimulacaoDePerformanceDeGerenciamentoDaReserva extends Simulation {
 
     public SimulacaoDePerformanceDeGerenciamentoDaReserva() throws JsonProcessingException {
         RestauranteDto restauranteDto = criaORestaurante();
-        ReservaDto reservaDto = criaAReserva(restauranteDto);
-        dataHoraDto = new DataHoraDto(reservaDto.horaChegada());
+        criaAReserva(restauranteDto);
     }
-
 
     public ActionBuilder criaActionBuilderParaGerenciamentoDeReserva() throws JsonProcessingException {
         return http("gerenciar reserva")
