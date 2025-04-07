@@ -20,11 +20,9 @@ Este é um sistema de gerenciamento de reservas para restaurantes desenvolvido e
 ## Funcionalidades
 
 - Cadastro e gerenciamento de restaurantes
-- Cadastro de endereços
 - Sistema de avaliações
 - Gerenciamento de usuários
 - Reservas de mesas
-- Alocação de mesas específicas
 
 ## Como Executar
 
